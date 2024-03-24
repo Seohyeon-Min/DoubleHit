@@ -47,7 +47,7 @@ public:
 private:
     Engine();
 
-    std::chrono::system_clock::time_point last_tick;
+    std::chrono::system_clock::time_point last_tick = std::chrono::system_clock::now();
     std::chrono::system_clock::time_point last_test;
 
     int frame_count = 0;

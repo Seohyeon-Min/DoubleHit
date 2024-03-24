@@ -5,7 +5,7 @@
 
 int main() {
     Engine& engine = Engine::Instance();
-    engine.Start("Assignment 2 - seohyeon.min@digipen.edu");
+    engine.Start("DoubleHit");
 
     Splash splash;
     engine.GetGameStateManager().AddGameState(splash);

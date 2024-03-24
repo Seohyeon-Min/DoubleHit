@@ -12,6 +12,7 @@ Created:    March 8, 2023
 #include <string>
 #include <raylib.h>
 #include <rlgl.h>
+#include "Vec2.h"
 
 namespace CS230 {
     class Window {
@@ -19,9 +20,13 @@ namespace CS230 {
         void Start(std::string title);
         void Update();
         bool IsClosed() const;
+        Math::ivec2 GetSize() const;
+        void Clear(unsigned int color);
 
     private:
-        static constexpr int default_width = 800;
-        static constexpr int default_height = 600;
+        static constexpr unsigned int default_background = UINT_MAX;
+        Math::ivec2 size;
+        static constexpr int default_width = 1280;
+        static constexpr int default_height = 720;
     };
 }

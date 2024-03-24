@@ -13,18 +13,26 @@ Created:    March 8, 2023
 #include "Mode1.h"
 
 
-Mode1::Mode1() {
-
+Mode1::Mode1() : hero({300, 80}) 
+{
 }
 
 void Mode1::Load() {
+    hero.Load();
 }
 
-void Mode1::Update() {
+void Mode1::Draw() {
+    Engine::GetWindow().Clear(UINT_MAX);
 
-
-
+    background.Draw({ 0, 0 });
+    hero.Draw();
 }
+
+void Mode1::Update([[maybe_unused]] double dt) {
+
+    hero.Update(dt);
+}
+
 
 void Mode1::Unload() {
 

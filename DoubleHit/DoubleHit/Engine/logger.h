@@ -13,6 +13,7 @@ Created:    March 8, 2023
 #include <string>
 #include <fstream>
 #include <raylib.h>
+#include <chrono>
 
 namespace CS230 {
     class Logger {
@@ -24,6 +25,7 @@ namespace CS230 {
             Error     //Errors, such as file load errors
         };
         Logger(Severity severity, bool use_console);
+        Logger(std::chrono::system_clock::time_point start_time, Severity severity, bool use_console);
         ~Logger();
         void LogError(std::string text) {
             log(Severity::Error, text);
@@ -41,6 +43,8 @@ namespace CS230 {
         const std::string word[4]{ "Verbose","Debug","Event","Error" };
         Severity min_level;
         std::ofstream out_stream;
+        std::chrono::system_clock::time_point start_time;
+        double seconds_since_start();
         void log(Severity severity, std::string message);
     };
 }

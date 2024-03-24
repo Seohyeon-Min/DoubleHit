@@ -39,10 +39,10 @@ bool CS230::GameStateManager::HasGameEnded() {
     return status == Status::EXIT;
 }
 
-void CS230::GameStateManager::Update() {
+void CS230::GameStateManager::Update(double dt) {
     switch (status) {
     case Status::STARTING:
-    
+
         next_gamestate = gamestates[0];
         status = Status::LOADING;
         if (gamestates.size() < 1) {
@@ -58,20 +58,21 @@ void CS230::GameStateManager::Update() {
         status = Status::UPDATING;
         break;
     case Status::UPDATING:
-         if (current_gamestate != next_gamestate) {
+        if (current_gamestate != next_gamestate) {
             status = Status::UNLOADING;
         }
         else {
             Engine::GetLogger().LogVerbose("Update" + current_gamestate->GetName());
-            current_gamestate->Update();
+            current_gamestate->Update(dt);
+            current_gamestate->Draw();
         }
 
         break;
     case Status::UNLOADING:
-       Engine::GetLogger().LogEvent("Unload " + current_gamestate->GetName());
+        Engine::GetLogger().LogEvent("Unload " + current_gamestate->GetName());
         current_gamestate->Unload();
         Engine::GetLogger().LogEvent("Unload Complete.");
-        if(next_gamestate == nullptr) {
+        if (next_gamestate == nullptr) {
             status = Status::STOPPING;
         }
         else {
@@ -79,7 +80,7 @@ void CS230::GameStateManager::Update() {
         }
         break;
     case Status::STOPPING:
-       status = Status::EXIT;
+        status = Status::EXIT;
 
         break;
     case Status::EXIT:

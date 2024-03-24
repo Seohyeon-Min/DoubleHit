@@ -71,6 +71,10 @@ constexpr int cs230_to_rl(CS230::Input::Keys cs230_key) noexcept {
         return KEY_SPACE;
     case CS230::Input::Keys::Enter:
         return KEY_ENTER;
+    case CS230::Input::Keys::Left:
+        return KEY_LEFT;
+    case CS230::Input::Keys::Right:
+        return KEY_RIGHT;
     default:
         return -1;
     }

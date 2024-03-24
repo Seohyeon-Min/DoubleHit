@@ -10,15 +10,23 @@ Created:    March 8, 2023
 
 #pragma once
 #include "../Engine/GameState.h"
+#include "../Engine/Sprite.h"
+#include "Hero.h"
 
 class Mode1 : public CS230::GameState {
 public:
     Mode1();
     void Load() override;
-    void Update() override;
+    void Update(double dt) override;
     void Unload() override;
+    void Draw() override;
+    static constexpr double gravity = 800;
+    static constexpr double floor = 80;
 
     std::string GetName() override {
         return "Mode1";
     }
+private:
+    Hero hero;
+    CS230::Texture background;
 };

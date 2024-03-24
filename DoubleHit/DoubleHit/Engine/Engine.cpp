@@ -9,10 +9,11 @@ Created:    March 8, 2023
 */
 
 #include "Engine.h"
+#include <iostream>
 
 Engine::Engine() :
 #ifdef _DEBUG
-    logger(CS230::Logger::Severity::Debug, true)
+    logger(last_tick, CS230::Logger::Severity::Debug, true)
 #else
     logger(CS230::Logger::Severity::Event, false)
 #endif
@@ -31,15 +32,25 @@ void Engine::Stop() {
 }
 
 void Engine::Update() {
-
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
     double dt = std::chrono::duration<double>(now - last_tick).count();
 
+    if (dt > (1 / TargetFPS))
+    {
+        frame_count++;
         logger.LogVerbose("Engine Update");
-        gamestatemanager.Update();
+        last_tick = now;
+
+        gamestatemanager.Update(dt);
         input.Update();
         window.Update();
-
+    }
+    if (frame_count >= FPSTargetFrames) {
+        double actual_time = std::chrono::duration<double>(now - last_test).count();
+        logger.LogDebug("FPS: " + std::to_string(frame_count / actual_time));
+        frame_count = 0;
+        last_test = now;
+    }
 }
 
 bool Engine::HasGameEnded() {
