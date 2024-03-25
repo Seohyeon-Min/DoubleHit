@@ -1,3 +1,5 @@
+
+
 #include "Pet.h"
 #include "../Engine/Engine.h"
 
@@ -7,15 +9,18 @@ Pet::Pet(Math::vec2 start_position) :
 {}
 
 void Pet::Load() {
-    sprite.Load("Assets/robot.png");
+    sprite.Load("Assets/flying robot2.png");
     position = start_position;
 }
 
-void Pet::Update(double dt) {
+void Pet::Update(double dt, Math::vec2 follow, int look) {
 
-
-    position.x += speed * dt;
-
+    if (look == 1) { // make it to enum
+        position.x = follow.x - space;
+    }
+    else {
+        position.x = follow.x + space;
+    }
 }
 
 void Pet::Draw() {

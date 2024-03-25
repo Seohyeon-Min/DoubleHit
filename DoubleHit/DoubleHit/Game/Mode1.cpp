@@ -13,12 +13,13 @@ Created:    March 8, 2023
 #include "Mode1.h"
 
 
-Mode1::Mode1() : hero({300, 80}) 
+Mode1::Mode1() : hero({300, 80}), pet({hero.GetPosition()})
 {
 }
 
 void Mode1::Load() {
     hero.Load();
+    pet.Load();
 }
 
 void Mode1::Draw() {
@@ -26,11 +27,13 @@ void Mode1::Draw() {
 
     background.Draw({ 0, 0 });
     hero.Draw();
+    pet.Draw();
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
 
     hero.Update(dt);
+    pet.Update(dt, hero.GetPosition(), hero.GetDirection());
 }
 
 

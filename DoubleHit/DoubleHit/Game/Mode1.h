@@ -12,6 +12,7 @@ Created:    March 8, 2023
 #include "../Engine/GameState.h"
 #include "../Engine/Sprite.h"
 #include "Hero.h"
+#include "Pet.h"
 
 class Mode1 : public CS230::GameState {
 public:
@@ -28,5 +29,6 @@ public:
     }
 private:
     Hero hero;
+    Pet pet;
     CS230::Texture background;
 };
