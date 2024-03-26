@@ -16,11 +16,13 @@ void Pet::Load() {
 void Pet::Update(double dt, Math::vec2 follow, int look) {
 
     if (look == 1) { // make it to enum
-        position.x = follow.x - space;
+        destination.x = follow.x - space;
     }
     else {
-        position.x = follow.x + space;
+        destination.x = follow.x + space;
     }
+
+    position
 }
 
 void Pet::Draw() {

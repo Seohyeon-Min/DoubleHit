@@ -15,6 +15,12 @@ private:
     CS230::Sprite sprite;
     Math::vec2 start_position;
     Math::vec2 position;
+    Math::vec2 destination;
+    Math::vec2 velocity;
     double space = 30;
+
+    static constexpr double x_acceleration = 400; //100 600
+    static constexpr double x_drag = 200;  // 1 200
+    static constexpr double max_velocity = 400; //100 600
     static constexpr double speed = 300;
 };

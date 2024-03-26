@@ -16,5 +16,5 @@ private:
     Math::vec2 start_position;
     Math::vec2 position;
     int direction = 1;
-    static constexpr double speed = 300;
+    static constexpr double speed = 140;
 };
