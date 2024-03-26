@@ -27,6 +27,8 @@ Math::vec2 Math::vec2::operator+(const vec2& v) {
 }
 
 Math::vec2& Math::vec2::operator+=(const vec2& v) {
+    x += v.x;
+    y += v.y;
     return *this;
 }
 
@@ -81,6 +83,8 @@ Math::ivec2 Math::ivec2::operator+(const ivec2& v) {
 }
 
 Math::ivec2& Math::ivec2::operator+=(const ivec2& v) {
+    x += v.x;
+    y += v.y;
     return *this;
 }
 
@@ -120,7 +124,5 @@ Math::vec2 Math::ivec2::operator*(double divisor) {
 }
 
 Math::vec2 Math::ivec2::operator/(double divisor) {
-    x /= divisor;
-    y /= divisor;
     return { x / divisor, y / divisor };
 }

@@ -17,7 +17,7 @@ private:
     Math::vec2 position;
     Math::vec2 destination;
     Math::vec2 velocity;
-    double space = 30;
+    Math::vec2 space = {30 , 0};
 
     static constexpr double x_acceleration = 400; //100 600
     static constexpr double x_drag = 200;  // 1 200

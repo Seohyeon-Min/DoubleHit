@@ -18,22 +18,22 @@ Mode1::Mode1() : hero({300, 80}), pet({hero.GetPosition()})
 }
 
 void Mode1::Load() {
-    hero.Load();
     pet.Load();
+    hero.Load();
 }
 
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
 
     background.Draw({ 0, 0 });
-    hero.Draw();
     pet.Draw();
+    hero.Draw();
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
 
-    hero.Update(dt);
     pet.Update(dt, hero.GetPosition(), hero.GetDirection());
+    hero.Update(dt);
 }
 
 
