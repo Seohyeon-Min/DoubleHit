@@ -1,4 +1,7 @@
-﻿  Mode1.cpp
-  DoubleHit.vcxproj -> C:\Users\weare\OneDrive\문서\GitHub\DoubleHit\DoubleHit\x64\Debug\DoubleHit.exe
-  'pwsh.exe'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는
-  배치 파일이 아닙니다.
+﻿  Combination.cpp
+C:\DoubleHit\DoubleHit\DoubleHit\DoubleHit\Game\Combination.cpp(131,71): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\DoubleHit\DoubleHit\DoubleHit\DoubleHit\Game\Combination.cpp(131,47): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\DoubleHit\DoubleHit\DoubleHit\DoubleHit\Game\Combination.cpp(144,23): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
+C:\DoubleHit\DoubleHit\DoubleHit\DoubleHit\Game\Combination.cpp(151,23): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
+C:\DoubleHit\DoubleHit\DoubleHit\DoubleHit\Game\Combination.cpp(158,23): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
+  DoubleHit.vcxproj -> C:\DoubleHit\DoubleHit\DoubleHit\x64\Debug\DoubleHit.exe

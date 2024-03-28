@@ -1,2 +1,3 @@
 C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\x64\Debug\DoubleHit.vcxproj.CopyComplete
 C:\Users\weare\OneDrive\문서\GitHub\DoubleHit\DoubleHit\DoubleHit\x64\Debug\DoubleHit.vcxproj.CopyComplete
+C:\DoubleHit\DoubleHit\DoubleHit\DoubleHit\x64\Debug\DoubleHit.vcxproj.CopyComplete

@@ -2,6 +2,7 @@
 
 #include "Pet.h"
 #include "../Engine/Engine.h"
+#include "Combination.h"
 
 Pet::Pet(Math::vec2 start_position) :
     start_position(start_position), 
@@ -18,7 +19,10 @@ void Pet::Load() {
 
 void Pet::Update(double dt, Math::vec2 follow, int look) {
 
-
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Down)) {
+        Combination::StartCombination();
+        //비정적 멤버 참조는 특정 개체에 상대적이어야 합니다.
+    }
 
 
     if (look == 1) { // make it to enum
