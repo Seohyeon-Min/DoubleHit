@@ -22,6 +22,8 @@ private:
     CS230::Sprite sprite;
 };
 
+extern Combination* combinationPtr;
+
 enum IconState {
     INACTIVE, // 비활성 상태
     ACTIVE    // 활성 상태

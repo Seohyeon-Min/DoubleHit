@@ -19,9 +19,9 @@ void Pet::Load() {
 
 void Pet::Update(double dt, Math::vec2 follow, int look) {
 
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Down)) {
-        Combination::StartCombination();
-        //비정적 멤버 참조는 특정 개체에 상대적이어야 합니다.
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Right)) {
+        combinationPtr->StartCombination();
+        Engine::GetLogger().LogDebug("Start_Combination");
     }
 
 

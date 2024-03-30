@@ -25,6 +25,9 @@ InputState currentInputState = NONE;
 KeyboardState currentKeyboardState = KEY_NONE;
 MouseState currentMouseState = MOUSE_NONE;
 
+Combination combinationInstance; // 실제 인스턴스 생성
+Combination* combinationPtr = &combinationInstance; // 포인터에 인스턴스 연결
+
 void Combination::StartCombination(){
     InitIcons();
     UpdateIcons();
@@ -135,27 +138,28 @@ void Combination::DrawIcons() {
 
 void Combination::comb_skill1() {
     Engine::GetLogger().LogDebug("(0,0)");
+    currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
 }
 
 void Combination::comb_skill2() {
     Engine::GetLogger().LogDebug("(0,1)");
-    currentInputState == NONE;
+    currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
 }
 
 void Combination::comb_skill3() {
     Engine::GetLogger().LogDebug("(1,0)");
-    currentInputState == NONE;
+    currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
 }
 
 void Combination::comb_skill4() {
     Engine::GetLogger().LogDebug("(1,1)");
-    currentInputState == NONE;
+    currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
 }
