@@ -1,5 +1,3 @@
-
-
 #include "Pet.h"
 #include "../Engine/Engine.h"
 #include "Combination.h"
@@ -18,12 +16,9 @@ void Pet::Load() {
 }
 
 void Pet::Update(double dt, Math::vec2 follow, int look) {
-
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::Right)) {
-        combinationPtr->StartCombination();
-        Engine::GetLogger().LogDebug("Start_Combination");
+        combinationStartPtr->CheckAndRunCombination();
     }
-
 
     if (look == 1) { // make it to enum
         destination.x = follow.x - space.x;

@@ -3,6 +3,9 @@
 
 Icon icons[2][2];
 
+bool isRunningStartCombination = false;
+bool isRunningCombination = false;
+
 enum InputState {
     NONE,
     KEYBOARD_ACTIVATED,
@@ -25,8 +28,11 @@ InputState currentInputState = NONE;
 KeyboardState currentKeyboardState = KEY_NONE;
 MouseState currentMouseState = MOUSE_NONE;
 
-Combination combinationInstance; // 실제 인스턴스 생성
-Combination* combinationPtr = &combinationInstance; // 포인터에 인스턴스 연결
+Combination combinationStartInstance; // 실제 인스턴스 생성
+Combination* combinationPtr = &combinationStartInstance; // 포인터에 인스턴스 연결
+
+Combination combinationReadyInstance;
+Combination* combinationStartPtr = &combinationReadyInstance;
 
 void Combination::StartCombination(){
     InitIcons();
@@ -141,6 +147,7 @@ void Combination::comb_skill1() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
+    isRunningStartCombination = false;
 }
 
 void Combination::comb_skill2() {
@@ -148,6 +155,8 @@ void Combination::comb_skill2() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
+    isRunningStartCombination = false;
+
 }
 
 void Combination::comb_skill3() {
@@ -155,6 +164,8 @@ void Combination::comb_skill3() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
+    isRunningStartCombination = false;
+
 }
 
 void Combination::comb_skill4() {
@@ -162,4 +173,37 @@ void Combination::comb_skill4() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
+    isRunningStartCombination = false;
+
 }
+
+void Combination::CheckAndRunCombination() {
+    using namespace std::chrono; // chrono 네임스페이스 사용
+
+    static steady_clock::time_point startTime; // 시작 시간을 기록할 변수
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Right)) {
+        isRunningCombination = true;
+        isRunningStartCombination = true;
+        startTime = steady_clock::now();
+    }
+
+    if (isRunningCombination) {
+        auto currentTime = steady_clock::now(); // 현재 시간을 얻음
+        auto elapsedTime = duration_cast<seconds>(currentTime - startTime); // 경과 시간 계산
+        if (elapsedTime.count() < 10) {
+            std::this_thread::sleep_for(milliseconds(500)); // 반복 실행 간격 조절을 위한 지연
+        }
+        else {
+            isRunningCombination = false;
+            isRunningStartCombination = false; // 실행 중지
+        }
+    }
+
+    if (isRunningStartCombination == true || isRunningCombination == true) {
+        combinationPtr->StartCombination(); // 함수 실행
+    }
+  
+}
+
+//isRunningStartCombination = 컴비네이션 시작
+//isRunningCombination = 컴비네이션 작동중인지 인식
