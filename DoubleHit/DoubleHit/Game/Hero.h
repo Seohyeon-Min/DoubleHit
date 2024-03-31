@@ -11,10 +11,17 @@ public:
     void Draw();
     Math::vec2 GetPosition();
     int GetDirection();
+    
+    //won
+    double GetHealth();
+    void TakeDamage(double damage);
 private:
     CS230::Sprite sprite;
     Math::vec2 start_position;
     Math::vec2 position;
     int direction = 1;
     static constexpr double speed = 140;
+
+    //won
+    double hero_health = 100.0;
 };
