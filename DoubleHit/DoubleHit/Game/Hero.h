@@ -15,6 +15,8 @@ public:
     //won
     double GetHealth();
     void TakeDamage(double damage);
+ 
+
 private:
     CS230::Sprite sprite;
     Math::vec2 start_position;
@@ -23,5 +25,11 @@ private:
     static constexpr double speed = 140;
 
     //won
-    double hero_health = 100.0;
+    double HeroHealth = 100.0;
+    double HealthMax = 100.0;
+    
+    double BarMaxWidth = 200.0;
+    double BarCurrentWidth = 200;
+    double HealthRatio = BarMaxWidth / HealthMax;
+    
 };

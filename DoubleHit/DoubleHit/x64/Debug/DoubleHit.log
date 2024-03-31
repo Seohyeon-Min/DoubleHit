@@ -1,2 +1,6 @@
 ﻿  Hero.cpp
+C:\Users\won\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\Game\Hero.cpp(19,28): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Mode1.cpp
+  main.cpp
+  Generating Code...
   DoubleHit.vcxproj -> C:\Users\won\Documents\GitHub\DoubleHit\DoubleHit\x64\Debug\DoubleHit.exe

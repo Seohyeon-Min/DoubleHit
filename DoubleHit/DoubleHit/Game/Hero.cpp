@@ -2,7 +2,7 @@
 
 #include "Hero.h"
 #include "../Engine/Engine.h"
-#include <iostream>
+#include <iostream> //delete later
 
 Hero::Hero(Math::vec2 start_position) :
     start_position(start_position),
@@ -15,6 +15,8 @@ void Hero::Load() {
 }
 
 void Hero::Update(double dt) {
+    
+    DrawRectangle(100,100, BarCurrentWidth, 40, GREEN);
 
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         direction = -1;
@@ -27,13 +29,14 @@ void Hero::Update(double dt) {
 
     //won
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::P)) {
-        Hero::TakeDamage(20);
-        
+        Hero::TakeDamage(10);
     }
+
 }
 
 void Hero::Draw() {
     sprite.Draw(position);
+    
 }
 
 Math::vec2 Hero::GetPosition() {
@@ -44,22 +47,24 @@ int Hero::GetDirection() {
     return direction;
 }
 
-//won
 
+//won
 double Hero::GetHealth() {
-    return hero_health;
+    return HeroHealth;
 }
 
 void Hero::TakeDamage(double damage) {
-    hero_health -= damage;
+    HeroHealth -= damage;
 
-    if (hero_health <= 0) {
-        hero_health = 0;
+    if (HeroHealth <= 0) {
+        HeroHealth = 0;
+        BarCurrentWidth = 0;
         std::cout << "Game Over." << std::endl;
     }
     else {
-        std::cout << "Hero got " << damage << " damage. Health: " << hero_health << std::endl;
-        //damaged sprite
+        std::cout << "Hero got " << damage << " damage. Health: " << HeroHealth << std::endl;
+        BarCurrentWidth = HeroHealth * HealthRatio;
+
     }
 
     
