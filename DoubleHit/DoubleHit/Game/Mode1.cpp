@@ -20,6 +20,7 @@ Mode1::Mode1() : hero({300, 80}), pet({hero.GetPosition()})
 void Mode1::Load() {
     pet.Load();
     hero.Load();
+    combination.InitIcons();
 }
 
 void Mode1::Draw() {
@@ -28,12 +29,14 @@ void Mode1::Draw() {
     background.Draw({ 0, 0 });
     pet.Draw();
     hero.Draw();
+    combination.DrawIcons();
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
 
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt);
+    combination.UpdateIcons();
 }
 
 

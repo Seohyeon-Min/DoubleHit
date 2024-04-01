@@ -28,6 +28,7 @@
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Vec2.h" />
     <ClInclude Include="Engine\Window.h" />
+    <ClInclude Include="Game\Combination.h" />
     <ClInclude Include="Game\Hero.h" />
     <ClInclude Include="Game\Mode1.h" />
     <ClInclude Include="Game\Pet.h" />
@@ -43,6 +44,7 @@
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Vec2.cpp" />
     <ClCompile Include="Engine\Window.cpp" />
+    <ClCompile Include="Game\Combination.cpp" />
     <ClCompile Include="Game\Hero.cpp" />
     <ClCompile Include="Game\Mode1.cpp" />
     <ClCompile Include="Game\Pet.cpp" />

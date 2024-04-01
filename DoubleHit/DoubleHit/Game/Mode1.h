@@ -13,6 +13,7 @@ Created:    March 8, 2023
 #include "../Engine/Sprite.h"
 #include "Hero.h"
 #include "Pet.h"
+#include "Combination.h"
 
 class Mode1 : public CS230::GameState {
 public:
@@ -30,5 +31,6 @@ public:
 private:
     Hero hero;
     Pet pet;
+    Combination combination;
     CS230::Texture background;
 };

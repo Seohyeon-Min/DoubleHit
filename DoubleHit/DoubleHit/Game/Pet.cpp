@@ -1,8 +1,7 @@
-
-
 #include "Pet.h"
 #include "../Engine/Engine.h"
 #include <cmath>
+#include "Combination.h"
 
 Pet::Pet(Math::vec2 start_position) :
     start_position(start_position), 
@@ -19,6 +18,10 @@ void Pet::Load() {
 }
 
 void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Right)) {
+        combinationStartPtr->CheckAndRunCombination();
+    }
+
     if (look == 1) { // make it to enum
         destination = follow - space;
 
