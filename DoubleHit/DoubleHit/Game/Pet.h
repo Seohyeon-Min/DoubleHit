@@ -28,7 +28,6 @@ private:
     static constexpr double max_velocity = 400; //100 600
     Math::vec2 attack_position;
     Math::vec2 mouse_position;
-    double space = 30;
     double x_distance;
     double y_distance;
     double x_speed;
