@@ -75,6 +75,10 @@ constexpr int cs230_to_rl(CS230::Input::Keys cs230_key) noexcept {
         return KEY_LEFT;
     case CS230::Input::Keys::Right:
         return KEY_RIGHT;
+    case CS230::Input::Keys::Mouse_Left:
+        return MOUSE_BUTTON_LEFT;
+    case CS230::Input::Keys::Mouse_Right:
+        return MOUSE_BUTTON_RIGHT;
     default:
         return -1;
     }
