@@ -3,6 +3,7 @@
 #include "Hero.h"
 #include "Mode1.h"
 #include "../Engine/Engine.h"
+#include <iostream> //delete later
 
 Hero::Hero(Math::vec2 start_position) :
     start_position(start_position),
@@ -33,6 +34,8 @@ void Hero::jump(float dt) {
 
 
 void Hero::Update(double dt) {
+    
+    DrawRectangle(100,100, BarCurrentWidth, 40, GREEN);
 
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         direction = -1;
@@ -49,12 +52,41 @@ void Hero::Update(double dt) {
     if (is_jumping) {
         jump(dt);
     }
+
+    //won
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::P)) {
+        Hero::TakeDamage(10);
+    }
+
 }
 
 void Hero::Draw() {
     sprite.Draw(position);
+    
 }
 
 Math::vec2 Hero::GetPosition() {
     return position;
+}
+
+//won
+double Hero::GetHealth() {
+    return HeroHealth;
+}
+
+void Hero::TakeDamage(double damage) {
+    HeroHealth -= damage;
+
+    if (HeroHealth <= 0) {
+        HeroHealth = 0;
+        BarCurrentWidth = 0;
+        std::cout << "Game Over." << std::endl;
+    }
+    else {
+        std::cout << "Hero got " << damage << " damage. Health: " << HeroHealth << std::endl;
+        BarCurrentWidth = HeroHealth * HealthRatio;
+
+    }
+
+    
 }

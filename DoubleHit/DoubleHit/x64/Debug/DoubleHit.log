@@ -1,5 +1,14 @@
-﻿  Hero.cpp
-C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\Game\Hero.cpp(50,14): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  Engine.cpp
+  GameStateManager.cpp
+  Input.cpp
+  logger.cpp
+  Sprite.cpp
+  Texture.cpp
+  Vec2.cpp
+  Window.cpp
+  Hero.cpp
+C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\Game\Hero.cpp(38,28): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\Game\Hero.cpp(53,14): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Mode1.cpp
   Pet.cpp
   Splash.cpp
@@ -8,28 +17,27 @@ C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\Game\Hero.cpp(50,1
   DoubleHit.vcxproj -> C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\x64\Debug\DoubleHit.exe
 
 프로젝트 성능 요약:
-     4847ms  C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\DoubleHit.vcxproj   1회 호출
-               4847ms  Build                                      1회 호출
+    11968ms  C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\DoubleHit.vcxproj   1회 호출
+              11968ms  Build                                      1회 호출
 
 대상 성능 요약:
-        0ms  _CheckForInvalidConfigurationAndPlatform   1회 호출
-        0ms  RegisterOutput                             1회 호출
+        0ms  AfterBuildCompileEvent                     1회 호출
         0ms  _Manifest                                  1회 호출
         0ms  _ALink                                     1회 호출
         0ms  _Link                                      1회 호출
         0ms  AfterLink                                  1회 호출
         0ms  ComputeLinkImportLibraryOutputsForClean    1회 호출
-        0ms  ComputeLinkSwitches                        1회 호출
         0ms  PreLinkEvent                               1회 호출
         0ms  DoLinkOutputFilesMatch                     1회 호출
         0ms  MakeDirsForLink                            1회 호출
         0ms  PrepareResourceNames                       1회 호출
         0ms  CreateCustomManifestResourceNames          1회 호출
-        0ms  ResolvedXDCMake                            1회 호출
         0ms  SplitResourcesByCulture                    1회 호출
+        0ms  AssignTargetPaths                          1회 호출
         0ms  ComputeManifestInputsTargets               1회 호출
         0ms  ComputeLinkInputsFromProject               1회 호출
         0ms  ComputeCLGeneratedLinkInputs               1회 호출
+        0ms  ComputeCLOutputs                           1회 호출
         0ms  ComputeManifestGeneratedLinkerInputs       1회 호출
         0ms  ComputeRCGeneratedLinkInputs               1회 호출
         0ms  ComputeRCOutputs                           1회 호출
@@ -38,8 +46,8 @@ C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\Game\Hero.cpp(50,1
         0ms  BuildLinkTraverse                          1회 호출
         0ms  BuildCompile                               1회 호출
         0ms  _BuildCompileAction                        1회 호출
-        0ms  FinalizeBuildStatus                        1회 호출
-        0ms  AssignTargetPaths                          1회 호출
+        0ms  _ResourceCompile                           1회 호출
+        0ms  ResolvedXDCMake                            1회 호출
         0ms  ComputeCLCompileGeneratedXDCFiles          1회 호출
         0ms  MakeDirsForXdcMake                         1회 호출
         0ms  _XdcMake                                   1회 호출
@@ -55,36 +63,33 @@ C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\Game\Hero.cpp(50,1
         0ms  _CheckForCompileOutputs                    1회 호출
         0ms  _CopySourceItemsToOutputDirectory          1회 호출
         0ms  _GetCopyToOutputDirectoryItemsFromThisProject   1회 호출
+        0ms  AfterResourceCompile                       1회 호출
         0ms  _GetCopyToOutputDirectoryItemsFromTransitiveProjectReferences   1회 호출
-        0ms  GetCopyToOutputDirectoryItems              1회 호출
         0ms  GetCopyToOutputDirectoryXamlAppDefs        1회 호출
         0ms  _PopulateCommonStateForGetCopyToOutputDirectoryItems   1회 호출
         0ms  _Deploy                                    1회 호출
         0ms  _Appverifier                               1회 호출
         0ms  CreateSatelliteAssemblies                  1회 호출
         0ms  _GenerateSatelliteAssemblyInputs           1회 호출
-        0ms  ContentFilesProjectOutputGroup             1회 호출
         0ms  MakeDirsForFxc                             1회 호출
         0ms  SatelliteDllsProjectOutputGroup            1회 호출
         0ms  BuiltProjectOutputGroup                    1회 호출
         0ms  _BscMake                                   1회 호출
         0ms  MakeDirsForBscMake                         1회 호출
         0ms  ComputeCLCompileGeneratedSbrFiles          1회 호출
-        0ms  _ResourceCompile                           1회 호출
-        0ms  AfterResourceCompile                       1회 호출
-        0ms  AfterBuildCompileEvent                     1회 호출
-        0ms  BeforeResourceCompile                      1회 호출
+        0ms  GetCopyToOutputDirectoryItems              1회 호출
+        0ms  MakeDirsForResourceCompile                 1회 호출
+        0ms  Build                                      1회 호출
+        0ms  _ClCompile                                 1회 호출
         0ms  _SelectedFiles                             1회 호출
         0ms  PreBuildEvent                              1회 호출
         0ms  BeforeBuildGenerateSources                 1회 호출
         0ms  BuildGenerateSourcesTraverse               1회 호출
-        0ms  InitializeBuildStatus                      1회 호출
         0ms  ResolveReferences                          1회 호출
         0ms  AfterResolveReferences                     1회 호출
         0ms  ResolveAssemblyReferences                  1회 호출
         0ms  ExpandSDKReferences                        1회 호출
         0ms  ResolveSDKReferences                       1회 호출
-        0ms  PrepareForBuild                            1회 호출
         0ms  SetCABuildNativeEnvironmentVariables       1회 호출
         0ms  _CheckWindowsSDKInstalled                  1회 호출
         0ms  GetResolvedWinMD                           1회 호출
@@ -94,73 +99,77 @@ C:\Users\gtg06\Documents\GitHub\DoubleHit\DoubleHit\DoubleHit\Game\Hero.cpp(50,1
         0ms  GetFrameworkPaths                          1회 호출
         0ms  ResolveProjectReferences                   1회 호출
         0ms  PrepareProjectReferences                   1회 호출
-        0ms  _GetProjectReferenceTargetFrameworkProperties   1회 호출
         0ms  _AddOutputPathToGlobalPropertiesToRemove   1회 호출
         0ms  _SplitProjectReferencesByFileExistence     1회 호출
+        0ms  AssignProjectConfiguration                 1회 호출
         0ms  BeforeResolveReferences                    1회 호출
         0ms  _PrepareForReferenceResolution             1회 호출
         0ms  _PrepareForBuild                           1회 호출
         0ms  SetTelemetryEnvironmentVariables           1회 호출
-        0ms  MakeDirsForResourceCompile                 1회 호출
+        0ms  BeforeResourceCompile                      1회 호출
         0ms  ComputeCustomBuildOutput                   1회 호출
         0ms  SelectCustomBuild                          1회 호출
-        0ms  CopyFileToFolders                          1회 호출
-        0ms  _ClCompile                                 1회 호출
-        0ms  AfterClCompile                             1회 호출
-        0ms  VcpkgCheckManifestRoot                     1회 호출
-        0ms  VcpkgTripletSelection                      1회 호출
-        0ms  SelectClCompile                            1회 호출
-        0ms  MakeDirsForCl                              1회 호출
-        0ms  FixupCLCompileOptions                      1회 호출
-        0ms  ComputeStdModulesCompileInputs             1회 호출
-        0ms  WarnCompileDuplicatedFilename              1회 호출
+        0ms  BuildCompileTraverse                       1회 호출
         0ms  ComputeReferenceCLInput                    1회 호출
         0ms  GetReferencedVCProjectsInfo                1회 호출
         0ms  FindReferenceAssembliesForReferences       1회 호출
-        0ms  CustomBuild                                1회 호출
         0ms  ComputeCLInputPDBName                      1회 호출
-        0ms  _Midl                                      1회 호출
-        0ms  _Xsd                                       1회 호출
-        0ms  MakeDirsForMidl                            1회 호출
-        0ms  ComputeMIDLGeneratedCompileInputs          1회 호출
-        0ms  AfterMidl                                  1회 호출
         0ms  BeforeClCompile                            1회 호출
-        0ms  AfterBuildGenerateSources                  1회 호출
-        0ms  Build                                      1회 호출
-        0ms  AfterBuildGenerateSourcesEvent             1회 호출
-        0ms  _BuildGenerateSourcesAction                1회 호출
+        0ms  CopyFileToFolders                          1회 호출
+        0ms  MakeDirsForCl                              1회 호출
         0ms  BuildGenerateSources                       1회 호출
-        0ms  BuildCompileTraverse                       1회 호출
-        4ms  AssignProjectConfiguration                 1회 호출
-       15ms  CreateRecipeFile                           1회 호출
-       15ms  _CopyFilesMarkedCopyLocal                  1회 호출
-       19ms  ComputeCLOutputs                           1회 호출
-      405ms  Link                                       1회 호출
-      884ms  AppLocalFromInstalled                      1회 호출
-     3506ms  ClCompile                                  1회 호출
+        0ms  _BuildGenerateSourcesAction                1회 호출
+        0ms  SelectClCompile                            1회 호출
+        0ms  WarnCompileDuplicatedFilename              1회 호출
+        0ms  ComputeStdModulesCompileInputs             1회 호출
+        0ms  AfterBuildGenerateSources                  1회 호출
+        0ms  _Midl                                      1회 호출
+        0ms  VcpkgTripletSelection                      1회 호출
+        0ms  AfterMidl                                  1회 호출
+        0ms  VcpkgCheckManifestRoot                     1회 호출
+        0ms  ComputeMIDLGeneratedCompileInputs          1회 호출
+        0ms  MakeDirsForMidl                            1회 호출
+        0ms  _Xsd                                       1회 호출
+        0ms  AfterClCompile                             1회 호출
+        0ms  AfterBuildGenerateSourcesEvent             1회 호출
+        1ms  RegisterOutput                             1회 호출
+        2ms  ContentFilesProjectOutputGroup             1회 호출
+       10ms  _CopyFilesMarkedCopyLocal                  1회 호출
+       10ms  ComputeLinkSwitches                        1회 호출
+       11ms  CustomBuild                                1회 호출
+       11ms  CreateRecipeFile                           1회 호출
+       11ms  FinalizeBuildStatus                        1회 호출
+       16ms  PrepareForBuild                            1회 호출
+       16ms  FixupCLCompileOptions                      1회 호출
+       18ms  _CheckForInvalidConfigurationAndPlatform   1회 호출
+       20ms  InitializeBuildStatus                      1회 호출
+       29ms  _GetProjectReferenceTargetFrameworkProperties   1회 호출
+      321ms  Link                                       1회 호출
+      720ms  AppLocalFromInstalled                      1회 호출
+    10774ms  ClCompile                                  1회 호출
 
 작업 성능 요약:
         0ms  Message                                    8회 호출
-        0ms  RemoveDuplicates                           2회 호출
         0ms  FindUnderPath                              5회 호출
         0ms  ConvertToAbsolutePath                      1회 호출
         0ms  CallTarget                                 2회 호출
-        0ms  Copy                                       1회 호출
         0ms  AssignCulture                              1회 호출
         0ms  AssignTargetPath                           7회 호출
-        0ms  Delete                                     2회 호출
-        0ms  GetOutOfDateItems                          3회 호출
+        0ms  RemoveDuplicates                           2회 호출
+        0ms  Touch                                      2회 호출
         0ms  CleanupStaleTlogItems                      1회 호출
-        0ms  WriteLinesToFile                           2회 호출
-        0ms  ReadLinesFromFile                          3회 호출
-        0ms  CheckVCToolsetVersion                      1회 호출
         0ms  MakeDir                                   10회 호출
         0ms  SetRidAgnosticValueForProjects             1회 호출
         0ms  MSBuild                                    1회 호출
         0ms  AssignProjectConfiguration                 1회 호출
         0ms  SetEnv                                    11회 호출
-        0ms  Touch                                      2회 호출
-       15ms  GenerateDesktopDeployRecipe                1회 호출
-      405ms  Link                                       1회 호출
-      869ms  Exec                                       2회 호출
-     3489ms  CL                                         1회 호출
+        1ms  Delete                                     3회 호출
+        1ms  ReadLinesFromFile                          3회 호출
+       10ms  Copy                                       1회 호출
+       11ms  GetOutOfDateItems                          3회 호출
+       11ms  GenerateDesktopDeployRecipe                1회 호출
+       16ms  CheckVCToolsetVersion                      1회 호출
+       20ms  WriteLinesToFile                           2회 호출
+      321ms  Link                                       1회 호출
+      709ms  Exec                                       2회 호출
+    10774ms  CL                                         1회 호출

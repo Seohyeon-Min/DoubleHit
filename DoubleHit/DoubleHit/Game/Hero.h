@@ -17,6 +17,12 @@ public:
     Math::vec2 GetPosition();
     int GetDirection() { return direction; };
     int GetJumping() { return is_jumping; };
+    
+    //won
+    double GetHealth();
+    void TakeDamage(double damage);
+ 
+
 private:
     CS230::Sprite sprite;
     Math::vec2 start_position;
@@ -25,4 +31,13 @@ private:
     int direction = 1;
     int jump_count = default_jump_count;
     bool is_jumping = false;
+
+    //won
+    double HeroHealth = 100.0;
+    double HealthMax = 100.0;
+    
+    double BarMaxWidth = 200.0;
+    double BarCurrentWidth = 200;
+    double HealthRatio = BarMaxWidth / HealthMax;
+    
 };
