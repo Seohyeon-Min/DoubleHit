@@ -32,7 +32,7 @@ void Mode1::Draw() {
 
 void Mode1::Update([[maybe_unused]] double dt) {
 
-    pet.Update(dt, hero.GetPosition(), hero.GetDirection());
+    pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt);
 }
 

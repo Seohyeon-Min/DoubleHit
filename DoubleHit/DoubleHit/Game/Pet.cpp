@@ -16,13 +16,10 @@ void Pet::Load() {
     position = start_position;
 }
 
-void Pet::Update(double dt, Math::vec2 follow, int look) {
-
-
-
-
+void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
     if (look == 1) { // make it to enum
-        destination.x = follow.x - space.x;
+        destination = follow - space;
+
         if (velocity.x <= 0) {
             velocity.x -= x_acceleration * dt;
             if (position.x <= destination.x) {
@@ -36,7 +33,8 @@ void Pet::Update(double dt, Math::vec2 follow, int look) {
 
     }
     else {
-        destination.x = follow.x + space.x;
+        destination = follow + space;
+
         if (velocity.x >= 0) {
             velocity.x += x_acceleration * dt;
             if (position.x >= destination.x) {

@@ -8,7 +8,7 @@ class Pet {
 public:
     Pet(Math::vec2 start_position);
     void Load();
-    void Update(double dt, Math::vec2 follow, int look);
+    void Update(double dt, Math::vec2 follow, int look, int jumping);
     void Draw();
 
 private:
@@ -19,7 +19,7 @@ private:
     Math::vec2 velocity;
     Math::vec2 space = {30 , 0};
 
-    static constexpr double x_acceleration = 400; //100 600
+    static constexpr double x_acceleration = 100; //100 600
     static constexpr double x_drag = 200;  // 1 200
     static constexpr double max_velocity = 400; //100 600
     static constexpr double speed = 300;
