@@ -68,6 +68,9 @@ Math::vec2 Math::operator*(double scale, const vec2& v)
     return vec2(v.x * scale, v.y * scale);
 }
 
+Math::vec2 Math::vec2::operator-() {
+    return { -x, -y };
+}
 
 bool Math::ivec2::operator==(const ivec2& v) {
     return (x == v.x && y == v.y);
@@ -125,4 +128,8 @@ Math::vec2 Math::ivec2::operator*(double divisor) {
 
 Math::vec2 Math::ivec2::operator/(double divisor) {
     return { x / divisor, y / divisor };
+}
+
+Math::ivec2 Math::ivec2::operator-() {
+    return { -x, -y };
 }

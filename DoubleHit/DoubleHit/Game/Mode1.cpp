@@ -13,7 +13,7 @@ Created:    March 8, 2023
 #include "Mode1.h"
 
 
-Mode1::Mode1() : hero({300, 80}), pet({hero.GetPosition()}) 
+Mode1::Mode1() : hero({300, 80}), pet({hero.GetPosition()}), camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } })
 {
 }
 

@@ -33,6 +33,8 @@ namespace Math {
 
         vec2 operator/(double divisor);
         vec2& operator/=(double divisor);
+
+        vec2 operator-();
     };
 
     vec2 operator*(double scale, const vec2& v);
@@ -64,6 +66,8 @@ namespace Math {
 
         vec2 operator*(double scale);
         vec2 operator/(double divisor);
+
+        ivec2 operator-();
     };
 
 

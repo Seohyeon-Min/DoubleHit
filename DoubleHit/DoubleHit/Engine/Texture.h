@@ -12,21 +12,23 @@ Created:    March 8, 2023
 #include "Vec2.h"
 #include <filesystem>
 #include <raylib.h>
+#include "Matrix.h"
 
 namespace CS230 {
     class Texture {
     public:
         Texture();
+        Texture(const std::filesystem::path& file_name);
         ~Texture();
 
         Texture(const Texture&) = delete;
         Texture& operator=(const Texture&) = delete;
         Texture(Texture&& temporary) noexcept;
         Texture& operator=(Texture&& temporary) noexcept;
-
         void Load(const std::filesystem::path& file_name);
-        void Draw(Math::vec2 loheroion);
         Math::ivec2 GetSize() const;
+        void Draw(Math::vec2 location);
+        void Draw(Math::TransformationMatrix display_matrix);
 
     private:
         Texture2D texture;

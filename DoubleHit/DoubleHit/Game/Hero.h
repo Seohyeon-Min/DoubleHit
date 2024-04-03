@@ -14,7 +14,9 @@ public:
     void Draw();
     void is_on_ground();
     void jump(float dt);
-    Math::vec2 GetPosition();
+    void lightAttack();
+    void heavyAttack();
+    const Math::vec2& GetPosition() const { return position; };
     int GetDirection() { return direction; };
     int GetJumping() { return is_jumping; };
     
@@ -31,11 +33,12 @@ private:
     int direction = 1;
     int jump_count = default_jump_count;
     bool is_jumping = false;
+    bool is_light_attack = false;
+    bool is_heavy_attack = false;
 
     //won
     double HeroHealth = 100.0;
     double HealthMax = 100.0;
-    
     double BarMaxWidth = 200.0;
     double BarCurrentWidth = 200;
     double HealthRatio = BarMaxWidth / HealthMax;

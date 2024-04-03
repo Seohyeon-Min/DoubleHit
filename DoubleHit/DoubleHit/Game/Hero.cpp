@@ -10,6 +10,8 @@ Hero::Hero(Math::vec2 start_position) :
     position(start_position)
 {}
 
+
+
 void Hero::Load() {
     sprite.Load("Assets/robot.png");
     position = start_position;
@@ -32,6 +34,17 @@ void Hero::jump(float dt) {
 	}
 }
 
+void Hero::lightAttack()
+{
+    Engine::GetLogger().LogDebug("lightAttack");
+    is_light_attack = false;
+}
+void Hero::heavyAttack()
+{
+    Engine::GetLogger().LogDebug("heavyAttack");
+    is_heavy_attack = false;
+}
+
 
 void Hero::Update(double dt) {
     
@@ -45,12 +58,24 @@ void Hero::Update(double dt) {
         direction = 1;
         position.x += speed.x * dt * direction;
     }
-	if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) { //jump
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) { //jump
 		is_jumping = true;
 	}
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+        is_light_attack = true;
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+        is_heavy_attack = true;
+    }
 
     if (is_jumping) {
         jump(dt);
+    }
+    if (is_light_attack) {
+        lightAttack();
+    }
+    if (is_heavy_attack) {
+        heavyAttack();
     }
 
     //won
@@ -63,10 +88,6 @@ void Hero::Update(double dt) {
 void Hero::Draw() {
     sprite.Draw(position);
     
-}
-
-Math::vec2 Hero::GetPosition() {
-    return position;
 }
 
 //won

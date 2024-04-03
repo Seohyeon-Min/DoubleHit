@@ -11,6 +11,7 @@ Created:    March 8, 2023
 #pragma once
 #include "../Engine/GameState.h"
 #include "../Engine/Sprite.h"
+#include "..\Engine\Camera.h"
 #include "Hero.h"
 #include "Pet.h"
 #include "Combination.h"
@@ -32,5 +33,6 @@ private:
     Hero hero;
     Pet pet;
     Combination combination;
+    CS230::Camera camera;
     CS230::Texture background;
 };

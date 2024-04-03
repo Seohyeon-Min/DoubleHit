@@ -12,6 +12,7 @@ Created:    March 8, 2023
 #include <string>
 #include "Vec2.h"
 #include "Texture.h"
+#include "Matrix.h"
 
 namespace CS230 {
     class Sprite {
@@ -19,8 +20,9 @@ namespace CS230 {
         Sprite();
         void Load(const std::filesystem::path& texture_path);
         void Load(const std::filesystem::path& texture_path, Math::ivec2 hotspot_position);
-        void Draw(Math::vec2 position);
         Math::ivec2 GetTextureSize();
+        void Draw(Math::vec2 position);
+        void Draw(Math::TransformationMatrix display_matrix);
     private:
         Texture texture;
         Math::ivec2 hotspot;

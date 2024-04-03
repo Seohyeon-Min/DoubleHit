@@ -25,10 +25,14 @@ void CS230::Sprite::Load(const std::filesystem::path& texture_path, Math::ivec2 
 	hotspot = hotspot_position;
 }
 
-void CS230::Sprite::Draw(Math::vec2 position) {
-	texture.Draw({ position.x - hotspot.x ,position.y - hotspot.y });
-}
-
 Math::ivec2 CS230::Sprite::GetTextureSize() {
 	return texture.GetSize();
+}
+
+void CS230::Sprite::Draw(Math::vec2 position) {
+	texture.Draw(position - static_cast<Math::vec2>(hotspot));
+}
+
+void CS230::Sprite::Draw(Math::TransformationMatrix display_matrix) {
+	texture.Draw(display_matrix * Math::TranslationMatrix(-hotspot));
 }

@@ -19,11 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\GameState.h" />
     <ClInclude Include="Engine\GameStateManager.h" />
     <ClInclude Include="Engine\Input.h" />
     <ClInclude Include="Engine\logger.h" />
+    <ClInclude Include="Engine\Matrix.h" />
+    <ClInclude Include="Engine\Rect.h" />
     <ClInclude Include="Engine\Sprite.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Vec2.h" />
@@ -36,10 +39,12 @@
     <ClInclude Include="Game\States.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\GameStateManager.cpp" />
     <ClCompile Include="Engine\Input.cpp" />
     <ClCompile Include="Engine\logger.cpp" />
+    <ClCompile Include="Engine\Matrix.cpp" />
     <ClCompile Include="Engine\Sprite.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Vec2.cpp" />
