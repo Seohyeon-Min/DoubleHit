@@ -11,8 +11,9 @@ public:
     void Update(double dt, Math::vec2 follow, int look, int jumping);
     void Draw();
     void Attack(double dt);
-    int GetAttackDirection();
+    void flip();
     void GetAttackPosition();
+    int GetAttackDirection();
 
 private:
     CS230::Sprite sprite;
@@ -22,6 +23,7 @@ private:
     Math::vec2 destination;
     Math::vec2 velocity;
     Math::vec2 space = {30 , 0};
+    Math::TransformationMatrix object_matrix;
 
     static constexpr double x_acceleration = 100; //100 600
     static constexpr double x_drag = 200;  // 1 200
@@ -33,6 +35,7 @@ private:
     double x_speed;
     double y_speed;
     double angle;
+    bool flipped = false;
     bool IsAttacking = false;
     bool StartAttacking = false;
     static constexpr int mouse_radius = 15; //temporary mouse asset

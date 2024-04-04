@@ -28,7 +28,7 @@ void Mode1::Draw() {
 
     background.Draw({ 0, 0 });
     pet.Draw();
-    hero.Draw();
+    hero.Draw(camera.GetMatrix());
     combination.DrawIcons();
 }
 

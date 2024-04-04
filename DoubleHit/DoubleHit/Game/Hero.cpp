@@ -10,51 +10,22 @@ Hero::Hero(Math::vec2 start_position) :
     position(start_position)
 {}
 
-
-
 void Hero::Load() {
-    sprite.Load("Assets/robot.png");
+    sprite.Load("Assets/player.png");
     position = start_position;
 }
-
-void Hero::is_on_ground() {
-    jump_count = default_jump_count;
-    speed.y = jumping_speed;
-    position.y = Mode1::floor ;
-    is_jumping = false;
-}
-
-void Hero::jump(float dt) {
-	if (is_jumping) { // jump
-		position.y += dt * speed.y;
-		speed.y -= dt * Mode1::gravity;
-	}
-	if (position.y <= Mode1::floor) { //on the ground
-        is_on_ground();
-	}
-}
-
-void Hero::lightAttack()
-{
-    Engine::GetLogger().LogDebug("lightAttack");
-    is_light_attack = false;
-}
-void Hero::heavyAttack()
-{
-    Engine::GetLogger().LogDebug("heavyAttack");
-    is_heavy_attack = false;
-}
-
 
 void Hero::Update(double dt) {
     
     DrawRectangle(100,100, BarCurrentWidth, 40, GREEN);
 
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) { //Left
+        flipped = true;
         direction = -1;
         position.x += speed.x * dt * direction;
     }
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) { //Right
+        flipped = false;
         direction = 1;
         position.x += speed.x * dt * direction;
     }
@@ -83,11 +54,45 @@ void Hero::Update(double dt) {
         Hero::TakeDamage(10);
     }
 
+    object_matrix = Math::TranslationMatrix(position);
+    if (flipped == true) {
+        object_matrix *= Math::ScaleMatrix({ -1.0, 1.0 });
+    }
 }
 
-void Hero::Draw() {
-    sprite.Draw(position);
+void Hero::Draw(Math::TransformationMatrix camera_matrix) {
+    sprite.Draw(camera_matrix * object_matrix);
     
+}
+
+
+void Hero::isOnGround() {
+    jump_count = default_jump_count;
+    speed.y = jumping_speed;
+    position.y = Mode1::floor;
+    is_jumping = false;
+}
+
+void Hero::jump(float dt) {
+    if (is_jumping) { // jump
+        position.y += dt * speed.y;
+        speed.y -= dt * Mode1::gravity;
+    }
+    if (position.y <= Mode1::floor) { //on the ground
+        isOnGround();
+    }
+}
+
+void Hero::lightAttack()
+{
+    Engine::GetLogger().LogDebug("lightAttack");
+    is_light_attack = false;
+}
+
+void Hero::heavyAttack()
+{
+    Engine::GetLogger().LogDebug("heavyAttack");
+    is_heavy_attack = false;
 }
 
 //won

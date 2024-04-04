@@ -11,8 +11,8 @@ public:
     Hero(Math::vec2 start_position);
     void Load();
     void Update(double dt);
-    void Draw();
-    void is_on_ground();
+    void Draw(Math::TransformationMatrix camera_matrix);
+    void isOnGround();
     void jump(float dt);
     void lightAttack();
     void heavyAttack();
@@ -35,6 +35,8 @@ private:
     bool is_jumping = false;
     bool is_light_attack = false;
     bool is_heavy_attack = false;
+    bool flipped = false;
+    Math::TransformationMatrix object_matrix;
 
     //won
     double HeroHealth = 100.0;

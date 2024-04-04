@@ -11,8 +11,8 @@ Pet::Pet(Math::vec2 start_position) :
 }
 
 void Pet::Load() {
-    sprite.Load("Assets/flying robot2.png");
-    attack.Load("Assets/Pet1.png");
+    sprite.Load("Assets/pet.png");
+    attack.Load("Assets/bullet.png");
     velocity = { 0,0 };
     position = start_position;
 }
@@ -52,6 +52,18 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
         }
     }
 
+    if (mouse_position.x > position.x) {
+        flipped = true;
+    }
+    else {
+        flipped = false;
+    }
+
+    object_matrix = Math::TranslationMatrix(position);
+    if (flipped == true) {
+        object_matrix *= Math::ScaleMatrix({ -1.0, 1.0 });
+    }
+
     position += velocity * dt;
     Attack(dt);
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -84,6 +96,12 @@ void Pet::Attack(double dt) {
             IsAttacking = false;
         }
     }
+}
+
+void Pet::flip()
+{
+
+
 }
 
 void Pet::GetAttackPosition() {

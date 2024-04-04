@@ -108,13 +108,14 @@ void CS230::Input::Update() {
         const auto rl_key = cs230_to_rl(static_cast<Keys>(key));
         SetKeyDown(key, IsKeyDown(rl_key));
         if (KeyJustPressed(key)) {
-            Engine::GetLogger().LogDebug("Key Pressed");
+            //Engine::GetLogger().LogDebug("Key Pressed");
         }
         else if (KeyJustReleased(key)) {
-            Engine::GetLogger().LogDebug("Key Released");
+            //Engine::GetLogger().LogDebug("Key Released");
         }
     }
 }
+
 
 bool CS230::Input::KeyDown(Keys key) {
     return keys_down[static_cast<int>(key)];
