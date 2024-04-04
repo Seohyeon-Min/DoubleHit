@@ -20,6 +20,9 @@ public:
     void comb_skill2();
     void comb_skill3();
     void comb_skill4();
+
+    double StartTime;
+    bool isRunningCombination = false;
 private:
     CS230::Sprite sprite;
 };
