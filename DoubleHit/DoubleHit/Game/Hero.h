@@ -20,9 +20,9 @@ public:
     int GetDirection() { return direction; };
     int GetJumping() { return is_jumping; };
     
-    //won
-    double GetHealth();
+    //health
     void TakeDamage(double damage);
+    double GetHealth();
  
 
 private:
@@ -38,11 +38,27 @@ private:
     bool flipped = false;
     Math::TransformationMatrix object_matrix;
 
-    //won
-    double HeroHealth = 100.0;
-    double HealthMax = 100.0;
-    double BarMaxWidth = 200.0;
-    double BarCurrentWidth = 200;
-    double HealthRatio = BarMaxWidth / HealthMax;
+    //health
+   
     
+    double HeroHealth = 100.0;
+};
+
+//Health Bar
+class HealthBar {
+public:
+    HealthBar(Math::vec2 position);
+    void Draw();
+    void Load();
+    void Update(double dt, double heroHealth);
+
+private:
+    CS230::Sprite health;
+    CS230::Sprite health_green;
+    Math::vec2 position;
+    Math::TransformationMatrix health_matrix;
+
+    bool damaged = false;
+    double HealthMax = 100.0;
+
 };

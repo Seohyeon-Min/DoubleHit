@@ -33,6 +33,7 @@ private:
     Hero hero;
     Pet pet;
     Combination combination;
+    HealthBar healthbar;
     CS230::Camera camera;
     CS230::Texture background;
 };

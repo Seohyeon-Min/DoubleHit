@@ -13,7 +13,7 @@ Created:    March 8, 2023
 #include "Mode1.h"
 
 
-Mode1::Mode1() : hero({300, 80}), pet({hero.GetPosition()}), camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } })
+Mode1::Mode1() : hero({300, 80}), pet({hero.GetPosition()}), healthbar({ 400, 650 }), camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } })
 {
 }
 
@@ -21,6 +21,7 @@ void Mode1::Load() {
     pet.Load();
     hero.Load();
     combination.InitIcons();
+    healthbar.Load();
 }
 
 void Mode1::Draw() {
@@ -30,6 +31,7 @@ void Mode1::Draw() {
     pet.Draw();
     hero.Draw(camera.GetMatrix());
     combination.DrawIcons();
+    healthbar.Draw();
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -37,6 +39,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt);
     combination.UpdateIcons();
+    healthbar.Update(dt, hero.GetHealth());
 }
 
 

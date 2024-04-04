@@ -16,9 +16,6 @@ void Hero::Load() {
 }
 
 void Hero::Update(double dt) {
-    
-    DrawRectangle(100,100, BarCurrentWidth, 40, GREEN);
-
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) { //Left
         flipped = true;
         direction = -1;
@@ -49,9 +46,8 @@ void Hero::Update(double dt) {
         heavyAttack();
     }
 
-    //won
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::P)) {
-        Hero::TakeDamage(10);
+        Hero::TakeDamage(10);   //temporary value
     }
 
     object_matrix = Math::TranslationMatrix(position);
@@ -64,7 +60,6 @@ void Hero::Draw(Math::TransformationMatrix camera_matrix) {
     sprite.Draw(camera_matrix * object_matrix);
     
 }
-
 
 void Hero::isOnGround() {
     jump_count = default_jump_count;
@@ -95,24 +90,51 @@ void Hero::heavyAttack()
     is_heavy_attack = false;
 }
 
-//won
+//######################################################################################
+//Health Bar
+//######################################################################################
+
 double Hero::GetHealth() {
     return HeroHealth;
 }
 
 void Hero::TakeDamage(double damage) {
     HeroHealth -= damage;
-
     if (HeroHealth <= 0) {
         HeroHealth = 0;
-        BarCurrentWidth = 0;
         std::cout << "Game Over." << std::endl;
     }
     else {
         std::cout << "Hero got " << damage << " damage. Health: " << HeroHealth << std::endl;
-        BarCurrentWidth = HeroHealth * HealthRatio;
+    }
+}
 
+
+HealthBar::HealthBar(Math::vec2 position) :
+    position(position)
+{}
+
+void HealthBar::Load() {
+    health.Load("Assets/HealthBar.png");
+    health_green.Load("Assets/HealthBar_Green.png");
+    position = position;
+
+}
+
+void HealthBar::Draw() {
+    health.Draw(position);
+    health_green.Draw(health_matrix);
+}
+
+void HealthBar::Update(double dt, double heroHealth) {    
+    //resize health bar
+    if (heroHealth < 100) {
+        damaged = true;
     }
 
-    
+    //health bar size matrix
+    health_matrix = Math::TranslationMatrix(position);
+    if (damaged == true) {
+        health_matrix *= Math::ScaleMatrix({ heroHealth / HealthMax, 1 });
+    }
 }
