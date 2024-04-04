@@ -20,6 +20,7 @@ namespace Math {
         const double* operator[](int index) const { return matrix[index]; }
         TransformationMatrix operator * (TransformationMatrix m) const;
         TransformationMatrix& operator *= (TransformationMatrix m);
+        Math::vec2 operator*(vec2 v) const;
         void Reset();
     protected:
         double matrix[3][3];

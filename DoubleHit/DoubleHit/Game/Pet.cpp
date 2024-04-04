@@ -35,7 +35,6 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
         else {
             velocity.x -= x_drag * 2 * dt;
         }
-
     }
     else {
         destination = follow + space;
@@ -52,11 +51,13 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
         }
     }
 
-    if (mouse_position.x > position.x) {
-        flipped = true;
-    }
-    else {
+    if ((double)GetMouseX() > position.x && flipped) {
         flipped = false;
+        Engine::GetLogger().LogDebug("flip true");
+    }
+    else if((double)GetMouseX() <= position.x && !flipped){
+        flipped = true;
+        Engine::GetLogger().LogDebug("flip false");
     }
 
     object_matrix = Math::TranslationMatrix(position);
@@ -73,7 +74,7 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
 }
 
 void Pet::Draw() {
-    sprite.Draw(position);
+    sprite.Draw(object_matrix);
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
     if (IsAttacking == true) {
         attack.Draw(attack_position);

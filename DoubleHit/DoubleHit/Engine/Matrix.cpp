@@ -44,6 +44,13 @@ Math::TransformationMatrix& Math::TransformationMatrix::operator *= (Math::Trans
     return (*this);
 }
 
+Math::vec2 Math::TransformationMatrix::operator * (vec2 v) const {
+    Math::vec2 result;
+    result.x = matrix[0][0] * v.x + matrix[0][1] * v.y + matrix[0][2];
+    result.y = matrix[1][0] * v.x + matrix[1][1] * v.y + matrix[1][2];
+    return result;
+}
+
 Math::TranslationMatrix::TranslationMatrix(ivec2 translate)
 {
     matrix[0][0] = 1.0; matrix[0][1] = 0.0; matrix[0][2] = translate.x;
