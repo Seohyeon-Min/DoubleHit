@@ -13,7 +13,9 @@ Created:    March 8, 2023
 #include "Mode1.h"
 
 
-Mode1::Mode1() : hero({300, 80}), pet({hero.GetPosition()}), camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } })
+Mode1::Mode1() : 
+    hero({ (double)Engine::GetWindow().GetSize().x/2, 80}, camera), pet({hero.GetPosition()}),
+    camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } })
 {
 }
 
@@ -21,25 +23,44 @@ void Mode1::Load() {
     pet.Load();
     hero.Load();
     combination.InitIcons();
-}
-
-void Mode1::Draw() {
-    Engine::GetWindow().Clear(UINT_MAX);
-
-    background.Draw({ 0, 0 });
-    pet.Draw();
-    hero.Draw(camera.GetMatrix());
-    combination.DrawIcons();
+    background.Add("Assets/background.png", 1);
+    camera.SetPosition({ 0, 0 });
+    camera.SetLimit({ { 0,0 }, { background.GetSize() - Engine::GetWindow().GetSize() } });
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
 
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::O)) {
+        debug = 1;
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::I)) {
+        debug = 0;
+    }
+
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt);
     combination.UpdateIcons();
+    camera.Update(hero.GetPosition(), dt);
 }
 
+void Mode1::Draw() {
+    Engine::GetWindow().Clear(UINT_MAX);
+    background.Draw(camera);
+
+    
+    combination.DrawIcons();
+
+    if (debug) {
+        hero.Draw();
+    }
+    else {
+        hero.Draw(camera.GetMatrix());
+        pet.Draw(camera.GetMatrix());
+    }
+
+
+}
 
 void Mode1::Unload() {
-
+    background.Unload();
 }

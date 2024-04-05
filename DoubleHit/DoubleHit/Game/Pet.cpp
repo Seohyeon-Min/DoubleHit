@@ -55,7 +55,7 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
         flipped = false;
         Engine::GetLogger().LogDebug("flip true");
     }
-    else if((double)GetMouseX() <= position.x && !flipped){
+    else if((double)GetMouseX() <=  position.x && !flipped){
         flipped = true;
         Engine::GetLogger().LogDebug("flip false");
     }
@@ -81,6 +81,15 @@ void Pet::Draw() {
     }
 }
 
+void Pet::Draw(Math::TransformationMatrix camera_matrix) {
+    sprite.Draw(camera_matrix * object_matrix);
+    DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
+    if (IsAttacking == true) {
+        attack.Draw(attack_position);
+    }
+    camera_offset = camera_matrix;
+}
+
 void Pet::Attack(double dt) {
     
     if (IsAttacking == true) {
@@ -99,22 +108,15 @@ void Pet::Attack(double dt) {
     }
 }
 
-void Pet::flip()
-{
-
-
-}
-
 void Pet::GetAttackPosition() {
-    attack_position = position;
+    attack_position = camera_offset * position  ;
     mouse_position = { (double)GetMouseX(), (double)GetMouseY() };
     mouse_position.y *= -1;
     mouse_position.y += Engine::GetWindow().GetSize().y;
 }
 
 int Pet::GetAttackDirection() {  
-    x_distance = mouse_position.x - attack_position.x;
-    y_distance = mouse_position.y - attack_position.y;
-    angle = atan2(y_distance, x_distance);
+    distance = mouse_position - attack_position;
+    angle = atan2(distance.y, distance.x);
     return 1;
 }

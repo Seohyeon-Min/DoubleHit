@@ -35,7 +35,7 @@ Math::TransformationMatrix CS230::Camera::GetMatrix() {
 }
 
 
-void CS230::Camera::Update(const Math::vec2& player_position) {
+void CS230::Camera::Update(const Math::vec2& player_position, double dt) {
     if (player_position.x > player_zone.top_right.x + position.x) {
         position.x = player_position.x - player_zone.top_right.x;
     }

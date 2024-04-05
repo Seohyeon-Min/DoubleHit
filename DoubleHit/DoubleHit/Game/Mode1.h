@@ -15,6 +15,7 @@ Created:    March 8, 2023
 #include "Hero.h"
 #include "Pet.h"
 #include "Combination.h"
+#include "Background.h"
 
 class Mode1 : public CS230::GameState {
 public:
@@ -30,9 +31,10 @@ public:
         return "Mode1";
     }
 private:
+    bool debug = 0;
     Hero hero;
     Pet pet;
     Combination combination;
     CS230::Camera camera;
-    CS230::Texture background;
+    Background  background;
 };

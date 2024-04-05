@@ -2,15 +2,18 @@
 #include "..\Engine\Sprite.h"
 #include "..\Engine\Input.h"
 #include "..\Engine\Vec2.h"
+#include "..\Engine\Camera.h"
+#include "..\Engine\Matrix.h"
 
 constexpr int default_jump_count = 2;
 constexpr float jumping_speed = 300;
 
 class Hero {
 public:
-    Hero(Math::vec2 start_position);
+    Hero(Math::vec2 start_position, const CS230::Camera& camera);
     void Load();
     void Update(double dt);
+    void Draw();
     void Draw(Math::TransformationMatrix camera_matrix);
     void isOnGround();
     void jump(float dt);
@@ -26,6 +29,7 @@ public:
  
 
 private:
+    const CS230::Camera& camera;
     CS230::Sprite sprite;
     Math::vec2 start_position;
     Math::vec2 position;

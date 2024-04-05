@@ -5,9 +5,10 @@
 #include "../Engine/Engine.h"
 #include <iostream> //delete later
 
-Hero::Hero(Math::vec2 start_position) :
+Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
     start_position(start_position),
-    position(start_position)
+    position(start_position),
+    camera(camera)
 {}
 
 void Hero::Load() {
@@ -17,7 +18,7 @@ void Hero::Load() {
 
 void Hero::Update(double dt) {
     
-    DrawRectangle(100,100, BarCurrentWidth, 40, GREEN);
+    
 
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) { //Left
         flipped = true;
@@ -49,6 +50,15 @@ void Hero::Update(double dt) {
         heavyAttack();
     }
 
+    if (position.x - sprite.GetTextureSize().x / 2 < camera.GetPosition().x) {
+        position.x = camera.GetPosition().x + sprite.GetTextureSize().x / 2;
+        speed.x = 0;
+    }
+    if (position.x + sprite.GetTextureSize().x / 2 > camera.GetPosition().x + Engine::GetWindow().GetSize().x) {
+        position.x = camera.GetPosition().x + Engine::GetWindow().GetSize().x - sprite.GetTextureSize().x / 2;
+        speed.x = 0;
+    }
+
     //won
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::P)) {
         Hero::TakeDamage(10);
@@ -60,8 +70,14 @@ void Hero::Update(double dt) {
     }
 }
 
+void Hero::Draw() {
+
+    sprite.Draw(object_matrix);
+}
+
 void Hero::Draw(Math::TransformationMatrix camera_matrix) {
     sprite.Draw(camera_matrix * object_matrix);
+    DrawRectangle(100, 100, BarCurrentWidth, 40, GREEN);
     
 }
 

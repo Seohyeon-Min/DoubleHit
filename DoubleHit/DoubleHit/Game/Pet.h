@@ -10,6 +10,7 @@ public:
     void Load();
     void Update(double dt, Math::vec2 follow, int look, int jumping);
     void Draw();
+    void Draw(Math::TransformationMatrix camera_matrix);
     void Attack(double dt);
     void flip();
     void GetAttackPosition();
@@ -23,15 +24,15 @@ private:
     Math::vec2 destination;
     Math::vec2 velocity;
     Math::vec2 space = {30 , 0};
+    Math::TransformationMatrix camera_offset;
     Math::TransformationMatrix object_matrix;
 
-    static constexpr double x_acceleration = 100; //100 600
-    static constexpr double x_drag = 200;  // 1 200
-    static constexpr double max_velocity = 400; //100 600
+    static constexpr double x_acceleration = 100; 
+    static constexpr double x_drag = 200; 
+    static constexpr double max_velocity = 400;
     Math::vec2 attack_position;
     Math::vec2 mouse_position;
-    double x_distance;
-    double y_distance;
+    Math::vec2 distance;
     double x_speed;
     double y_speed;
     double angle;

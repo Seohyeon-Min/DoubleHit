@@ -20,9 +20,9 @@ namespace CS230 {
         Sprite();
         void Load(const std::filesystem::path& texture_path);
         void Load(const std::filesystem::path& texture_path, Math::ivec2 hotspot_position);
-        Math::ivec2 GetTextureSize();
         void Draw(Math::vec2 position);
         void Draw(Math::TransformationMatrix display_matrix);
+        Math::ivec2 GetTextureSize();
     private:
         Texture texture;
         Math::ivec2 hotspot;
