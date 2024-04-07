@@ -71,6 +71,10 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
         IsAttacking = true;
         StartAttacking = true;
     }
+    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
+        IsAttacking = true;
+        StartAttacking = true;
+    }
 }
 
 void Pet::Draw() {
