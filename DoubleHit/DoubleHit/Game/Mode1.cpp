@@ -15,6 +15,7 @@ Created:    March 8, 2023
 
 Mode1::Mode1() : 
     hero({ (double)Engine::GetWindow().GetSize().x/2, 80}, camera), pet({hero.GetPosition()}),
+    enemy({(double)Engine::GetWindow().GetSize().x *0.8, 80}, camera),
     camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } })
 {
 }
@@ -22,6 +23,7 @@ Mode1::Mode1() :
 void Mode1::Load() {
     pet.Load();
     hero.Load();
+    enemy.Load();
     combination.InitIcons();
     background.Add("Assets/background.png", 1);
     camera.SetPosition({ 0, 0 });
@@ -39,6 +41,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt);
+    enemy.Update(dt, hero.GetPosition());
     combination.UpdateIcons();
     camera.Update(hero.GetPosition(), dt);
 }
@@ -46,18 +49,19 @@ void Mode1::Update([[maybe_unused]] double dt) {
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
     background.Draw(camera);
-
     
     combination.DrawIcons();
+    enemy.Draw();
 
     if (debug) {
         hero.Draw();
+
     }
     else {
         hero.Draw(camera.GetMatrix());
         pet.Draw(camera.GetMatrix());
+        
     }
-
 
 }
 

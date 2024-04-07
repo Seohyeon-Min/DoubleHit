@@ -18,7 +18,7 @@ void Hero::Load() {
 
 void Hero::Update(double dt) {
     
-    
+  
 
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) { //Left
         flipped = true;
@@ -59,7 +59,6 @@ void Hero::Update(double dt) {
         speed.x = 0;
     }
 
-    //won
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::P)) {
         Hero::TakeDamage(10);
     }
@@ -78,7 +77,6 @@ void Hero::Draw() {
 void Hero::Draw(Math::TransformationMatrix camera_matrix) {
     sprite.Draw(camera_matrix * object_matrix);
     DrawRectangle(100, 100, BarCurrentWidth, 40, GREEN);
-    
 }
 
 
@@ -111,7 +109,6 @@ void Hero::heavyAttack()
     is_heavy_attack = false;
 }
 
-//won
 double Hero::GetHealth() {
     return HeroHealth;
 }

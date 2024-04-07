@@ -42,7 +42,7 @@ private:
     bool flipped = false;
     Math::TransformationMatrix object_matrix;
 
-    //won
+
     double HeroHealth = 100.0;
     double HealthMax = 100.0;
     double BarMaxWidth = 200.0;
