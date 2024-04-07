@@ -14,7 +14,6 @@ public:
     void Draw();
     void Move(double dt, Math::vec2 hero_position, double speed);
     void Attack(Math::vec2 hero_position);
-    void Gravity(double dt);
     Math::vec2 Normalize(const Math::vec2& vec);
 
 private:
@@ -26,7 +25,7 @@ private:
     double speed = 3;
     double min_distance = 60;
     double damage = 10;     //unused..yet
-    const double gravity = 10;
+    bool air = false;
 
     double counter = 0;    //attack time count
 

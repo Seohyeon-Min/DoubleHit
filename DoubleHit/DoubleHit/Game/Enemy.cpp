@@ -15,6 +15,7 @@ Enemy::Enemy(Math::vec2 start_position, const CS230::Camera& camera) :
 void Enemy::Load() {
     sprite.Load("Assets/robot.png");
     position = start_position;
+    air = false;    //air enemy? ground enemy?
 }
 
 void Enemy::Update(double dt, Math::vec2 hero_position) {
@@ -45,9 +46,18 @@ Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
 
 void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
 
-    Math::vec2 direction = hero_position - position;
+    Math::vec2 direction;
+   
+    
+    if (air == true) {  //air enemy
+       direction = hero_position - position;
+    }
+    else {  //ground enemy
+        double x_distance = hero_position.x - position.x;
+        direction = Math::vec2(x_distance, 0.0);    //no direction in y
 
-    double distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    }
+    double distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
     
     if (distance > min_distance) {
        position += Normalize(direction) * speed;
@@ -66,13 +76,4 @@ void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
 
 void Enemy::Attack(Math::vec2 hero_position) {
     std::cout << "Attacked Hero." << std::endl;
-
-}
-
-void Enemy::Gravity(double dt) {
-
-
-    velocity.y -= gravity * dt;
-
-    position.y += velocity.y * dt;
 }
