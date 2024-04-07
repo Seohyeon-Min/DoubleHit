@@ -47,8 +47,7 @@ Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
 void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
 
     Math::vec2 direction;
-   
-    
+       
     if (air == true) {  //air enemy
        direction = hero_position - position;
     }
@@ -75,5 +74,6 @@ void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
 }
 
 void Enemy::Attack(Math::vec2 hero_position) {
-    std::cout << "Attacked Hero." << std::endl;
+    std::cout << "Attacked Hero." << std::endl; 
+    IsAttacking = true;
 }

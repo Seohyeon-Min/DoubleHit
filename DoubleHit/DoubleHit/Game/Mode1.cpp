@@ -44,6 +44,11 @@ void Mode1::Update([[maybe_unused]] double dt) {
     enemy.Update(dt, hero.GetPosition());
     combination.UpdateIcons();
     camera.Update(hero.GetPosition(), dt);
+
+    if (enemy.IsAttacking == true) {
+        hero.TakeDamage(10);
+        enemy.IsAttacking = false;
+    }
 }
 
 void Mode1::Draw() {

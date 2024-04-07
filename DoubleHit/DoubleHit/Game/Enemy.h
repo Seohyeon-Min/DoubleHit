@@ -4,6 +4,7 @@
 #include "..\Engine\Vec2.h"
 #include "..\Engine\Camera.h"
 #include "..\Engine\Matrix.h"
+#include "Hero.h"
 
 
 class Enemy {
@@ -15,6 +16,9 @@ public:
     void Move(double dt, Math::vec2 hero_position, double speed);
     void Attack(Math::vec2 hero_position);
     Math::vec2 Normalize(const Math::vec2& vec);
+    const Math::vec2& GetPosition() const { return position; };
+
+    bool IsAttacking;
 
 private:
     const CS230::Camera& camera;

@@ -124,8 +124,5 @@ void Hero::TakeDamage(double damage) {
     else {
         std::cout << "Hero got " << damage << " damage. Health: " << HeroHealth << std::endl;
         BarCurrentWidth = HeroHealth * HealthRatio;
-
-    }
-
-    
+    }  
 }

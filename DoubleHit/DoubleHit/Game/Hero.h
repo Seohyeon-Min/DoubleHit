@@ -4,6 +4,7 @@
 #include "..\Engine\Vec2.h"
 #include "..\Engine\Camera.h"
 #include "..\Engine\Matrix.h"
+#include "Enemy.h"
 
 constexpr int default_jump_count = 2;
 constexpr float jumping_speed = 300;
@@ -48,5 +49,6 @@ private:
     double BarMaxWidth = 200.0;
     double BarCurrentWidth = 200;
     double HealthRatio = BarMaxWidth / HealthMax;
+    double enemyDistance;
     
 };
