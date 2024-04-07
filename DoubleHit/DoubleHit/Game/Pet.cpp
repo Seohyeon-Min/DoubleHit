@@ -70,10 +70,12 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         IsAttacking = true;
         StartAttacking = true;
+        Engine::GetLogger().LogDebug("Pet Basic Attack");
     }
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
         IsAttacking = true;
         StartAttacking = true;
+        Engine::GetLogger().LogDebug("Pet Heavy Attack");
     }
 }
 
