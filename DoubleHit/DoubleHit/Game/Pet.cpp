@@ -12,7 +12,7 @@ Pet::Pet(Math::vec2 start_position) :
 
 void Pet::Load() {
     sprite.Load("Assets/pet.png");
-    attack.Load("Assets/bullet.png");
+    
     velocity = { 0,0 };
     position = start_position;
 }
@@ -22,7 +22,7 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
         combinationStartPtr->CheckAndRunCombination();
     }
 
-    if (look == 1) { // make it to enum
+    if (look == 1) { //follow hero
         destination = follow - space;
 
         if (velocity.x <= 0) {
@@ -51,7 +51,7 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
         }
     }
 
-    if ((double)GetMouseX() > position.x && flipped) {
+    if ((double)GetMouseX() > position.x && flipped) {  // flip
         flipped = false;
         Engine::GetLogger().LogDebug("flip true");
     }
@@ -66,62 +66,89 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
     }
 
     position += velocity * dt;
-    Attack(dt);
+
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        MakeAttack();
         IsAttacking = true;
-        StartAttacking = true;
+
         Engine::GetLogger().LogDebug("Pet Basic Attack");
     }
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
+        MakeAttack();
         IsAttacking = true;
-        StartAttacking = true;
         Engine::GetLogger().LogDebug("Pet Heavy Attack");
     }
+
+    if (IsAttacking) {  // attack
+        Attack(dt);
+
+    }
+    
 }
 
 void Pet::Draw() {
     sprite.Draw(object_matrix);
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
-    if (IsAttacking == true) {
-        attack.Draw(attack_position);
+    for (Bullet* bullet : attacks) {
+        bullet->attack.Load("Assets/bullet.png");
+        bullet->attack.Draw(bullet->attack_position);
     }
 }
 
 void Pet::Draw(Math::TransformationMatrix camera_matrix) {
-    sprite.Draw(camera_matrix * object_matrix);
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
-    if (IsAttacking == true) {
-        attack.Draw(attack_position);
+    sprite.Draw(camera_matrix * object_matrix);
+
+    for (Bullet* bullet : attacks) {
+       
+        bullet->attack.Draw(bullet->attack_position);
+        Engine::GetLogger().LogDebug("Pet Basic Attack" + std::to_string(bullet->attack_position.x));
     }
     camera_offset = camera_matrix;
 }
 
+void Pet::MakeAttack()
+{
+    Bullet* new_bullet = new Bullet;
+    new_bullet->attack.Load("Assets/bullet.png");
+    new_bullet->StartAttacking = true;
+    attacks.push_back(new_bullet);
+}
+
+
+
 void Pet::Attack(double dt) {
-    
-    if (IsAttacking == true) {
-        if (StartAttacking == true) {
-            GetAttackPosition();
-            GetAttackDirection();
-            StartAttacking = false;
+    for (Bullet* bullet : attacks) {
+
+        if (bullet->StartAttacking == true) {
+            bullet->GetAttackPosition(position, camera_offset);
+            bullet->GetAttackDirection();
+            bullet->StartAttacking = false;
         }
-        attack_position.x += attack_speed * dt * cos(angle);
-        attack_position.y += attack_speed * dt * sin(angle);
-        
-        //Put Pet's attack asset acording to the direction here     
-        if (attack_position.x > GetScreenWidth() || attack_position.x < 0) {
-            IsAttacking = false;
+        bullet->attack_position.x += bullet->attack_speed * dt * cos(bullet->angle);
+        bullet->attack_position.y += bullet->attack_speed * dt * sin(bullet->angle);
+        bullet->life -= dt;
+    }
+    for (int i = attacks.size() - 1; i >= 0; i--) {
+        if (attacks[i]->life < 0) {
+            delete attacks[i];
+            attacks.erase(attacks.begin() + i);
         }
+    }
+
+    if (attacks.size() == 0) {
+        IsAttacking = false;
     }
 }
 
-void Pet::GetAttackPosition() {
-    attack_position = camera_offset * position  ;
+void Bullet::GetAttackPosition(Math::vec2 position, Math::TransformationMatrix camera_offset) {
+    attack_position = camera_offset * position;
     mouse_position = { (double)GetMouseX(), (double)GetMouseY() };
     mouse_position.y *= -1;
     mouse_position.y += Engine::GetWindow().GetSize().y;
 }
 
-int Pet::GetAttackDirection() {  
+int Bullet::GetAttackDirection() {
     distance = mouse_position - attack_position;
     angle = atan2(distance.y, distance.x);
     return 1;
