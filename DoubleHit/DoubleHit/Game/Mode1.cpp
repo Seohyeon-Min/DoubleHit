@@ -35,13 +35,6 @@ void Mode1::Load() {
 
 void Mode1::Update([[maybe_unused]] double dt) {
 
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::O)) {
-        debug = 1;
-    }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::I)) {
-        debug = 0;
-    }
-
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt);
 
@@ -51,15 +44,16 @@ void Mode1::Update([[maybe_unused]] double dt) {
     for (Enemy* enemy : enemies) {
         
         enemy->Update(dt, hero.GetPosition());
+        if (enemy->IsAttacking == true) {
+            hero.TakeDamage(10);
+            enemy->IsAttacking = false;
+        }
     }
     
     combination.UpdateIcons();
     camera.Update(hero.GetPosition(), dt);
 
-    if (enemy.IsAttacking == true) {
-        hero.TakeDamage(10);
-        enemy.IsAttacking = false;
-    }
+
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::R)) {
         Engine::GetGameStateManager().ReloadState();
     }
@@ -73,16 +67,8 @@ void Mode1::Draw() {
     }
     combination.DrawIcons();
 
-    if (debug) {
-        hero.Draw();
-
-    }
-    else {
-        hero.Draw(camera.GetMatrix());
-        pet.Draw(camera.GetMatrix());
-        
-    }
-
+    hero.Draw(camera.GetMatrix());
+    pet.Draw(camera.GetMatrix());
 }
 
 //##########################################

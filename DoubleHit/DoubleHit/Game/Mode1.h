@@ -35,7 +35,6 @@ public:
         return "Mode1";
     }
 private:
-    bool debug = 0;
     Hero hero;
     Pet pet;
     Combination combination;

@@ -86,15 +86,6 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
     
 }
 
-void Pet::Draw() {
-    sprite.Draw(object_matrix);
-    DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
-    for (Bullet* bullet : attacks) {
-        bullet->attack.Load("Assets/bullet.png");
-        bullet->attack.Draw(bullet->attack_position);
-    }
-}
-
 void Pet::Draw(Math::TransformationMatrix camera_matrix) {
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
     sprite.Draw(camera_matrix * object_matrix);

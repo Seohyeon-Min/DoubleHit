@@ -73,11 +73,6 @@ void Hero::Update(double dt) {
     }
 }
 
-void Hero::Draw() {
-
-    sprite.Draw(object_matrix);
-}
-
 void Hero::Draw(Math::TransformationMatrix camera_matrix) {
     sprite.Draw(camera_matrix * object_matrix);
     if (is_light_attack) {
