@@ -14,6 +14,8 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
 void Hero::Load() {
     sprite.Load("Assets/player.png");
     position = start_position;
+    HeroHealth = HealthMax;
+    BarCurrentWidth = BarMaxWidth;
 }
 
 void Hero::Update(double dt) {

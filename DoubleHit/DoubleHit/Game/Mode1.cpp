@@ -49,6 +49,9 @@ void Mode1::Update([[maybe_unused]] double dt) {
         hero.TakeDamage(10);
         enemy.IsAttacking = false;
     }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::R)) {
+        Engine::GetGameStateManager().ReloadState();
+    }
 }
 
 void Mode1::Draw() {
