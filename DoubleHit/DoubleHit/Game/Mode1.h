@@ -18,6 +18,9 @@ Created:    March 8, 2023
 #include "Background.h"
 #include "Enemy.h"
 
+#include "raylib.h"
+
+
 class Mode1 : public CS230::GameState {
 public:
     Mode1();
@@ -42,4 +45,6 @@ private:
     Background  background;
 
     std::vector<Enemy*> enemies; //enemy vectors
+    double spawn_time = 0;
+    const double enemy_spawn_time = 3;
 };

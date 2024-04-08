@@ -31,6 +31,10 @@ void Mode1::Load() {
     background.Add("Assets/background.png", 1);
     camera.SetPosition({ 0, 0 });
     camera.SetLimit({ { 0,0 }, { background.GetSize() - Engine::GetWindow().GetSize() } });
+    for (auto& enemyPtr : enemies) {  //reset enemies
+        delete enemyPtr; 
+    }
+    enemies.clear();
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -38,18 +42,19 @@ void Mode1::Update([[maybe_unused]] double dt) {
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt);
 
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::N)) {
-        MakeEnemy();        
+    spawn_time += dt;
+    if (spawn_time > enemy_spawn_time) { // spawn logic
+        MakeEnemy();
+        spawn_time = 0;
     }
     for (Enemy* enemy : enemies) {
-        
         enemy->Update(dt, hero.GetPosition());
         if (enemy->IsAttacking == true) {
             hero.TakeDamage(10);
             enemy->IsAttacking = false;
         }
     }
-    
+
     combination.UpdateIcons();
     camera.Update(hero.GetPosition(), dt);
 
@@ -76,28 +81,27 @@ void Mode1::Draw() {
 
 Enemy* Mode1::MakeGroundEnemy(){
    
-    double randomX = rand() / 100.0 + 30.0;
-    Math::vec2 ground_position = { randomX, 80.0 };    //random position
+    double randomX = GetRandomValue(0, 100);
+    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
 
-    GroundEnemy* g_enemy = new GroundEnemy( ground_position );
+    GroundEnemy* g_enemy = new GroundEnemy( ground_position + camera.GetPosition());
     g_enemy->Load();
     return g_enemy;
 }
 
 Enemy* Mode1::MakeAirEnemy() {
 
-    double randomX = rand() / 500.0 + 30.0;
-    double randomY = rand() / 100.0 + 30.0;
-    Math::vec2 air_position = { randomX, randomY};    //random position
+    double randomX = GetRandomValue(0, GetScreenWidth());
+    double randomY = GetRandomValue(500, GetScreenHeight() - 100);
+    Math::vec2 air_position = { randomX, randomY };    //random position
 
-    AirEnemy* a_enemy = new AirEnemy( air_position );
+    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition());
     a_enemy->Load();
     return a_enemy;
 }
 
 void Mode1::MakeEnemy() {
-    enemies.push_back(MakeGroundEnemy());
-    enemies.push_back(MakeAirEnemy());
+    GetRandomValue(1, 0) ? enemies.push_back(MakeGroundEnemy()) : enemies.push_back(MakeAirEnemy());
 
 }
 void Mode1::Unload() {

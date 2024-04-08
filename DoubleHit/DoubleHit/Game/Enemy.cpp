@@ -13,6 +13,7 @@ Enemy::Enemy(Math::vec2 start_position) :
 
 void Enemy::Load() {
     sprite.Load("Assets/robot/png");
+    distance = 600;
 }
 
 void Enemy::Update(double dt, Math::vec2 hero_position) {
@@ -41,7 +42,7 @@ void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
         double x_distance = hero_position.x - position.x;
         direction = Math::vec2(x_distance, 0.0);    //no direction in y
 
-    double distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
+    distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
     
     if (distance > min_distance) {  //collision
        position += Normalize(direction) * speed;
@@ -85,7 +86,7 @@ void GroundEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
     direction = Math::vec2(x_distance, 0.0);    //no direction in y
     
     
-    double distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
+    distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
 
     if (distance > min_distance) {  //collision
         position += Normalize(direction) * speed;
@@ -108,6 +109,7 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :Enemy(start_position), start_posi
 void AirEnemy::Load() {
     sprite.Load("Assets/flying robot2.png");
     position = start_position;
+    distance = 600;
 }
 
 void AirEnemy::Update(double dt, Math::vec2 hero_position) {
@@ -123,7 +125,7 @@ void AirEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
 
     direction = hero_position - position;
     
-    double distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
+    distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
 
     if (distance > min_distance) {  //collision
         position += Normalize(direction) * speed;

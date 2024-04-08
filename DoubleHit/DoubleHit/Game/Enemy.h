@@ -17,7 +17,7 @@ public:
     void Attack(Math::vec2 hero_position);
     Math::vec2 Normalize(const Math::vec2& vec);
     const Math::vec2& GetPosition() const { return position; };
-
+    double GetDistance() { return distance; };
     bool IsAttacking;
 
 
@@ -31,7 +31,7 @@ private:
     double speed = 3;
     double min_distance = 60;
     double damage = 10;     //unused... yet
-
+    double distance;
     double counter = 0;    //attack time count
 
 };
@@ -44,6 +44,7 @@ public:
     void Update(double dt, Math::vec2 hero_position) override;
     void Draw(const CS230::Camera& camera) override;
     void Move(double dt, Math::vec2 hero_position, double speed) override;
+
 protected:
     Math::vec2 start_position;
     Math::vec2 position;
@@ -53,7 +54,7 @@ private:
     double speed = 3;
     double min_distance = 60;
     double damage = 10;     //unused... yet
-
+    double distance = 600;
     double counter = 0;    //attack time count
 };
 
@@ -65,6 +66,7 @@ public:
     void Update(double dt, Math::vec2 hero_position) override;
     void Draw(const CS230::Camera& camera) override;
     void Move(double dt, Math::vec2 hero_position, double speed) override;
+
 protected:
     Math::vec2 start_position;
     Math::vec2 position;
@@ -74,6 +76,6 @@ private:
     double speed = 3;
     double min_distance = 60;
     double damage = 10;     //unused... yet
-
+    double distance;
     double counter = 0;    //attack time count
 };

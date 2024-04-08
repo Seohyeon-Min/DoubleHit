@@ -23,12 +23,11 @@ public:
     const Math::vec2& GetPosition() const { return position; };
     int GetDirection() { return direction; };
     int GetJumping() { return is_jumping; };
-    
+    bool GetIslight() { return is_light_attack; };
     //won
     double GetHealth();
     void TakeDamage(double damage);
  
-
 private:
     const CS230::Camera& camera;
     CS230::Sprite sprite;
@@ -52,6 +51,5 @@ private:
     double BarMaxWidth = 200.0;
     double BarCurrentWidth = 200;
     double HealthRatio = BarMaxWidth / HealthMax;
-    double enemyDistance;
     
 };
