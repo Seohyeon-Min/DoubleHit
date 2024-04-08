@@ -25,6 +25,9 @@ public:
     void Update(double dt) override;
     void Unload() override;
     void Draw() override;
+    void MakeEnemy();
+    Enemy* MakeGroundEnemy();
+    Enemy* MakeAirEnemy();
     static constexpr double gravity = 800;
     static constexpr double floor = 80;
 
@@ -35,8 +38,9 @@ private:
     bool debug = 0;
     Hero hero;
     Pet pet;
-    Enemy enemy;
     Combination combination;
     CS230::Camera camera;
     Background  background;
+
+    std::vector<Enemy*> enemies; //enemy vectors
 };
