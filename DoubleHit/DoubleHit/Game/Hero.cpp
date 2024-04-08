@@ -127,5 +127,4 @@ void Hero::TakeDamage(double damage) {
 
     }
 
-    
 }

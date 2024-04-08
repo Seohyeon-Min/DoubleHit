@@ -6,29 +6,30 @@
 #include <cmath>
 #include <iostream> //delete later
 
-Enemy::Enemy(Math::vec2 start_position, const CS230::Camera& camera) :
+Enemy::Enemy(Math::vec2 start_position, bool air, const CS230::Camera& camera) :
     start_position(start_position),
     position(start_position),
+    air(air),
     camera(camera)
 {}
 
 void Enemy::Load() {
-    sprite.Load("Assets/robot.png");
+    if (air == false) {  //air enemy
+        sprite.Load("Assets/robot.png");
+    }
+    else {  //ground enemy
+        sprite.Load("Assets/flying robot2.png");
+    }
     position = start_position;
-    air = false;    //air enemy? ground enemy?
 }
 
 void Enemy::Update(double dt, Math::vec2 hero_position) {
-    /*if (Engine::GetInput().KeyDown(CS230::Input::Keys::M)){
-        Enemy::Move(hero_position, speed);
-    }*/
     Enemy::Move(dt, hero_position, speed);
 
 }
 
 void Enemy::Draw() {
     sprite.Draw(position - camera.GetPosition());
-    
 }
 
 Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
@@ -59,14 +60,11 @@ void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
     }
     double distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
     
-    if (distance > min_distance) {
+    if (distance > min_distance) {  //collision
        position += Normalize(direction) * speed;
-       if (position.y >= hero_position.y) {
-           position.y = hero_position.y;
-       }
     }
     else {
-        if (counter >= 1.0) {   // 1 attack in 1 second
+        if (counter >= 1.0) {   //attack per 1 second
             Enemy::Attack(hero_position);
             counter = 0;
         }

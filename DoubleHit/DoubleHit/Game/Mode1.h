@@ -35,8 +35,8 @@ private:
     bool debug = 0;
     Hero hero;
     Pet pet;
-    Enemy enemy;
     Combination combination;
     CS230::Camera camera;
     Background  background;
+    std::vector<Enemy> enemies; //enemy vectors
 };

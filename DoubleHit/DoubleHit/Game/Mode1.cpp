@@ -15,15 +15,20 @@ Created:    March 8, 2023
 
 Mode1::Mode1() : 
     hero({ (double)Engine::GetWindow().GetSize().x/2, 80}, camera), pet({hero.GetPosition()}),
-    enemy({(double)Engine::GetWindow().GetSize().x *0.8, 80}, camera),
     camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } })
 {
+    enemies.push_back(Enemy({ (double)Engine::GetWindow().GetSize().x * 0.8, 300 }, true, camera));     //air
+    enemies.push_back(Enemy({ (double)Engine::GetWindow().GetSize().x * 0.2, 200 }, true, camera));     //air
+    enemies.push_back(Enemy({ (double)Engine::GetWindow().GetSize().x * 0.4, 80 }, false, camera));
+    enemies.push_back(Enemy({ (double)Engine::GetWindow().GetSize().x * 0.6, 80 }, false, camera));
 }
 
 void Mode1::Load() {
     pet.Load();
     hero.Load();
-    enemy.Load();
+    for (Enemy& enemy : enemies) {
+        enemy.Load();
+    }
     combination.InitIcons();
     background.Add("Assets/background.png", 1);
     camera.SetPosition({ 0, 0 });
@@ -41,7 +46,10 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt);
-    enemy.Update(dt, hero.GetPosition());
+    //enemy.Update(dt, hero.GetPosition());
+    for (Enemy& enemy : enemies) {
+        enemy.Update(dt, hero.GetPosition());
+    }
     combination.UpdateIcons();
     camera.Update(hero.GetPosition(), dt);
 }
@@ -51,7 +59,10 @@ void Mode1::Draw() {
     background.Draw(camera);
     
     combination.DrawIcons();
-    enemy.Draw();
+    //enemy.Draw();
+    for (Enemy& enemy : enemies) {
+        enemy.Draw();
+    }
 
     if (debug) {
         hero.Draw();

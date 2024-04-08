@@ -8,7 +8,7 @@
 
 class Enemy {
 public:
-    Enemy(Math::vec2 start_position, const CS230::Camera& camera);
+    Enemy(Math::vec2 start_position, bool air, const CS230::Camera& camera);
     void Load();
     void Update(double dt, Math::vec2 hero_position);
     void Draw();
@@ -17,15 +17,18 @@ public:
     Math::vec2 Normalize(const Math::vec2& vec);
 
 private:
+    Math::TransformationMatrix object_matrix;
     const CS230::Camera& camera;
     CS230::Sprite sprite;
     Math::vec2 start_position;
     Math::vec2 position;
-    Math::vec2 velocity;
+
+    bool flipped = false;
+    double enemy_health = 10;
     double speed = 3;
     double min_distance = 60;
-    double damage = 10;     //unused..yet
-    bool air = false;
+    double damage = 10;     //unused... yet
+    bool air;
 
     double counter = 0;    //attack time count
 
