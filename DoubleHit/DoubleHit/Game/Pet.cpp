@@ -25,6 +25,7 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
     if (combiActiveFlag == true) {
         if (combiTimer >= 5.0) {
             combiActiveFlag = false;
+            combiTimer = 0;
             Engine::GetLogger().LogDebug("End Combination");
 
         }
@@ -101,7 +102,6 @@ void Pet::Draw(Math::TransformationMatrix camera_matrix) {
 
     for (Bullet* bullet : attacks) {
         bullet->attack.Draw(bullet->attack_position);
-        Engine::GetLogger().LogDebug("Pet Basic Attack" + std::to_string(bullet->attack_position.x));
     }
     camera_offset = camera_matrix;
 }

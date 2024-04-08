@@ -104,7 +104,7 @@ void Hero::jump(float dt) {
 
 void Hero::lightAttack(float dt)
 {
-    Engine::GetLogger().LogDebug("lightAttack");
+    //Engine::GetLogger().LogDebug("lightAttack");
     attack_long -= dt;
 
     if (attack_long < 0) {
@@ -116,7 +116,7 @@ void Hero::lightAttack(float dt)
 
 void Hero::heavyAttack(float dt)
 {
-    Engine::GetLogger().LogDebug("heavyAttack");
+    //Engine::GetLogger().LogDebug("heavyAttack");
     heavy_attack_long -= dt;
 
     if (heavy_attack_long < 0) {
