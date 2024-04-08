@@ -6,37 +6,27 @@
 #include <cmath>
 #include <iostream> //delete later
 
-Enemy::Enemy(Math::vec2 start_position, bool air, const CS230::Camera& camera) :
+Enemy::Enemy(Math::vec2 start_position) :
     start_position(start_position),
-    position(start_position),
-    air(air),
-    camera(camera)
+    position(start_position)
 {}
 
 void Enemy::Load() {
-    if (air == false) {  //air enemy
-        sprite.Load("Assets/robot.png");
-    }
-    else {  //ground enemy
-        sprite.Load("Assets/flying robot2.png");
-    }
-    position = start_position;
+    sprite.Load("Assets/robot/png");
 }
 
 void Enemy::Update(double dt, Math::vec2 hero_position) {
     Enemy::Move(dt, hero_position, speed);
-
 }
 
-void Enemy::Draw() {
+void Enemy::Draw(const CS230::Camera& camera) {
     sprite.Draw(position - camera.GetPosition());
 }
 
 Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
     double length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
 
-    if (length == 0)
-        return vec; 
+    if (length == 0) {return vec;}
 
     Math::vec2 normalized_vec;
     normalized_vec.x = vec.x / length;
@@ -46,18 +36,12 @@ Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
 }
 
 void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
-
     Math::vec2 direction;
-   
-    
-    if (air == true) {  //air enemy
+
        direction = hero_position - position;
-    }
-    else {  //ground enemy
         double x_distance = hero_position.x - position.x;
         direction = Math::vec2(x_distance, 0.0);    //no direction in y
 
-    }
     double distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
     
     if (distance > min_distance) {  //collision
@@ -74,4 +58,82 @@ void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
 
 void Enemy::Attack(Math::vec2 hero_position) {
     std::cout << "Attacked Hero." << std::endl;
+}
+
+
+
+//#####################################################################
+
+
+GroundEnemy::GroundEnemy(Math::vec2 start_position):Enemy(start_position), start_position(start_position) {
+}
+
+void GroundEnemy::Load() {
+    sprite.Load("Assets/robot.png");
+    position = start_position;
+}
+void GroundEnemy::Update(double dt, Math::vec2 hero_position) {
+    GroundEnemy::Move(dt, hero_position, speed);
+}
+
+void GroundEnemy::Draw(const CS230::Camera& camera) {
+    sprite.Draw(position - camera.GetPosition());
+}
+void GroundEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
+    Math::vec2 direction;
+    double x_distance = hero_position.x - position.x;
+    direction = Math::vec2(x_distance, 0.0);    //no direction in y
+    
+    
+    double distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
+
+    if (distance > min_distance) {  //collision
+        position += Normalize(direction) * speed;
+    }
+    else {
+        if (counter >= 1.0) {   //attack per 1 second
+            Enemy::Attack(hero_position);
+            counter = 0;
+        }
+        counter += dt;
+    }
+
+}
+
+//#####################################################################
+
+AirEnemy::AirEnemy(Math::vec2 start_position) :Enemy(start_position), start_position(start_position) {
+}
+
+void AirEnemy::Load() {
+    sprite.Load("Assets/flying robot2.png");
+    position = start_position;
+}
+
+void AirEnemy::Update(double dt, Math::vec2 hero_position) {
+    AirEnemy::Move(dt, hero_position, speed);
+}
+
+void AirEnemy::Draw(const CS230::Camera& camera) {
+    sprite.Draw(position - camera.GetPosition());
+}
+
+void AirEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
+    Math::vec2 direction;
+
+    direction = hero_position - position;
+    
+    double distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
+
+    if (distance > min_distance) {  //collision
+        position += Normalize(direction) * speed;
+    }
+    else {
+        if (counter >= 1.0) {   //attack per 1 second
+            Enemy::Attack(hero_position);
+            counter = 0;
+        }
+        counter += dt;
+    }
+
 }

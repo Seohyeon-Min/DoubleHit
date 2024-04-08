@@ -8,28 +8,68 @@
 
 class Enemy {
 public:
-    Enemy(Math::vec2 start_position, bool air, const CS230::Camera& camera);
-    void Load();
-    void Update(double dt, Math::vec2 hero_position);
-    void Draw();
-    void Move(double dt, Math::vec2 hero_position, double speed);
+    Enemy(Math::vec2 start_position);
+    virtual void Load();
+    virtual void Update(double dt, Math::vec2 hero_position);
+    virtual void Draw(const CS230::Camera& camera);
+    virtual void Move(double dt, Math::vec2 hero_position, double speed);
     void Attack(Math::vec2 hero_position);
     Math::vec2 Normalize(const Math::vec2& vec);
 
+
 private:
     Math::TransformationMatrix object_matrix;
-    const CS230::Camera& camera;
     CS230::Sprite sprite;
     Math::vec2 start_position;
     Math::vec2 position;
 
     bool flipped = false;
-    double enemy_health = 10;
     double speed = 3;
     double min_distance = 60;
     double damage = 10;     //unused... yet
-    bool air;
 
     double counter = 0;    //attack time count
 
+};
+
+class GroundEnemy : public Enemy {
+public:
+    GroundEnemy(Math::vec2 start_position);
+
+    void Load() override;
+    void Update(double dt, Math::vec2 hero_position) override;
+    void Draw(const CS230::Camera& camera) override;
+    void Move(double dt, Math::vec2 hero_position, double speed) override;
+protected:
+    Math::vec2 start_position;
+    Math::vec2 position;
+
+private:
+    CS230::Sprite sprite;
+    double speed = 3;
+    double min_distance = 60;
+    double damage = 10;     //unused... yet
+
+    double counter = 0;    //attack time count
+};
+
+class AirEnemy : public Enemy {
+public:
+
+    AirEnemy(Math::vec2 start_position);
+    void Load() override;
+    void Update(double dt, Math::vec2 hero_position) override;
+    void Draw(const CS230::Camera& camera) override;
+    void Move(double dt, Math::vec2 hero_position, double speed) override;
+protected:
+    Math::vec2 start_position;
+    Math::vec2 position;
+
+private:
+    CS230::Sprite sprite;
+    double speed = 3;
+    double min_distance = 60;
+    double damage = 10;     //unused... yet
+
+    double counter = 0;    //attack time count
 };
