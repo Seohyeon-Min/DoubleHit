@@ -3,8 +3,6 @@
 #include "..\Engine\Input.h"
 #include "..\Engine\Vec2.h"
 
-class Pet;
-
 struct Bullet {
     void GetAttackPosition(Math::vec2 position, Math::TransformationMatrix camera);
     int GetAttackDirection();
@@ -17,8 +15,6 @@ struct Bullet {
     bool StartAttacking = false;
     static constexpr double attack_speed = 800;
     static constexpr double speed = 300;
-
-    Pet* petPtr;
 };
 
 

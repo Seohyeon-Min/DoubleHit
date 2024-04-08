@@ -18,8 +18,8 @@ public:
     void Draw(Math::TransformationMatrix camera_matrix);
     void isOnGround();
     void jump(float dt);
-    void lightAttack();
-    void heavyAttack();
+    void lightAttack(float dt);
+    void heavyAttack(float dt);
     const Math::vec2& GetPosition() const { return position; };
     int GetDirection() { return direction; };
     int GetJumping() { return is_jumping; };
@@ -32,6 +32,8 @@ public:
 private:
     const CS230::Camera& camera;
     CS230::Sprite sprite;
+    CS230::Sprite light_attack;
+    CS230::Sprite heavy_attack;
     Math::vec2 start_position;
     Math::vec2 position;
     Math::vec2 speed = { 140, jumping_speed };
@@ -43,7 +45,8 @@ private:
     bool flipped = false;
     Math::TransformationMatrix object_matrix;
 
-
+    double attack_long = 1;
+    double heavy_attack_long = 1;
     double HeroHealth = 100.0;
     double HealthMax = 100.0;
     double BarMaxWidth = 200.0;

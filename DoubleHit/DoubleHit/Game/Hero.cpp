@@ -13,6 +13,8 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
 
 void Hero::Load() {
     sprite.Load("Assets/player.png");
+    light_attack.Load("Assets/attack.png");
+    heavy_attack.Load("Assets/strong_attack.png");
     position = start_position;
     HeroHealth = HealthMax;
     BarCurrentWidth = BarMaxWidth;
@@ -46,10 +48,10 @@ void Hero::Update(double dt) {
         jump(dt);
     }
     if (is_light_attack) {
-        lightAttack();
+        lightAttack(dt);
     }
     if (is_heavy_attack) {
-        heavyAttack();
+        heavyAttack(dt);
     }
 
     if (position.x - sprite.GetTextureSize().x / 2 < camera.GetPosition().x) {
@@ -78,6 +80,12 @@ void Hero::Draw() {
 
 void Hero::Draw(Math::TransformationMatrix camera_matrix) {
     sprite.Draw(camera_matrix * object_matrix);
+    if (is_light_attack) {
+        light_attack.Draw(camera_matrix * object_matrix);
+    }
+    if (is_heavy_attack) {
+        heavy_attack.Draw(camera_matrix * object_matrix);
+    }
     DrawRectangle(100, 100, BarCurrentWidth, 40, GREEN);
 }
 
@@ -99,16 +107,27 @@ void Hero::jump(float dt) {
     }
 }
 
-void Hero::lightAttack()
+void Hero::lightAttack(float dt)
 {
     Engine::GetLogger().LogDebug("lightAttack");
-    is_light_attack = false;
+    attack_long -= dt;
+
+    if (attack_long < 0) {
+        is_light_attack = false;
+        attack_long = 1;
+    }
+
 }
 
-void Hero::heavyAttack()
+void Hero::heavyAttack(float dt)
 {
     Engine::GetLogger().LogDebug("heavyAttack");
-    is_heavy_attack = false;
+    heavy_attack_long -= dt;
+
+    if (heavy_attack_long < 0) {
+        is_heavy_attack = false;
+        heavy_attack_long = 1;
+    }
 }
 
 double Hero::GetHealth() {
