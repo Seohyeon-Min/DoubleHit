@@ -25,17 +25,8 @@ InputState currentInputState = NONE;
 KeyboardState currentKeyboardState = KEY_NONE;
 MouseState currentMouseState = MOUSE_NONE;
 
-Combination combinationStartInstance; //스타트용 포인터
-Combination* combinationPtr = &combinationStartInstance; 
-
-Combination combinationReadyInstance; //시간 측정 포인터
-Combination* combinationStartPtr = &combinationReadyInstance;
-
-void Combination::StartCombination(){
-    InitIcons();
-    UpdateIcons();
-    DrawIcons();
-}
+Combination combinationStartInstance; //CheckAndRunCombination's pointer
+Combination* combinationStartPtr = &combinationStartInstance;
 
 void Combination::InitIcons() {
     for (int i = 0; i < 2; i++) {
@@ -46,14 +37,13 @@ void Combination::InitIcons() {
 }
 
 void Combination::UpdateIcons() {
-
-    // 아이콘 상태 초기화
+    // Icon state initialization
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
             icons[i][j].state = INACTIVE;
         }
     }
-    // 키보드 입력 처리
+    // Keyboard Input
     if (currentInputState == NONE || currentInputState == MOUSE_ACTIVATED) {
         if (IsKeyPressed(KEY_J) && currentKeyboardState == KEY_NONE) {
             currentKeyboardState = J_PRESSED;
@@ -65,7 +55,7 @@ void Combination::UpdateIcons() {
         }
     }
 
-    // 마우스 입력 처리
+    // Mouse Input
     if (currentInputState == NONE || currentInputState == KEYBOARD_ACTIVATED) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && currentMouseState == MOUSE_NONE) {
             currentMouseState = LEFT_PRESSED;
@@ -77,9 +67,9 @@ void Combination::UpdateIcons() {
         }
     }
 
-    // 키보드와 마우스 입력이 모두 있을 경우
+    // Both input mouse and keyboard
     if (currentKeyboardState != KEY_NONE && currentMouseState != MOUSE_NONE) {
-        // 특정 조합에 따른 아이콘 활성화
+        // Active icon when completely combination
         if (currentKeyboardState == J_PRESSED && currentMouseState == LEFT_PRESSED) {
             icons[0][0].state = ACTIVE;
             icons[0][1].state = INACTIVE;
@@ -110,7 +100,7 @@ void Combination::UpdateIcons() {
         }
     }
     else {
-        // 단일 입력에 따른 아이콘 활성화
+        // when you type first input about combination
         if (currentKeyboardState == J_PRESSED) {
             icons[0][0].state = ACTIVE;
             icons[1][0].state = ACTIVE;
@@ -130,6 +120,7 @@ void Combination::UpdateIcons() {
     }
 }
 
+
 void Combination::DrawIcons() {
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
@@ -144,7 +135,6 @@ void Combination::comb_skill1() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
-    isRunningCombination = false;
 }
 
 void Combination::comb_skill2() {
@@ -152,7 +142,6 @@ void Combination::comb_skill2() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
-    isRunningCombination = false;
 }
 
 void Combination::comb_skill3() {
@@ -160,7 +149,6 @@ void Combination::comb_skill3() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
-    isRunningCombination = false;
 }
 
 void Combination::comb_skill4() {
@@ -168,20 +156,4 @@ void Combination::comb_skill4() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
-    isRunningCombination = false;
-}
-
-void Combination::CheckAndRunCombination() { //우 방향키 누르면 5초동안 작동.
-    Engine::GetLogger().LogDebug("StartCombination");
-    isRunningCombination = true;
-    StartTime = GetTime();
-    if (isRunningCombination == true) {
-        while (isRunningCombination == false) {
-            StartCombination();
-            if (GetTime() - StartTime >= 5.0) {
-                isRunningCombination = false;
-            }
-        }
-    }
-    
 }

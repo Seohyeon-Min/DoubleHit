@@ -6,12 +6,9 @@
 #include "../Engine/logger.h"
 #include "../Engine/Vec2.h"
 #include "../Engine/Sprite.h"
-#include <thread>
 
 class Combination {
 public:
-    void CheckAndRunCombination();
-    void StartCombination();
     void InitIcons();
     void UpdateIcons();
     void DrawIcons();
@@ -26,9 +23,6 @@ public:
 private:
     CS230::Sprite sprite;
 };
-
-extern Combination* combinationPtr;
-extern Combination* combinationStartPtr;
 
 enum IconState {
     INACTIVE, // 비활성 상태

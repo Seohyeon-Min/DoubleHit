@@ -4,7 +4,7 @@
 #include "Combination.h"
 
 Pet::Pet(Math::vec2 start_position) :
-    start_position(start_position), 
+    start_position(start_position),
     destination(start_position),
     position(start_position)
 {
@@ -12,15 +12,25 @@ Pet::Pet(Math::vec2 start_position) :
 
 void Pet::Load() {
     sprite.Load("Assets/pet.png");
-    
     velocity = { 0,0 };
     position = start_position;
 }
 
 void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Right)) {
-        combinationStartPtr->CheckAndRunCombination();
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Right)) {
+        combiActiveFlag = true;
+        Engine::GetLogger().LogDebug("Start Combination");
     }
+
+    if (combiActiveFlag == true) {
+        if (combiTimer >= 5.0) {
+            combiActiveFlag = false;
+            Engine::GetLogger().LogDebug("End Combination");
+
+        }
+        combiTimer += dt;
+    }
+
 
     if (look == 1) { //follow hero
         destination = follow - space;
@@ -55,7 +65,7 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
         flipped = false;
         Engine::GetLogger().LogDebug("flip true");
     }
-    else if((double)GetMouseX() <=  position.x && !flipped){
+    else if ((double)GetMouseX() <= position.x && !flipped) {
         flipped = true;
         Engine::GetLogger().LogDebug("flip false");
     }
@@ -83,7 +93,6 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
         Attack(dt);
 
     }
-    
 }
 
 void Pet::Draw(Math::TransformationMatrix camera_matrix) {
@@ -91,7 +100,6 @@ void Pet::Draw(Math::TransformationMatrix camera_matrix) {
     sprite.Draw(camera_matrix * object_matrix);
 
     for (Bullet* bullet : attacks) {
-       
         bullet->attack.Draw(bullet->attack_position);
         Engine::GetLogger().LogDebug("Pet Basic Attack" + std::to_string(bullet->attack_position.x));
     }

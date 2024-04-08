@@ -34,12 +34,12 @@ private:
     Math::vec2 position;
     Math::vec2 destination;
     Math::vec2 velocity;
-    Math::vec2 space = {30 , 0};
+    Math::vec2 space = { 30 , 0 };
     Math::TransformationMatrix camera_offset;
     Math::TransformationMatrix object_matrix;
 
-    static constexpr double x_acceleration = 100; 
-    static constexpr double x_drag = 200; 
+    static constexpr double x_acceleration = 100;
+    static constexpr double x_drag = 200;
     static constexpr double max_velocity = 400;
 
     bool flipped = false;
@@ -51,4 +51,7 @@ private:
 
     Bullet bullet;
     std::vector <Bullet*>attacks;
+
+    bool combiActiveFlag = false;
+    double combiTimer = 0;
 };
