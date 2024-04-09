@@ -17,6 +17,7 @@ struct Bullet {
     static constexpr double speed = 300;
 };
 
+extern std::vector <Bullet*>attacks;
 
 class Pet {
 public:

@@ -17,7 +17,6 @@ Created:    March 8, 2023
 #include<cstdlib>
 #include<ctime> 
 
-
 Mode1::Mode1() : 
     hero({ (double)Engine::GetWindow().GetSize().x/2, 80}, camera), pet({hero.GetPosition()}),
     camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } })
@@ -61,6 +60,15 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::R)) {
         Engine::GetGameStateManager().ReloadState();
+    }
+
+    for (int i = 0; i < sizeof(attacks); i++) {
+        for (int j = 0; j < sizeof(enemies); j++) {
+            if (attacks[i]->attack_position == enemies[j]->GetPosition()) {
+                attacks.erase(attacks.begin() + i);
+                enemies.erase(enemies.begin() + j);
+            }
+        }
     }
 }
 

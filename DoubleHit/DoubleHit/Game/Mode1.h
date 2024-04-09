@@ -20,7 +20,6 @@ Created:    March 8, 2023
 
 #include "raylib.h"
 
-
 class Mode1 : public CS230::GameState {
 public:
     Mode1();
