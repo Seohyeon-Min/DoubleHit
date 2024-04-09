@@ -28,6 +28,9 @@ public:
     void Attack(double dt);
     void MakeAttack();
 
+    bool combiActiveFlag = false;
+    double combiTimer = 0;
+
 private:
     CS230::Sprite sprite;
     Math::vec2 start_position;
@@ -52,6 +55,5 @@ private:
     Bullet bullet;
     std::vector <Bullet*>attacks;
 
-    bool combiActiveFlag = false;
-    double combiTimer = 0;
+    
 };

@@ -27,7 +27,13 @@ Mode1::Mode1() :
 void Mode1::Load() {
     pet.Load();
     hero.Load();
+
+    /*if (pet.combiActiveFlag == true) {
+        combination.InitIcons();
+    }*/
+
     combination.InitIcons();
+    
     background.Add("Assets/background.png", 1);
     camera.SetPosition({ 0, 0 });
     camera.SetLimit({ { 0,0 }, { background.GetSize() - Engine::GetWindow().GetSize() } });
@@ -55,7 +61,10 @@ void Mode1::Update([[maybe_unused]] double dt) {
         }
     }
 
-    combination.UpdateIcons();
+    if (pet.combiActiveFlag == true) {
+        combination.UpdateIcons();
+    }
+    
     camera.Update(hero.GetPosition(), dt);
 
 
@@ -70,7 +79,10 @@ void Mode1::Draw() {
     for (Enemy* enemy : enemies) {
         enemy->Draw(camera);
     }
-    combination.DrawIcons();
+    
+    if (pet.combiActiveFlag == true) {
+        combination.DrawIcons();
+    }
 
     hero.Draw(camera.GetMatrix());
     pet.Draw(camera.GetMatrix());

@@ -3,6 +3,10 @@
 #include <cmath>
 #include "Combination.h"
 
+Combination combination;
+
+Icon icon;
+
 Pet::Pet(Math::vec2 start_position) :
     start_position(start_position),
     destination(start_position),
@@ -27,7 +31,7 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
             combiActiveFlag = false;
             combiTimer = 0;
             Engine::GetLogger().LogDebug("End Combination");
-
+            
         }
         combiTimer += dt;
     }

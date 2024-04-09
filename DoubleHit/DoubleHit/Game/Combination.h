@@ -7,6 +7,7 @@
 #include "../Engine/Vec2.h"
 #include "../Engine/Sprite.h"
 
+
 class Combination {
 public:
     void InitIcons();
@@ -18,8 +19,24 @@ public:
     void comb_skill3();
     void comb_skill4();
 
-    double StartTime;
-    bool isRunningCombination = false;
+    enum InputState {
+        NONE,
+        KEYBOARD_ACTIVATED,
+        MOUSE_ACTIVATED
+    };
+
+    enum KeyboardState {
+        KEY_NONE,
+        J_PRESSED,
+        K_PRESSED
+    };
+
+    enum MouseState {
+        MOUSE_NONE,
+        LEFT_PRESSED,
+        RIGHT_PRESSED
+    };
+
 private:
     CS230::Sprite sprite;
 };
@@ -34,5 +51,7 @@ struct Icon {
     Vector2 position; // 아이콘의 위치
     IconState state;  // 아이콘의 상태
 };
+
+
 
 #endif

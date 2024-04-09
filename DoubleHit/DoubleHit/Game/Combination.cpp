@@ -1,32 +1,12 @@
 #include "Combination.h"
 #include "../Engine/Engine.h"
+#include "Pet.h"
 
 Icon icons[2][2];
 
-enum InputState {
-    NONE,
-    KEYBOARD_ACTIVATED,
-    MOUSE_ACTIVATED
-};
-
-enum KeyboardState {
-    KEY_NONE,
-    J_PRESSED,
-    K_PRESSED
-};
-
-enum MouseState {
-    MOUSE_NONE,
-    LEFT_PRESSED,
-    RIGHT_PRESSED
-};
-
-InputState currentInputState = NONE;
-KeyboardState currentKeyboardState = KEY_NONE;
-MouseState currentMouseState = MOUSE_NONE;
-
-Combination combinationStartInstance; //CheckAndRunCombination's pointer
-Combination* combinationStartPtr = &combinationStartInstance;
+Combination::InputState currentInputState = Combination::InputState::NONE;
+Combination::KeyboardState currentKeyboardState = Combination::KeyboardState::KEY_NONE;
+Combination::MouseState currentMouseState = Combination::MouseState::MOUSE_NONE;
 
 void Combination::InitIcons() {
     for (int i = 0; i < 2; i++) {
@@ -34,6 +14,11 @@ void Combination::InitIcons() {
             icons[i][j] = { {static_cast<float>(i * 100), static_cast<float>(j * 100)}, INACTIVE };
         }
     }
+    /*if (pet.combiActiveFlag == false) {
+        currentInputState = NONE;
+        currentKeyboardState = KEY_NONE;
+        currentMouseState = MOUSE_NONE;
+    }*/
 }
 
 void Combination::UpdateIcons() {

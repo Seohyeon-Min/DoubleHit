@@ -21,9 +21,6 @@ void Hero::Load() {
 }
 
 void Hero::Update(double dt) {
-    
-  
-
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) { //Left
         flipped = true;
         direction = -1;
