@@ -3,19 +3,34 @@
 #include "..\Engine\Input.h"
 #include "..\Engine\Vec2.h"
 
-struct Bullet {
-    void GetAttackPosition(Math::vec2 position, Math::TransformationMatrix camera);
-    int GetAttackDirection();
+class Bullet {
+public:
+    Bullet(Math::vec2 position, Math::vec2 targetPosition, Math::TransformationMatrix camera_offset);
+    void Update(double dt);
+    void Draw(Math::vec2 position);
+    Math::vec2 GetAttackDirection();
+private:
     CS230::Sprite attack;
-    Math::vec2 attack_position;
-    Math::vec2 mouse_position;
+    Math::vec2 position;
+    Math::vec2 velocity;
+    Math::vec2 destination;
     Math::vec2 distance;
-    double angle;
-    double life = 1.3;
-    bool StartAttacking = false;
     static constexpr double attack_speed = 800;
-    static constexpr double speed = 300;
+    friend class Pet;
 };
+//struct Bullet {
+//    void GetAttackPosition(Math::vec2 position, Math::TransformationMatrix camera);
+//    int GetAttackDirection();
+//    CS230::Sprite attack;
+//    Math::vec2 attack_position;
+//    Math::vec2 mouse_position;
+//    Math::vec2 distance;
+//    double angle;
+//    double life = 1.3;
+//    bool StartAttacking = false;
+//    static constexpr double attack_speed = 800;
+//    static constexpr double speed = 300;
+//};
 
 
 class Pet {
@@ -23,11 +38,8 @@ public:
     Pet(Math::vec2 start_position);
     void Load();
     void Update(double dt, Math::vec2 follow, int look, int jumping);
-    void Draw();
     void Draw(Math::TransformationMatrix camera_matrix);
-    void Attack(double dt);
     void MakeAttack();
-
     bool combiActiveFlag = false;
     double combiTimer = 0;
 
@@ -49,11 +61,6 @@ private:
     bool IsAttacking = false;
     static constexpr int mouse_radius = 15; //temporary mouse asset
     Color mouse_color = { 230 , 116 , 92, 125 }; //temporary mouse asset
-    Color basic_attack = { 252, 36, 36 };
-    Color strong_attack = { 0, 44, 255 };
 
-    Bullet bullet;
-    std::vector <Bullet*>attacks;
-
-    
+    std::vector <Bullet*>attacks; 
 };

@@ -14,6 +14,13 @@ Pet::Pet(Math::vec2 start_position) :
 {
 }
 
+Bullet::Bullet(Math::vec2 position, Math::vec2 targetPosition, Math::TransformationMatrix camera_offset)
+    : position(camera_offset * position) {
+    destination = targetPosition;
+    velocity = { 0,0 };
+    distance = GetAttackDirection();
+}
+
 void Pet::Load() {
     sprite.Load("Assets/pet.png");
     velocity = { 0,0 };
@@ -84,20 +91,43 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         MakeAttack();
-        IsAttacking = true;
-
         Engine::GetLogger().LogDebug("Pet Basic Attack");
     }
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
         MakeAttack();
-        IsAttacking = true;
         Engine::GetLogger().LogDebug("Pet Heavy Attack");
     }
-
-    if (IsAttacking) {  // attack
-        Attack(dt);
-
+ 
+    for (Bullet* bullet : attacks) {
+        bullet->Update(dt);
     }
+}
+
+void Pet::MakeAttack()
+{
+    Math::vec2 mouse_position;
+    mouse_position = { (double)GetMouseX(), (double)GetMouseY() };
+    mouse_position.y *= -1;
+    mouse_position.y += Engine::GetWindow().GetSize().y;
+
+    attacks.push_back(new Bullet(position, mouse_position, camera_offset));
+    attacks[attacks.size() - 1]->attack.Load("Assets/bullet.png");
+}
+
+void Bullet::Update(double dt) {
+    velocity.x += attack_speed * distance.x;
+    velocity.y += attack_speed * distance.y;
+    Engine::GetLogger().LogDebug(std::to_string(velocity.x) + "  " + std::to_string(velocity.y));
+    position += velocity * dt;
+}
+
+Math::vec2 Bullet::GetAttackDirection() {
+    distance = destination - position;
+    double angle = atan2(distance.y, distance.x);
+    distance.x = cos(angle);
+    distance.y = sin(angle);
+    
+    return distance;
 }
 
 void Pet::Draw(Math::TransformationMatrix camera_matrix) {
@@ -105,54 +135,25 @@ void Pet::Draw(Math::TransformationMatrix camera_matrix) {
     sprite.Draw(camera_matrix * object_matrix);
 
     for (Bullet* bullet : attacks) {
-        bullet->attack.Draw(bullet->attack_position);
+        bullet->attack.Draw(bullet->position);
     }
+
     camera_offset = camera_matrix;
 }
 
-void Pet::MakeAttack()
-{
-    Bullet* new_bullet = new Bullet;
-    new_bullet->attack.Load("Assets/bullet.png");
-    new_bullet->StartAttacking = true;
-    attacks.push_back(new_bullet);
+void Bullet::Draw(Math::vec2 position) {
+    attack.Draw(position);
 }
 
+//void Bullet::GetAttackPosition(Math::vec2 position, Math::TransformationMatrix camera_offset) {
+//    attack_position = camera_offset * position;
+//    mouse_position = { (double)GetMouseX(), (double)GetMouseY() };
+//    mouse_position.y *= -1;
+//    mouse_position.y += Engine::GetWindow().GetSize().y;
+//}
 
-
-void Pet::Attack(double dt) {
-    for (Bullet* bullet : attacks) {
-
-        if (bullet->StartAttacking == true) {
-            bullet->GetAttackPosition(position, camera_offset);
-            bullet->GetAttackDirection();
-            bullet->StartAttacking = false;
-        }
-        bullet->attack_position.x += bullet->attack_speed * dt * cos(bullet->angle);
-        bullet->attack_position.y += bullet->attack_speed * dt * sin(bullet->angle);
-        bullet->life -= dt;
-    }
-    for (int i = attacks.size() - 1; i >= 0; i--) {
-        if (attacks[i]->life < 0) {
-            delete attacks[i];
-            attacks.erase(attacks.begin() + i);
-        }
-    }
-
-    if (attacks.size() == 0) {
-        IsAttacking = false;
-    }
-}
-
-void Bullet::GetAttackPosition(Math::vec2 position, Math::TransformationMatrix camera_offset) {
-    attack_position = camera_offset * position;
-    mouse_position = { (double)GetMouseX(), (double)GetMouseY() };
-    mouse_position.y *= -1;
-    mouse_position.y += Engine::GetWindow().GetSize().y;
-}
-
-int Bullet::GetAttackDirection() {
-    distance = mouse_position - attack_position;
-    angle = atan2(distance.y, distance.x);
-    return 1;
-}
+//int Bullet::GetAttackDirection() {
+//    distance = mouse_position - attack_position;
+//    angle = atan2(distance.y, distance.x);
+//    return 1;
+//}
