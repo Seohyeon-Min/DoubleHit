@@ -49,5 +49,5 @@ private:
     std::vector<Enemy*> enemies; //enemy vectors
     double spawn_time = 0;
     double elite_spawn_time = 0;
-    const double enemy_spawn_time = 3; // every x second
+    const double enemy_spawn_time = 2; // every x second
 };

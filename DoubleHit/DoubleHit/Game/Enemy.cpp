@@ -14,6 +14,7 @@ Enemy::Enemy(Math::vec2 start_position) :
 
 void Enemy::Load() {
     sprite.Load("Assets/robot/png");
+    health_bar.Load("Assets/health bar.png");
 }
 
 void Enemy::Update(double dt, Math::vec2 hero_position) {
@@ -22,7 +23,7 @@ void Enemy::Update(double dt, Math::vec2 hero_position) {
 
 void Enemy::Draw(const CS230::Camera& camera, const double zoom) {
     sprite.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
-    
+    health_bar.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
 }
 
 Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
@@ -41,6 +42,11 @@ void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
 
 }
 
+void Enemy::TakeDamage(double damage)
+{
+    health -= damage;
+}
+
 void Enemy::Attack(Math::vec2 hero_position) {
     std::cout << "Attacked Hero." << std::endl; 
     IsAttacking = true;
@@ -57,14 +63,17 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position):Enemy(start_position), start
 
 void GroundEnemy::Load() {
     sprite.Load("Assets/robot.png");
+    health_bar.Load("Assets/health bar.png");
     position = start_position;
 }
 void GroundEnemy::Update(double dt, Math::vec2 hero_position) {
     GroundEnemy::Move(dt, hero_position, speed);
+    Engine::GetLogger().LogDebug(std::to_string(position.x) + "  " + std::to_string(position.y));
 }
 
 void GroundEnemy::Draw(const CS230::Camera& camera, const double zoom) {
     sprite.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
+    health_bar.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
 }
 void GroundEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
     Math::vec2 direction;
@@ -87,6 +96,11 @@ void GroundEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
 
 }
 
+void GroundEnemy::TakeDamage(double damage)
+{
+    health -= damage;
+}
+
 //#####################################################################
 
 AirEnemy::AirEnemy(Math::vec2 start_position) :Enemy(start_position), start_position(start_position) {
@@ -95,6 +109,7 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :Enemy(start_position), start_posi
 
 void AirEnemy::Load() {
     sprite.Load("Assets/flying robot2.png");
+    health_bar.Load("Assets/health bar.png");
     position = start_position;
 }
 
@@ -104,6 +119,7 @@ void AirEnemy::Update(double dt, Math::vec2 hero_position) {
 
 void AirEnemy::Draw(const CS230::Camera& camera, const double zoom) {
     sprite.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
+    health_bar.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
 }
 
 void AirEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
@@ -124,6 +140,11 @@ void AirEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
         counter += dt;
     }
 
+}
+
+void AirEnemy::TakeDamage(double damage)
+{
+    health -= damage;
 }
 
 //#####################################################################

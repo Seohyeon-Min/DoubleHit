@@ -14,9 +14,9 @@ Pet::Pet(Math::vec2 start_position) :
 {
 }
 
-Bullet::Bullet(Math::vec2 position, Math::vec2 targetPosition, Math::TransformationMatrix camera_offset)
-    : position(camera_offset * position) {
-    destination = targetPosition;
+Bullet::Bullet(Math::vec2 position, Math::vec2 targetPosition)
+    : position(position) , destination(targetPosition)
+{
     velocity = { 0,0 };
     distance = GetAttackDirection();
 }
@@ -101,6 +101,12 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
     for (Bullet* bullet : attacks) {
         bullet->Update(dt);
     }
+    for (int i = attacks.size() - 1; i >= 0; i--) {
+        if (attacks[i]->life < 0) {
+            delete attacks[i];
+            attacks.erase(attacks.begin() + i);
+        }
+    }
 }
 
 void Pet::MakeAttack()
@@ -110,15 +116,17 @@ void Pet::MakeAttack()
     mouse_position.y *= -1;
     mouse_position.y += Engine::GetWindow().GetSize().y;
 
-    attacks.push_back(new Bullet(position, mouse_position, camera_offset));
+    attacks.push_back(new Bullet( position,  mouse_position + position/2));
     attacks[attacks.size() - 1]->attack.Load("Assets/bullet.png");
 }
 
 void Bullet::Update(double dt) {
-    velocity.x += attack_speed * distance.x;
-    velocity.y += attack_speed * distance.y;
-    Engine::GetLogger().LogDebug(std::to_string(velocity.x) + "  " + std::to_string(velocity.y));
+    velocity.x = attack_speed * distance.x;
+    velocity.y = attack_speed * distance.y;
+    //Engine::GetLogger().LogDebug(std::to_string(position.x) + "  " + std::to_string(position.y));
     position += velocity * dt;
+    object_matrix = Math::TranslationMatrix(position);
+    life -= dt;
 }
 
 Math::vec2 Bullet::GetAttackDirection() {
@@ -135,14 +143,12 @@ void Pet::Draw(Math::TransformationMatrix camera_matrix) {
     sprite.Draw(camera_matrix * object_matrix);
 
     for (Bullet* bullet : attacks) {
-        bullet->attack.Draw(bullet->position);
+        bullet->Draw(camera_matrix);
     }
-
-    camera_offset = camera_matrix;
 }
 
-void Bullet::Draw(Math::vec2 position) {
-    attack.Draw(position);
+void Bullet::Draw(Math::TransformationMatrix camera_matrix) {
+    attack.Draw(camera_matrix * object_matrix);
 }
 
 //void Bullet::GetAttackPosition(Math::vec2 position, Math::TransformationMatrix camera_offset) {

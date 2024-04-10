@@ -44,7 +44,6 @@ void Hero::Update(double dt, Combination& combination) {
     if (combination.GetCombination() == Combination::Type::LIGHTLIGHT) {
         is_light_light = true;
     }
-    
 
     if (is_jumping) {
         jump(dt);
@@ -66,10 +65,6 @@ void Hero::Update(double dt, Combination& combination) {
     if (position.x + sprite.GetTextureSize().x / 2 > camera.GetPosition().x + Engine::GetWindow().GetSize().x) {
         position.x = camera.GetPosition().x + Engine::GetWindow().GetSize().x - sprite.GetTextureSize().x / 2;
         speed.x = 0;
-    }
-
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::P)) {
-        Hero::TakeDamage(10);
     }
 
     object_matrix = Math::TranslationMatrix(position);
@@ -119,7 +114,6 @@ void Hero::lightAttack(float dt)
         is_light_attack = false;
         attack_long = 1;
     }
-
 }
 
 void Hero::heavyAttack(float dt)

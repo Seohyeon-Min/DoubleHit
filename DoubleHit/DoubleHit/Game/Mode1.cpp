@@ -66,7 +66,33 @@ void Mode1::Update([[maybe_unused]] double dt) {
             enemy->IsAttacking = false;
         }
     }
+    //CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius);
+    for (int i = pet.getAttack().size()-1; i >= 0; i--) {
+        for (int j = enemies.size()-1; j >= 0; j--) {
+            if (auto* airEnemy = dynamic_cast<AirEnemy*>(enemies[j])) {  // case1: air
+                if (CheckCollisionPointCircle(
+                    { (float)pet.getAttack()[i]->GetAttackPosition().x,(float)pet.getAttack()[i]->GetAttackPosition().y }, //bullet pos
+                    { (float)enemies[j]->GetPosition().x,(float)enemies[j]->GetPosition().y }, // enemy pos
+                    20)) {
 
+                    delete enemies[j];
+                    enemies[j] = nullptr;
+                    enemies.erase(enemies.begin() + j);
+                }
+            }
+            else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[j])) {  // case2: ground
+                if (CheckCollisionPointCircle(
+                    { (float)pet.getAttack()[i]->GetAttackPosition().x,(float)pet.getAttack()[i]->GetAttackPosition().y }, //bullet pos
+                    { (float)enemies[j]->GetPosition().x,(float)enemies[j]->GetPosition().y }, // enemy pos
+                    20)) {
+
+                    delete enemies[j];
+                    enemies[j] = nullptr;
+                    enemies.erase(enemies.begin() + j);
+                }
+            }
+        }
+    }
     if (pet.combiActiveFlag == true) {
         combination.UpdateIcons();
     }

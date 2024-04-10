@@ -5,17 +5,20 @@
 
 class Bullet {
 public:
-    Bullet(Math::vec2 position, Math::vec2 targetPosition, Math::TransformationMatrix camera_offset);
+    Bullet(Math::vec2 position, Math::vec2 targetPosition);
     void Update(double dt);
-    void Draw(Math::vec2 position);
+    void Draw(Math::TransformationMatrix camera_matrix);
     Math::vec2 GetAttackDirection();
+    Math::vec2 GetAttackPosition() { return position; };
 private:
     CS230::Sprite attack;
     Math::vec2 position;
     Math::vec2 velocity;
     Math::vec2 destination;
     Math::vec2 distance;
-    static constexpr double attack_speed = 800;
+    Math::TransformationMatrix object_matrix;
+    double life = 1.3;
+    static constexpr double attack_speed = 700;
     friend class Pet;
 };
 //struct Bullet {
@@ -42,6 +45,7 @@ public:
     void MakeAttack();
     bool combiActiveFlag = false;
     double combiTimer = 0;
+    std::vector <Bullet*> getAttack() { return attacks; };
 
 private:
     CS230::Sprite sprite;
@@ -50,7 +54,6 @@ private:
     Math::vec2 destination;
     Math::vec2 velocity;
     Math::vec2 space = { 30 , 0 };
-    Math::TransformationMatrix camera_offset;
     Math::TransformationMatrix object_matrix;
 
     static constexpr double x_acceleration = 100;
