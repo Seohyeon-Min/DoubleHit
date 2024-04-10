@@ -12,10 +12,10 @@ void Background::Unload()
 	backgrounds.clear();
 }
 
-void Background::Draw(const CS230::Camera& camera)
+void Background::Draw(const CS230::Camera& camera, const double zoom)
 {
 	for (ParallaxLayer& background : backgrounds) {
-		background.texture.Draw(Math::TranslationMatrix((-const_cast<Math::vec2&>(camera.GetPosition())) * background.speed));
+		background.texture.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((-const_cast<Math::vec2&>(camera.GetPosition())) * background.speed));
 	}
 }
 

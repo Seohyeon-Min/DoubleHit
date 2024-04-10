@@ -24,6 +24,7 @@ public:
     int GetDirection() { return direction; };
     int GetJumping() { return is_jumping; };
     bool GetIslight() { return is_light_attack; };
+    bool GetIsHeavy() { return is_heavy_attack; };
     //won
     double GetHealth();
     void TakeDamage(double damage);

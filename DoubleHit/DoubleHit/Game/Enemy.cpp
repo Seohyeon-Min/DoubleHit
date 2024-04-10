@@ -9,19 +9,20 @@
 Enemy::Enemy(Math::vec2 start_position) :
     start_position(start_position),
     position(start_position)
-{}
+{
+}
 
 void Enemy::Load() {
     sprite.Load("Assets/robot/png");
-    distance = 600;
 }
 
 void Enemy::Update(double dt, Math::vec2 hero_position) {
     Enemy::Move(dt, hero_position, speed);
 }
 
-void Enemy::Draw(const CS230::Camera& camera) {
-    sprite.Draw(position - camera.GetPosition());
+void Enemy::Draw(const CS230::Camera& camera, const double zoom) {
+    sprite.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
+    
 }
 
 Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
@@ -37,23 +38,7 @@ Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
 }
 
 void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
-    Math::vec2 direction;
-       direction = hero_position - position;
-        double x_distance = hero_position.x - position.x;
-        direction = Math::vec2(x_distance, 0.0);    //no direction in y
 
-    distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
-    
-    if (distance > min_distance) {  //collision
-       position += Normalize(direction) * speed;
-    }
-    else {
-        if (counter >= 1.0) {   //attack per 1 second
-            Enemy::Attack(hero_position);
-            counter = 0;
-        }
-        counter += dt;
-    }
 }
 
 void Enemy::Attack(Math::vec2 hero_position) {
@@ -67,6 +52,7 @@ void Enemy::Attack(Math::vec2 hero_position) {
 
 
 GroundEnemy::GroundEnemy(Math::vec2 start_position):Enemy(start_position), start_position(start_position) {
+    distance = 600;
 }
 
 void GroundEnemy::Load() {
@@ -77,8 +63,8 @@ void GroundEnemy::Update(double dt, Math::vec2 hero_position) {
     GroundEnemy::Move(dt, hero_position, speed);
 }
 
-void GroundEnemy::Draw(const CS230::Camera& camera) {
-    sprite.Draw(position - camera.GetPosition());
+void GroundEnemy::Draw(const CS230::Camera& camera, const double zoom) {
+    sprite.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
 }
 void GroundEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
     Math::vec2 direction;
@@ -104,20 +90,20 @@ void GroundEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
 //#####################################################################
 
 AirEnemy::AirEnemy(Math::vec2 start_position) :Enemy(start_position), start_position(start_position) {
+    distance = 600;
 }
 
 void AirEnemy::Load() {
     sprite.Load("Assets/flying robot2.png");
     position = start_position;
-    distance = 600;
 }
 
 void AirEnemy::Update(double dt, Math::vec2 hero_position) {
     AirEnemy::Move(dt, hero_position, speed);
 }
 
-void AirEnemy::Draw(const CS230::Camera& camera) {
-    sprite.Draw(position - camera.GetPosition());
+void AirEnemy::Draw(const CS230::Camera& camera, const double zoom) {
+    sprite.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
 }
 
 void AirEnemy::Move(double dt, Math::vec2 hero_position, double speed) {

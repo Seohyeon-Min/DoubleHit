@@ -31,16 +31,16 @@ void CS230::Camera::SetLimit(Math::irect new_limit)
 }
 
 Math::TransformationMatrix CS230::Camera::GetMatrix() {
-    return Math::TranslationMatrix(-position);
+    return  Math::ScaleMatrix(1.5) * Math::TranslationMatrix(-position);
 }
 
 
 void CS230::Camera::Update(const Math::vec2& player_position, double dt) {
     if (player_position.x > player_zone.top_right.x + position.x) {
-        position.x = player_position.x - player_zone.top_right.x;
+        position.x = player_position.x - player_zone.top_right.x ;
     }
     if (player_position.x - position.x < player_zone.bottom_left.x) {
-        position.x = player_position.x - player_zone.bottom_left.x;
+        position.x = player_position.x - player_zone.bottom_left.x ;
     }
 
     if (position.x < limit.bottom_left.x) {

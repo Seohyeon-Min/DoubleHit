@@ -51,6 +51,7 @@ Math::vec2 Math::TransformationMatrix::operator * (vec2 v) const {
     return result;
 }
 
+
 Math::TranslationMatrix::TranslationMatrix(ivec2 translate)
 {
     matrix[0][0] = 1.0; matrix[0][1] = 0.0; matrix[0][2] = translate.x;

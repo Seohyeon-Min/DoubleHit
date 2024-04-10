@@ -20,7 +20,7 @@ Created:    March 8, 2023
 
 Mode1::Mode1() : 
     hero({ (double)Engine::GetWindow().GetSize().x/2, 80}, camera), pet({hero.GetPosition()}),
-    camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } })
+    camera({ { 0.30 * Engine::GetWindow().GetSize().x, 0 }, { 0.34 * Engine::GetWindow().GetSize().x, 0 } })
 {
 }
 
@@ -31,7 +31,6 @@ void Mode1::Load() {
     /*if (pet.combiActiveFlag == true) {
         combination.InitIcons();
     }*/
-
     combination.InitIcons();
     
     background.Add("Assets/background.png", 1);
@@ -47,6 +46,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt);
+    Skill();
 
     spawn_time += dt;
     if (spawn_time > enemy_spawn_time) { // spawn logic
@@ -75,9 +75,9 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-    background.Draw(camera);
+    background.Draw(camera, 1.5);
     for (Enemy* enemy : enemies) {
-        enemy->Draw(camera);
+        enemy->Draw(camera, 1.5);
     }
     
     if (pet.combiActiveFlag == true) {
@@ -88,7 +88,7 @@ void Mode1::Draw() {
     pet.Draw(camera.GetMatrix());
 }
 
-//##########################################
+//####################################################################################
 
 
 Enemy* Mode1::MakeGroundEnemy(){
@@ -118,4 +118,52 @@ void Mode1::MakeEnemy() {
 }
 void Mode1::Unload() {
     background.Unload();
+}
+
+
+//####################################################################################
+
+void Mode1::Skill() {
+
+    //interact with light attack
+    for (int i = enemies.size() - 1; i >= 0; i--) {
+        if (auto* airEnemy = dynamic_cast<AirEnemy*>(enemies[i])) {  // case1: air
+            if (abs(airEnemy->GetPosition().x - hero.GetPosition().x) < 70 && 
+                abs(airEnemy->GetPosition().y - hero.GetPosition().y) < 20 && 
+                hero.GetIslight()) {
+                delete enemies[i];
+                enemies[i] = nullptr;
+                enemies.erase(enemies.begin() + i);
+            }
+        }
+        else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[i])) {  // case2: ground
+            if (abs(groundEnemy->GetPosition().x - hero.GetPosition().x) < 70 &&
+                hero.GetIslight()) {
+                delete enemies[i];
+                enemies[i] = nullptr;
+                enemies.erase(enemies.begin() + i);
+            }
+        }
+    }
+
+    //interact with heavy attack
+    for (int i = enemies.size() - 1; i >= 0; i--) {
+        if (auto* airEnemy = dynamic_cast<AirEnemy*>(enemies[i])) {  // case1: air
+            if (abs(airEnemy->GetPosition().x - hero.GetPosition().x) < 200 &&
+                abs(airEnemy->GetPosition().y - hero.GetPosition().y) < 20 &&
+                hero.GetIsHeavy()) {
+                delete enemies[i];
+                enemies[i] = nullptr;
+                enemies.erase(enemies.begin() + i);
+            }
+        }
+        else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[i])) {  // case2: ground
+            if (abs(groundEnemy->GetPosition().x - hero.GetPosition().x) < 200 &&
+                hero.GetIsHeavy()) {
+                delete enemies[i];
+                enemies[i] = nullptr;
+                enemies.erase(enemies.begin() + i);
+            }
+        }
+    }
 }

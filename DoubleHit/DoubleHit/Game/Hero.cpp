@@ -13,8 +13,8 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
 
 void Hero::Load() {
     sprite.Load("Assets/player.png");
-    light_attack.Load("Assets/attack.png");
-    heavy_attack.Load("Assets/strong_attack.png");
+    light_attack.Load("Assets/attack.png", {22,22});
+    heavy_attack.Load("Assets/strong_attack.png", {22,22});
     position = start_position;
     HeroHealth = HealthMax;
     BarCurrentWidth = BarMaxWidth;
@@ -71,13 +71,13 @@ void Hero::Update(double dt) {
 }
 
 void Hero::Draw(Math::TransformationMatrix camera_matrix) {
-    sprite.Draw(camera_matrix * object_matrix);
     if (is_light_attack) {
         light_attack.Draw(camera_matrix * object_matrix);
     }
-    if (is_heavy_attack) {
+    else if (is_heavy_attack) {
         heavy_attack.Draw(camera_matrix * object_matrix);
     }
+    else sprite.Draw(camera_matrix * object_matrix);
     DrawRectangle(100, 100, BarCurrentWidth, 40, GREEN);
 }
 

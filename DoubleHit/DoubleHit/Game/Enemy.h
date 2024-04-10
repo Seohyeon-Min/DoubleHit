@@ -9,19 +9,23 @@
 
 class Enemy {
 public:
+    enum class Type {
+        Ground,
+        Air
+    };
     Enemy(Math::vec2 start_position);
     virtual void Load();
     virtual void Update(double dt, Math::vec2 hero_position);
-    virtual void Draw(const CS230::Camera& camera);
+    virtual void Draw(const CS230::Camera& camera, const double zoom);
     virtual void Move(double dt, Math::vec2 hero_position, double speed);
+    virtual const Math::vec2& GetPosition() { return position; }
     void Attack(Math::vec2 hero_position);
     Math::vec2 Normalize(const Math::vec2& vec);
-    const Math::vec2& GetPosition() const { return position; };
-    double GetDistance() { return distance; };
     bool IsAttacking;
 
 
 private:
+    Type type;
     Math::TransformationMatrix object_matrix;
     CS230::Sprite sprite;
     Math::vec2 start_position;
@@ -42,14 +46,13 @@ public:
 
     void Load() override;
     void Update(double dt, Math::vec2 hero_position) override;
-    void Draw(const CS230::Camera& camera) override;
+    void Draw(const CS230::Camera& camera, const double zoom) override;
     void Move(double dt, Math::vec2 hero_position, double speed) override;
-
-protected:
-    Math::vec2 start_position;
-    Math::vec2 position;
+    const Math::vec2& GetPosition() override { return position; }
 
 private:
+    Math::vec2 start_position;
+    Math::vec2 position;
     CS230::Sprite sprite;
     double speed = 3;
     double min_distance = 60;
@@ -64,14 +67,13 @@ public:
     AirEnemy(Math::vec2 start_position);
     void Load() override;
     void Update(double dt, Math::vec2 hero_position) override;
-    void Draw(const CS230::Camera& camera) override;
+    void Draw(const CS230::Camera& camera, const double zoom) override;
     void Move(double dt, Math::vec2 hero_position, double speed) override;
-
-protected:
-    Math::vec2 start_position;
-    Math::vec2 position;
+    const Math::vec2& GetPosition() override { return position; }
 
 private:
+    Math::vec2 start_position;
+    Math::vec2 position;
     CS230::Sprite sprite;
     double speed = 3;
     double min_distance = 60;
