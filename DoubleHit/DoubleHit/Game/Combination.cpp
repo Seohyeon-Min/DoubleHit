@@ -14,6 +14,7 @@ void Combination::InitIcons() {
             icons[i][j] = { {static_cast<float>(i * 100), static_cast<float>(j * 100)}, INACTIVE };
         }
     }
+    type = Type::NONE;
     /*if (pet.combiActiveFlag == false) {
         currentInputState = NONE;
         currentKeyboardState = KEY_NONE;
@@ -28,6 +29,7 @@ void Combination::UpdateIcons() {
             icons[i][j].state = INACTIVE;
         }
     }
+    type = Type::NONE;
     // Keyboard Input
     if (currentInputState == NONE || currentInputState == MOUSE_ACTIVATED) {
         if (IsKeyPressed(KEY_J) && currentKeyboardState == KEY_NONE) {
@@ -120,6 +122,7 @@ void Combination::comb_skill1() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
+    type = Type::LIGHTLIGHT;
 }
 
 void Combination::comb_skill2() {
@@ -127,6 +130,7 @@ void Combination::comb_skill2() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
+    type = Type::LIGHTHEAVY;
 }
 
 void Combination::comb_skill3() {
@@ -134,6 +138,7 @@ void Combination::comb_skill3() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
+    type = Type::HEAVYLIGHT;
 }
 
 void Combination::comb_skill4() {
@@ -141,4 +146,5 @@ void Combination::comb_skill4() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
+    type = Type::HEAVYHEAVY;
 }

@@ -45,7 +45,7 @@ void Mode1::Load() {
 void Mode1::Update([[maybe_unused]] double dt) {
 
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
-    hero.Update(dt);
+    hero.Update(dt, combination);
     Skill();
 
     spawn_time += dt;
@@ -53,6 +53,12 @@ void Mode1::Update([[maybe_unused]] double dt) {
         MakeEnemy();
         spawn_time = 0;
     }
+    elite_spawn_time += dt;
+    if (elite_spawn_time > enemy_spawn_time * 10) { // spawn logic
+        enemies.push_back(MakeEliteEnemy());
+        elite_spawn_time = 0;
+    }
+
     for (Enemy* enemy : enemies) {
         enemy->Update(dt, hero.GetPosition());
         if (enemy->IsAttacking == true) {
@@ -112,6 +118,16 @@ Enemy* Mode1::MakeAirEnemy() {
     return a_enemy;
 }
 
+Enemy* Mode1::MakeEliteEnemy()
+{
+    double randomX = GetRandomValue(0, 100);
+    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
+
+    EliteEnemy* e_enemy = new EliteEnemy(ground_position + camera.GetPosition());
+    e_enemy->Load();
+    return e_enemy;
+}
+
 void Mode1::MakeEnemy() {
     GetRandomValue(1, 0) ? enemies.push_back(MakeGroundEnemy()) : enemies.push_back(MakeAirEnemy());
 
@@ -160,6 +176,17 @@ void Mode1::Skill() {
         else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[i])) {  // case2: ground
             if (abs(groundEnemy->GetPosition().x - hero.GetPosition().x) < 200 &&
                 hero.GetIsHeavy()) {
+                delete enemies[i];
+                enemies[i] = nullptr;
+                enemies.erase(enemies.begin() + i);
+            }
+        }
+    }
+    //interact with elite
+    for (int i = enemies.size() - 1; i >= 0; i--) {
+        if (auto* eliteEnemy = dynamic_cast<EliteEnemy*>(enemies[i])) {  // case1: air
+            if (abs(eliteEnemy->GetPosition().x - hero.GetPosition().x) < 100 &&
+                combination.GetCombination() == Combination::Type::LIGHTLIGHT) {
                 delete enemies[i];
                 enemies[i] = nullptr;
                 enemies.erase(enemies.begin() + i);

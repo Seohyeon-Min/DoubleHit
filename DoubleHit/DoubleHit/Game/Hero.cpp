@@ -15,12 +15,13 @@ void Hero::Load() {
     sprite.Load("Assets/player.png");
     light_attack.Load("Assets/attack.png", {22,22});
     heavy_attack.Load("Assets/strong_attack.png", {22,22});
+    lightlight.Load("Assets/combination skill1.png", { 22,22 });
     position = start_position;
     HeroHealth = HealthMax;
     BarCurrentWidth = BarMaxWidth;
 }
 
-void Hero::Update(double dt) {
+void Hero::Update(double dt, Combination& combination) {
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) { //Left
         flipped = true;
         direction = -1;
@@ -40,6 +41,10 @@ void Hero::Update(double dt) {
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
         is_heavy_attack = true;
     }
+    if (combination.GetCombination() == Combination::Type::LIGHTLIGHT) {
+        is_light_light = true;
+    }
+    
 
     if (is_jumping) {
         jump(dt);
@@ -49,6 +54,9 @@ void Hero::Update(double dt) {
     }
     if (is_heavy_attack) {
         heavyAttack(dt);
+    }
+    if (is_light_light) {
+        lightLightAtack(dt);
     }
 
     if (position.x - sprite.GetTextureSize().x / 2 < camera.GetPosition().x) {
@@ -76,6 +84,9 @@ void Hero::Draw(Math::TransformationMatrix camera_matrix) {
     }
     else if (is_heavy_attack) {
         heavy_attack.Draw(camera_matrix * object_matrix);
+    }
+    else if (is_light_light) {
+        lightlight.Draw(camera_matrix * object_matrix);
     }
     else sprite.Draw(camera_matrix * object_matrix);
     DrawRectangle(100, 100, BarCurrentWidth, 40, GREEN);
@@ -119,6 +130,15 @@ void Hero::heavyAttack(float dt)
     if (heavy_attack_long < 0) {
         is_heavy_attack = false;
         heavy_attack_long = 1;
+    }
+}
+
+void Hero::lightLightAtack(float dt)
+{
+    light_light_long -= dt;
+    if (light_light_long < 0) {
+        is_light_light = false;
+        light_light_long = 1;
     }
 }
 

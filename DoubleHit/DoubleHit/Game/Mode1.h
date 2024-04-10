@@ -32,6 +32,7 @@ public:
     void MakeEnemy();
     Enemy* MakeGroundEnemy();
     Enemy* MakeAirEnemy();
+    Enemy* MakeEliteEnemy();
     static constexpr double gravity = 800;
     static constexpr double floor = 80;
 
@@ -41,11 +42,12 @@ public:
 private:
     Hero hero;
     Pet pet;
-    Combination combination;
     CS230::Camera camera;
+    Combination combination;
     Background  background;
 
     std::vector<Enemy*> enemies; //enemy vectors
     double spawn_time = 0;
+    double elite_spawn_time = 0;
     const double enemy_spawn_time = 3; // every x second
 };

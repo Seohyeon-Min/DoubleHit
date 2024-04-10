@@ -8,8 +8,10 @@
 #include "../Engine/Sprite.h"
 
 
+
 class Combination {
 public:
+
     void InitIcons();
     void UpdateIcons();
     void DrawIcons();
@@ -18,6 +20,16 @@ public:
     void comb_skill2();
     void comb_skill3();
     void comb_skill4();
+
+    enum class Type {
+        NONE,
+        LIGHTLIGHT,
+        LIGHTHEAVY,
+        HEAVYLIGHT,
+        HEAVYHEAVY
+    };
+
+    Type GetCombination() { return type; };
 
     enum InputState {
         NONE,
@@ -37,7 +49,9 @@ public:
         RIGHT_PRESSED
     };
 
+
 private:
+    Type type; // current combination state
     CS230::Sprite sprite;
 };
 

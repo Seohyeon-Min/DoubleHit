@@ -5,6 +5,7 @@
 #include "..\Engine\Camera.h"
 #include "..\Engine\Matrix.h"
 #include "Enemy.h"
+#include "Combination.h"
 
 constexpr int default_jump_count = 2;
 constexpr float jumping_speed = 300;
@@ -13,13 +14,14 @@ class Hero {
 public:
     Hero(Math::vec2 start_position, const CS230::Camera& camera);
     void Load();
-    void Update(double dt);
+    void Update(double dt, Combination& combination);
     void Draw();
     void Draw(Math::TransformationMatrix camera_matrix);
     void isOnGround();
     void jump(float dt);
     void lightAttack(float dt);
     void heavyAttack(float dt);
+    void lightLightAtack(float dt);
     const Math::vec2& GetPosition() const { return position; };
     int GetDirection() { return direction; };
     int GetJumping() { return is_jumping; };
@@ -34,6 +36,7 @@ private:
     CS230::Sprite sprite;
     CS230::Sprite light_attack;
     CS230::Sprite heavy_attack;
+    CS230::Sprite lightlight;
     Math::vec2 start_position;
     Math::vec2 position;
     Math::vec2 speed = { 140, jumping_speed };
@@ -42,11 +45,13 @@ private:
     bool is_jumping = false;
     bool is_light_attack = false;
     bool is_heavy_attack = false;
+    bool is_light_light = false;
     bool flipped = false;
     Math::TransformationMatrix object_matrix;
 
     double attack_long = 1;
     double heavy_attack_long = 1;
+    double light_light_long = 1;
     double HeroHealth = 100.0;
     double HealthMax = 100.0;
     double BarMaxWidth = 200.0;
