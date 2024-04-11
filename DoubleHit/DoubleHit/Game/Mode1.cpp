@@ -54,7 +54,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
         spawn_time = 0;
     }
     elite_spawn_time += dt;
-    if (elite_spawn_time > enemy_spawn_time * 10) { // spawn logic
+    if (elite_spawn_time > enemy_spawn_time * 24) { // spawn logic
         enemies.push_back(MakeEliteEnemy());
         elite_spawn_time = 0;
     }
@@ -80,17 +80,17 @@ void Mode1::Update([[maybe_unused]] double dt) {
                     enemies.erase(enemies.begin() + j);
                 }
             }
-            else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[j])) {  // case2: ground
-                if (CheckCollisionPointCircle(
-                    { (float)pet.getAttack()[i]->GetAttackPosition().x,(float)pet.getAttack()[i]->GetAttackPosition().y }, //bullet pos
-                    { (float)enemies[j]->GetPosition().x,(float)enemies[j]->GetPosition().y }, // enemy pos
-                    20)) {
+            //else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[j])) {  // case2: ground
+            //    if (CheckCollisionPointCircle(
+            //        { (float)pet.getAttack()[i]->GetAttackPosition().x,(float)pet.getAttack()[i]->GetAttackPosition().y }, //bullet pos
+            //        { (float)enemies[j]->GetPosition().x,(float)enemies[j]->GetPosition().y }, // enemy pos
+            //        20)) {
 
-                    delete enemies[j];
-                    enemies[j] = nullptr;
-                    enemies.erase(enemies.begin() + j);
-                }
-            }
+            //        delete enemies[j];
+            //        enemies[j] = nullptr;
+            //        enemies.erase(enemies.begin() + j);
+            //    }
+            //}
         }
     }
     if (pet.combiActiveFlag == true) {

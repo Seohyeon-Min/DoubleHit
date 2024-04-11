@@ -55,6 +55,7 @@ private:
     Math::vec2 velocity;
     Math::vec2 space = { 30 , 0 };
     Math::TransformationMatrix object_matrix;
+    Math::TransformationMatrix camera_offset;
 
     static constexpr double x_acceleration = 100;
     static constexpr double x_drag = 200;

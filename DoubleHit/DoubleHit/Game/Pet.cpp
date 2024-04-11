@@ -116,7 +116,7 @@ void Pet::MakeAttack()
     mouse_position.y *= -1;
     mouse_position.y += Engine::GetWindow().GetSize().y;
 
-    attacks.push_back(new Bullet( position,  mouse_position + position/2));
+    attacks.push_back(new Bullet(position, { (position.x - Engine::GetWindow().GetSize().x / 2 + mouse_position.x), (position.y - Engine::GetWindow().GetSize().y / 6 + mouse_position.y) }));
     attacks[attacks.size() - 1]->attack.Load("Assets/bullet.png");
 }
 
@@ -145,6 +145,8 @@ void Pet::Draw(Math::TransformationMatrix camera_matrix) {
     for (Bullet* bullet : attacks) {
         bullet->Draw(camera_matrix);
     }
+
+    camera_offset = camera_matrix; // find a better way
 }
 
 void Bullet::Draw(Math::TransformationMatrix camera_matrix) {
