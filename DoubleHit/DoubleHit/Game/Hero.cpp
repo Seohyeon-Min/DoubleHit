@@ -38,9 +38,9 @@ void Hero::Update(double dt, Combination& combination) {
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
         is_light_attack = true;
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
-        is_heavy_attack = true;
-    }
+    //if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+    //    is_heavy_attack = true;
+    //}
     if (combination.GetCombination() == Combination::Type::LIGHTLIGHT) {
         is_light_light = true;
     }

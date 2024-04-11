@@ -45,8 +45,9 @@ private:
     CS230::Camera camera;
     Combination combination;
     Background  background;
-
     std::vector<Enemy*> enemies; //enemy vectors
+    char timeStr[20];
+    float time = 0;
     double spawn_time = 0;
     double elite_spawn_time = 0;
     const double enemy_spawn_time = 0.5; // every x second

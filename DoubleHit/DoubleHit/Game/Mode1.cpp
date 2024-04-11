@@ -40,6 +40,7 @@ void Mode1::Load() {
         delete enemyPtr; 
     }
     enemies.clear();
+    time = 0;
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -47,7 +48,10 @@ void Mode1::Update([[maybe_unused]] double dt) {
     pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
     hero.Update(dt, combination);
     Skill();
-
+    if (hero.GetHealth() > 0) {
+        time += dt;
+    }
+    sprintf_s(timeStr, "%.0f", time);
     spawn_time += dt;
     if (spawn_time > enemy_spawn_time) { // spawn logic
         MakeEnemy();
@@ -118,6 +122,7 @@ void Mode1::Draw() {
 
     hero.Draw(camera.GetMatrix());
     pet.Draw(camera.GetMatrix());
+    DrawText(timeStr, GetScreenWidth() / 2 - MeasureText(timeStr, 20) / 2, 20, 20, BLACK); // int를 못 쓴대 고쳐봐
 }
 
 //####################################################################################

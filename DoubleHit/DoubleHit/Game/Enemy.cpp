@@ -68,7 +68,6 @@ void GroundEnemy::Load() {
 }
 void GroundEnemy::Update(double dt, Math::vec2 hero_position) {
     GroundEnemy::Move(dt, hero_position, speed);
-    Engine::GetLogger().LogDebug(std::to_string(position.x) + "  " + std::to_string(position.y));
 }
 
 void GroundEnemy::Draw(const CS230::Camera& camera, const double zoom) {
