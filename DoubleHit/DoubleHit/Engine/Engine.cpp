@@ -9,7 +9,6 @@ Created:    March 8, 2023
 */
 
 #include "Engine.h"
-#include <iostream>
 
 Engine::Engine() :
 #ifdef _DEBUG
@@ -19,7 +18,15 @@ Engine::Engine() :
 #endif
 { }
 
+void Engine::AddFont(const std::filesystem::path& file_name)
+{
+    fonts.push_back(file_name);
+}
+
 void Engine::Start(std::string window_title) {
+    unsigned int seed = static_cast<unsigned int>(std::time(NULL));
+    std::srand(seed);
+    logger.LogEvent("Random seed :" + std::to_string(seed));
     logger.LogEvent("Engine Started");
     window.Start(window_title);
     //Start other services

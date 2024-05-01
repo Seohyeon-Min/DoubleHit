@@ -9,28 +9,40 @@ Created:    March 8, 2023
 */
 
 #pragma once
+#include "Matrix.h"
 #include "Vec2.h"
 #include <filesystem>
 #include <raylib.h>
-#include "Matrix.h"
 
 namespace CS230 {
+    class Font;
+
     class Texture {
     public:
-        Texture();
-        Texture(const std::filesystem::path& file_name);
+        friend class TextureManager;
+        friend class Font;
+
+        void Draw(Math::TransformationMatrix display_matrix, unsigned int color = 0xFFFFFFFF);
+        void Draw(
+            Math::TransformationMatrix display_matrix,
+            Math::ivec2 texel_position,
+            Math::ivec2 frame_size,
+            unsigned int color = 0xFFFFFFFF
+        );
+        Math::ivec2 GetSize() const;
         ~Texture();
 
         Texture(const Texture&) = delete;
         Texture& operator=(const Texture&) = delete;
+
         Texture(Texture&& temporary) noexcept;
         Texture& operator=(Texture&& temporary) noexcept;
-        void Load(const std::filesystem::path& file_name);
-        Math::ivec2 GetSize() const;
-        void Draw(Math::vec2 location);
-        void Draw(Math::TransformationMatrix display_matrix);
 
     private:
-        Texture2D texture;
+        Texture(Texture2D given_texture);
+        Texture(const std::filesystem::path& file_name);
+
+        Texture2D texture = {};
     };
 }
+

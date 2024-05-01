@@ -11,20 +11,39 @@ Created:    March 8, 2023
 #pragma once
 #include <string>
 #include "Vec2.h"
-#include "Texture.h"
 #include "Matrix.h"
+#include "Texture.h"
+#include "Animation.h"
+#include "engine.h"
 
 namespace CS230 {
     class Sprite {
     public:
         Sprite();
-        void Load(const std::filesystem::path& texture_path);
-        void Load(const std::filesystem::path& texture_path, Math::ivec2 hotspot_position);
-        void Draw(Math::vec2 position);
+        ~Sprite();
+
+        Sprite(const Sprite&) = delete;
+        Sprite& operator=(const Sprite&) = delete;
+
+        Sprite(Sprite&& temporary) noexcept;
+        Sprite& operator=(Sprite&& temporary) noexcept;
+        void Update(double dt);
+        void Load(const std::filesystem::path& sprite_file);
         void Draw(Math::TransformationMatrix display_matrix);
-        Math::ivec2 GetTextureSize();
+        Math::ivec2 GetHotSpot(int index);
+        Math::ivec2 GetFrameSize() { return frame_size; };
+
+        void PlayAnimation(int animation);
+        bool AnimationEnded();
     private:
-        Texture texture;
-        Math::ivec2 hotspot;
+        Math::ivec2 GetFrameTexel(int index) const;
+
+        Texture* texture;
+        std::vector<Math::ivec2> hotspots;
+
+        int current_animation;
+        Math::ivec2 frame_size;
+        std::vector<Math::ivec2> frame_texels;
+        std::vector<Animation*> animations;
     };
 }

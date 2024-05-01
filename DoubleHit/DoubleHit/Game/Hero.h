@@ -1,53 +1,35 @@
 #pragma once
-#include "..\Engine\Sprite.h"
-#include "..\Engine\Input.h"
-#include "..\Engine\Vec2.h"
 #include "..\Engine\Camera.h"
-#include "..\Engine\Matrix.h"
+#include "..\Engine\GameObject.h"
 #include "Enemy.h"
 #include "Combination.h"
 
-constexpr int default_jump_count = 2;
-constexpr float jumping_speed = 300;
+//constexpr float jumping_speed = 300;
 
-class Hero {
+class Hero : public CS230::GameObject {
 public:
     Hero(Math::vec2 start_position, const CS230::Camera& camera);
-    void Load();
     void Update(double dt, Combination& combination);
-    void Draw();
-    void Draw(Math::TransformationMatrix camera_matrix);
+    void update_x_velocity(double dt);
+    const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
+
+    int GetJumping() { return is_jumping; };
+    bool GetIslight() { return is_light_attack; };
+    bool GetIsHeavy() { return is_heavy_attack; };
+    double GetHealth();
+
     void isOnGround();
     void jump(float dt);
     void lightAttack(float dt);
     void heavyAttack(float dt);
     void lightLightAtack(float dt);
-    const Math::vec2& GetPosition() const { return position; };
-    int GetDirection() { return direction; };
-    int GetJumping() { return is_jumping; };
-    bool GetIslight() { return is_light_attack; };
-    bool GetIsHeavy() { return is_heavy_attack; };
-    //won
-    double GetHealth();
     void TakeDamage(double damage);
  
 private:
     const CS230::Camera& camera;
-    CS230::Sprite sprite;
-    CS230::Sprite light_attack;
-    CS230::Sprite heavy_attack;
-    CS230::Sprite lightlight;
-    Math::vec2 start_position;
-    Math::vec2 position;
-    Math::vec2 speed = { 140, jumping_speed };
-    int direction = 1;
-    int jump_count = default_jump_count;
-    bool is_jumping = false;
-    bool is_light_attack = false;
-    bool is_heavy_attack = false;
-    bool is_light_light = false;
-    bool flipped = false;
-    Math::TransformationMatrix object_matrix;
+    static inline const  Math::vec2 velocity = { 140, 300 };
+    //static constexpr double jump_velocity = 300;
+    //static constexpr Math::vec2 speed { 140, 300 };
 
     double attack_long = 1;
     double heavy_attack_long = 1;
@@ -57,5 +39,78 @@ private:
     double BarMaxWidth = 200.0;
     double BarCurrentWidth = 200;
     double HealthRatio = BarMaxWidth / HealthMax;
+
+    class State_Jumping : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Jumping"; }
+    };
+
+    class State_Idle : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Idle"; }
+    };
+
+    class State_Falling : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Falling"; }
+    };
+
+    class State_Running : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Running"; }
+    };
+
+    class State_Light : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Light attack"; }
+    };
+
+    class State_Heavy : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Heavy attack"; }
+    };
+
+    class State_Light_Light : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Combination attack - lightlgith"; }
+    };
+
+    State_Jumping state_jumping;
+    State_Idle state_idle;
+    State_Falling state_falling;
+    State_Running state_running;
+    State_Light state_light;
+    State_Heavy state_heavy;
     
+
+    enum class Animations {
+        Idle,
+        Running,
+        Jumping,
+        Falling,
+        Light,
+        Heavy,
+        LightLight
+    };
 };

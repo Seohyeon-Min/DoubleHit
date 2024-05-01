@@ -14,7 +14,10 @@ Created:    March 8, 2023
 #include "Window.h"
 #include "GameStateManager.h"
 #include "Input.h"
+#include "TextureManager.h"
+#include "Font.h"
 #include <chrono>
+#include <time.h>
 
 class Engine {
 public:
@@ -39,6 +42,15 @@ public:
         return Instance().input;
     }
 
+    static CS230::TextureManager& GetTextureManager() {
+        return Instance().texturemanager;
+    }
+
+    static CS230::Font& GetFont(int index) {
+        return Instance().fonts[index];
+    }
+
+    void AddFont(const std::filesystem::path& file_name);
     void Start(std::string window_title);
     void Stop();
     void Update();
@@ -56,8 +68,10 @@ private:
     static constexpr int FPSDuration = 5;
     static constexpr int FPSTargetFrames = static_cast<int>(FPSDuration * TargetFPS);
 
+    std::vector<CS230::Font> fonts;
     CS230::Logger logger;
     CS230::Window window;
     CS230::GameStateManager gamestatemanager;
     CS230::Input input;
+    CS230::TextureManager texturemanager;
 };
