@@ -27,7 +27,7 @@ void Pet::Load() {
     position = start_position;
 }
 
-void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
+void Pet::Update(double dt, Math::vec2 follow, int look, int jumping, Math::vec2 camera_position) {
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Right)) {
         combiActiveFlag = true;
         Engine::GetLogger().LogDebug("Start Combination");
@@ -90,11 +90,11 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
     position += velocity * dt;
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        MakeAttack();
+        MakeAttack(camera_position);
         Engine::GetLogger().LogDebug("Pet Basic Attack");
     }
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-        MakeAttack();
+        MakeAttack(camera_position);
         Engine::GetLogger().LogDebug("Pet Heavy Attack");
     }
  
@@ -109,19 +109,21 @@ void Pet::Update(double dt, Math::vec2 follow, int look, int jumping) {
     }
 }
 
-void Pet::MakeAttack()
+void Pet::MakeAttack(Math::vec2 camera_position)
 {
     Math::vec2 mouse_position;
+    Math::vec2 attack_position = position;
     mouse_position = { (double)GetMouseX(), (double)GetMouseY() };
     mouse_position.y *= -1;
     mouse_position.y += Engine::GetWindow().GetSize().y;
+   
 
-    attacks.push_back(new Bullet( position,  mouse_position + position/2));
+    attacks.push_back(new Bullet( attack_position,  mouse_position));
     attacks[attacks.size() - 1]->attack.Load("Assets/bullet.png");
 }
 
 void Bullet::Update(double dt) {
-    velocity.x = attack_speed * distance.x;
+    velocity.x = attack_speed * distance.x ;
     velocity.y = attack_speed * distance.y;
     //Engine::GetLogger().LogDebug(std::to_string(position.x) + "  " + std::to_string(position.y));
     position += velocity * dt;
@@ -130,6 +132,7 @@ void Bullet::Update(double dt) {
 }
 
 Math::vec2 Bullet::GetAttackDirection() {
+
     distance = destination - position;
     double angle = atan2(distance.y, distance.x);
     distance.x = cos(angle);
@@ -150,16 +153,3 @@ void Pet::Draw(Math::TransformationMatrix camera_matrix) {
 void Bullet::Draw(Math::TransformationMatrix camera_matrix) {
     attack.Draw(camera_matrix * object_matrix);
 }
-
-//void Bullet::GetAttackPosition(Math::vec2 position, Math::TransformationMatrix camera_offset) {
-//    attack_position = camera_offset * position;
-//    mouse_position = { (double)GetMouseX(), (double)GetMouseY() };
-//    mouse_position.y *= -1;
-//    mouse_position.y += Engine::GetWindow().GetSize().y;
-//}
-
-//int Bullet::GetAttackDirection() {
-//    distance = mouse_position - attack_position;
-//    angle = atan2(distance.y, distance.x);
-//    return 1;
-//}

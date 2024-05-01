@@ -2,6 +2,7 @@
 #include "..\Engine\Sprite.h"
 #include "..\Engine\Input.h"
 #include "..\Engine\Vec2.h"
+#include "..\Engine\Camera.h"
 
 class Bullet {
 public:
@@ -16,6 +17,7 @@ private:
     Math::vec2 velocity;
     Math::vec2 destination;
     Math::vec2 distance;
+    Math::TransformationMatrix destination_matrix;
     Math::TransformationMatrix object_matrix;
     double life = 1.3;
     static constexpr double attack_speed = 700;
@@ -40,9 +42,9 @@ class Pet {
 public:
     Pet(Math::vec2 start_position);
     void Load();
-    void Update(double dt, Math::vec2 follow, int look, int jumping);
+    void Update(double dt, Math::vec2 follow, int look, int jumping, Math::vec2 camera_position);
     void Draw(Math::TransformationMatrix camera_matrix);
-    void MakeAttack();
+    void MakeAttack(Math::vec2);
     bool combiActiveFlag = false;
     double combiTimer = 0;
     std::vector <Bullet*> getAttack() { return attacks; };

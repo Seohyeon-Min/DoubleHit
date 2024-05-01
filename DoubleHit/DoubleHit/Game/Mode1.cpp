@@ -44,7 +44,7 @@ void Mode1::Load() {
 
 void Mode1::Update([[maybe_unused]] double dt) {
 
-    pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
+    pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping(), camera.GetPosition());
     hero.Update(dt, combination);
     Skill();
 
