@@ -16,8 +16,6 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
     current_state->Enter(this);
 }
 
-
-
 //void Hero::isOnGround() {
 //    jump_count = default_jump_count;
 //    speed.y = jumping_speed;
@@ -34,7 +32,6 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
 //        isOnGround();
 //    }
 //}
-
 
 void Hero::State_Jumping::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
@@ -68,6 +65,12 @@ void Hero::State_Idle::CheckExit(GameObject* object) {
     }
     else if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Up)) {
         hero->change_state(&hero->state_jumping);
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+        hero->change_state(&hero->state_light);
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+        hero->change_state(&hero->state_heavy);
     }
 }
 
@@ -111,31 +114,14 @@ void Hero::State_Running::CheckExit(GameObject* object) {
     if (hero->GetVelocity().x == 0) {
         hero->change_state(&hero->state_idle);
     }
-}
-
-
-
-void Hero::lightAttack(float dt)
-{
-    //Engine::GetLogger().LogDebug("lightAttack");
-    attack_long -= dt;
-
-    if (attack_long < 0) {
-        is_light_attack = false;
-        attack_long = 1;
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+        hero->change_state(&hero->state_light);
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+        hero->change_state(&hero->state_heavy);
     }
 }
 
-void Hero::heavyAttack(float dt)
-{
-    //Engine::GetLogger().LogDebug("heavyAttack");
-    heavy_attack_long -= dt;
-
-    if (heavy_attack_long < 0) {
-        is_heavy_attack = false;
-        heavy_attack_long = 1;
-    }
-}
 
 void Hero::State_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
