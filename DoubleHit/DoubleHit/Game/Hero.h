@@ -12,28 +12,12 @@ public:
     void Update(double dt, Combination& combination);
     void update_x_velocity(double dt);
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
-
-    int GetJumping() { return is_jumping; };
-    bool GetIslight() { return is_light_attack; };
-    bool GetIsHeavy() { return is_heavy_attack; };
     double GetHealth();
-
-    void isOnGround();
-    void jump(float dt);
-    void lightAttack(float dt);
-    void heavyAttack(float dt);
-    void lightLightAtack(float dt);
     void TakeDamage(double damage);
  
 private:
     const CS230::Camera& camera;
     static inline const  Math::vec2 velocity = { 140, 300 };
-    //static constexpr double jump_velocity = 300;
-    //static constexpr Math::vec2 speed { 140, 300 };
-
-    double attack_long = 1;
-    double heavy_attack_long = 1;
-    double light_light_long = 1;
     double HeroHealth = 100.0;
     double HealthMax = 100.0;
     double BarMaxWidth = 200.0;

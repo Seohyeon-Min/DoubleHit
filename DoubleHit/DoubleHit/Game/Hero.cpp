@@ -16,23 +16,6 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
     current_state->Enter(this);
 }
 
-//void Hero::isOnGround() {
-//    jump_count = default_jump_count;
-//    speed.y = jumping_speed;
-//    position.y = Mode1::floor;
-//    is_jumping = false;
-//}
-//
-//void Hero::jump(float dt) {
-//    if (is_jumping) { // jump
-//        position.y += dt * speed.y;
-//        speed.y -= dt * Mode1::gravity;
-//    }
-//    if (position.y <= Mode1::floor) { //on the ground
-//        isOnGround();
-//    }
-//}
-
 void Hero::State_Jumping::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->sprite.PlayAnimation(static_cast<int>(Animations::Jumping));
@@ -142,17 +125,7 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
 }
 
 void Hero::Update(double dt, Combination& combination) {
-
-    //if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
-    //    is_light_attack = true;
-    //}
-    //if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
-    //    is_heavy_attack = true;
-    //}
-    //if (combination.GetCombination() == Combination::Type::LIGHTLIGHT) {
-    //    is_light_light = true;
-    //}
-
+    GameObject::Update(dt);
 
     // Boundary Check
     if (GetPosition().x < camera.GetPosition().x + sprite.GetFrameSize().x / 2) {
@@ -177,15 +150,15 @@ void Hero::update_x_velocity(double dt) {
     }
 }
 
-
-void Hero::lightLightAtack(float dt)
-{
-    light_light_long -= dt;
-    if (light_light_long < 0) {
-        is_light_light = false;
-        light_light_long = 1;
-    }
-}
+//
+//void Hero::lightLightAtack(float dt)
+//{
+//    light_light_long -= dt;
+//    if (light_light_long < 0) {
+//        is_light_light = false;
+//        light_light_long = 1;
+//    }
+//}
 
 double Hero::GetHealth() {
     return HeroHealth;
