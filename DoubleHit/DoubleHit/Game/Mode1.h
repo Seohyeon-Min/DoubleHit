@@ -12,14 +12,13 @@ Created:    March 8, 2023
 #include "../Engine/GameState.h"
 #include "../Engine/Sprite.h"
 #include "..\Engine\Camera.h"
-#include "Hero.h"
-#include "Pet.h"
-#include "Combination.h"
+#include "..\Engine\GameObjectManager.h"
 #include "Background.h"
 #include "Enemy.h"
-
 #include "raylib.h"
 
+class Hero;
+class Pet;
 
 class Mode1 : public CS230::GameState {
 public:
@@ -40,14 +39,12 @@ public:
         return "Mode1";
     }
 private:
-    Hero hero;
-    Pet pet;
+    Hero* hero_ptr;
+    CS230::GameObjectManager gameobjectmanager;
     CS230::Camera camera;
-    Combination combination;
     Background  background;
+    Combination combination;
     std::vector<Enemy*> enemies; //enemy vectors
-    char timeStr[20];
-    float time = 0;
     double spawn_time = 0;
     double elite_spawn_time = 0;
     const double enemy_spawn_time = 0.5; // every x second

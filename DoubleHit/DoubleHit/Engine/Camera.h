@@ -22,7 +22,7 @@ namespace CS230 {
         const Math::vec2& GetPosition() const;
         void SetLimit(Math::irect new_limit);
         Math::TransformationMatrix GetMatrix();
-        void Update(const Math::vec2& player_position, double dt);
+        void Update(const Math::vec2& player_position);
     private:
         Math::irect limit;
         Math::vec2 position;

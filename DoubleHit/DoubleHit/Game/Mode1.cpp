@@ -12,6 +12,9 @@ Created:    March 8, 2023
 #include "States.h"
 #include "Mode1.h"
 #include <iostream>
+#include "Hero.h"
+#include "Pet.h"
+#include "Combination.h"
 
 //random
 #include<cstdlib>
@@ -19,18 +22,14 @@ Created:    March 8, 2023
 
 
 Mode1::Mode1() : 
-    hero({ (double)Engine::GetWindow().GetSize().x/2, 80}, camera), pet({hero.GetPosition()}),
     camera({ { 0.30 * Engine::GetWindow().GetSize().x, 0 }, { 0.34 * Engine::GetWindow().GetSize().x, 0 } })
 {
 }
 
 void Mode1::Load() {
-    pet.Load();
-    hero.Load();
-
-    /*if (pet.combiActiveFlag == true) {
-        combination.InitIcons();
-    }*/
+    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }, camera);
+    gameobjectmanager.Add(hero_ptr);
+    gameobjectmanager.Add(new Pet(hero_ptr->GetPosition()));        
     combination.InitIcons();
     
     background.Add("Assets/background.png", 1);
@@ -40,18 +39,14 @@ void Mode1::Load() {
         delete enemyPtr; 
     }
     enemies.clear();
-    time = 0;
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
 
-    pet.Update(dt, hero.GetPosition(), hero.GetDirection(), hero.GetJumping());
-    hero.Update(dt, combination);
-    Skill();
-    if (hero.GetHealth() > 0) {
-        time += dt;
-    }
-    sprintf_s(timeStr, "%.0f", time);
+    camera.Update(hero_ptr->GetPosition());
+    //pet.Update(dt, hero_ptr->GetPosition());
+    gameobjectmanager.UpdateAll(dt);
+
     spawn_time += dt;
     if (spawn_time > enemy_spawn_time) { // spawn logic
         MakeEnemy();
@@ -63,66 +58,61 @@ void Mode1::Update([[maybe_unused]] double dt) {
         elite_spawn_time = 0;
     }
 
-    for (Enemy* enemy : enemies) {
-        enemy->Update(dt, hero.GetPosition());
-        if (enemy->IsAttacking == true) {
-            hero.TakeDamage(10);
-            enemy->IsAttacking = false;
-        }
-    }
-    //CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius);
-    for (int i = pet.getAttack().size()-1; i >= 0; i--) {
-        for (int j = enemies.size()-1; j >= 0; j--) {
-            if (auto* airEnemy = dynamic_cast<AirEnemy*>(enemies[j])) {  // case1: air
-                if (CheckCollisionPointCircle(
-                    { (float)pet.getAttack()[i]->GetAttackPosition().x,(float)pet.getAttack()[i]->GetAttackPosition().y }, //bullet pos
-                    { (float)enemies[j]->GetPosition().x,(float)enemies[j]->GetPosition().y }, // enemy pos
-                    20)) {
+    //for (Enemy* enemy : enemies) {
+    //    enemy->Update(dt, hero_ptr->GetPosition());
+    //    if (enemy->IsAttacking == true) {
+    //        hero_ptr->TakeDamage(10);
+    //        enemy->IsAttacking = false;
+    //    }
+    //}
+    ////CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius);
+    //for (int i = pet.getAttack().size()-1; i >= 0; i--) {
+    //    for (int j = enemies.size()-1; j >= 0; j--) {
+    //        if (auto* airEnemy = dynamic_cast<AirEnemy*>(enemies[j])) {  // case1: air
+    //            if (CheckCollisionPointCircle(
+    //                { (float)pet.getAttack()[i]->GetAttackPosition().x,(float)pet.getAttack()[i]->GetAttackPosition().y }, //bullet pos
+    //                { (float)enemies[j]->GetPosition().x,(float)enemies[j]->GetPosition().y }, // enemy pos
+    //                20)) {
 
-                    delete enemies[j];
-                    enemies[j] = nullptr;
-                    enemies.erase(enemies.begin() + j);
-                }
-            }
-            //else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[j])) {  // case2: ground
-            //    if (CheckCollisionPointCircle(
-            //        { (float)pet.getAttack()[i]->GetAttackPosition().x,(float)pet.getAttack()[i]->GetAttackPosition().y }, //bullet pos
-            //        { (float)enemies[j]->GetPosition().x,(float)enemies[j]->GetPosition().y }, // enemy pos
-            //        20)) {
+    //                delete enemies[j];
+    //                enemies[j] = nullptr;
+    //                enemies.erase(enemies.begin() + j);
+    //            }
+    //        }
+    //        //else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[j])) {  // case2: ground
+    //        //    if (CheckCollisionPointCircle(
+    //        //        { (float)pet.getAttack()[i]->GetAttackPosition().x,(float)pet.getAttack()[i]->GetAttackPosition().y }, //bullet pos
+    //        //        { (float)enemies[j]->GetPosition().x,(float)enemies[j]->GetPosition().y }, // enemy pos
+    //        //        20)) {
 
-            //        delete enemies[j];
-            //        enemies[j] = nullptr;
-            //        enemies.erase(enemies.begin() + j);
-            //    }
-            //}
-        }
-    }
-    if (pet.combiActiveFlag == true) {
-        combination.UpdateIcons();
-    }
-    
-    camera.Update(hero.GetPosition(), dt);
+    //        //        delete enemies[j];
+    //        //        enemies[j] = nullptr;
+    //        //        enemies.erase(enemies.begin() + j);
+    //        //    }
+    //        //}
+    //    }
+    //}
+    //if (pet.combiActiveFlag == true) {
+    //    combination.UpdateIcons();
+    //}
 
-
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::R)) {
-        Engine::GetGameStateManager().ReloadState();
-    }
+    //if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::R)) {
+    //    Engine::GetGameStateManager().ReloadState();
+    //}
 }
 
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
     background.Draw(camera, 1.5);
+    gameobjectmanager.DrawAll(camera.GetMatrix());
+
     for (Enemy* enemy : enemies) {
         enemy->Draw(camera, 1.5);
     }
     
-    if (pet.combiActiveFlag == true) {
-        combination.DrawIcons();
-    }
-
-    hero.Draw(camera.GetMatrix());
-    pet.Draw(camera.GetMatrix());
-    DrawText(timeStr, GetScreenWidth() / 2 - MeasureText(timeStr, 20) / 2, 20, 20, BLACK); // int를 못 쓴대 고쳐봐
+    //if (pet.combiActiveFlag == true) {
+    //    combination.DrawIcons();
+    //}
 }
 
 //####################################################################################
@@ -169,59 +159,59 @@ void Mode1::Unload() {
 
 
 //####################################################################################
-
-void Mode1::Skill() {
-
-    //interact with light attack
-    for (int i = enemies.size() - 1; i >= 0; i--) {
-        if (auto* airEnemy = dynamic_cast<AirEnemy*>(enemies[i])) {  // case1: air
-            if (abs(airEnemy->GetPosition().x - hero.GetPosition().x) < 70 && 
-                abs(airEnemy->GetPosition().y - hero.GetPosition().y) < 20 && 
-                hero.GetIslight()) {
-                delete enemies[i];
-                enemies[i] = nullptr;
-                enemies.erase(enemies.begin() + i);
-            }
-        }
-        else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[i])) {  // case2: ground
-            if (abs(groundEnemy->GetPosition().x - hero.GetPosition().x) < 70 &&
-                hero.GetIslight()) {
-                delete enemies[i];
-                enemies[i] = nullptr;
-                enemies.erase(enemies.begin() + i);
-            }
-        }
-    }
-
-    //interact with heavy attack
-    for (int i = enemies.size() - 1; i >= 0; i--) {
-        if (auto* airEnemy = dynamic_cast<AirEnemy*>(enemies[i])) {  // case1: air
-            if (abs(airEnemy->GetPosition().x - hero.GetPosition().x) < 200 &&
-                abs(airEnemy->GetPosition().y - hero.GetPosition().y) < 20 &&
-                hero.GetIsHeavy()) {
-                delete enemies[i];
-                enemies[i] = nullptr;
-                enemies.erase(enemies.begin() + i);
-            }
-        }
-        else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[i])) {  // case2: ground
-            if (abs(groundEnemy->GetPosition().x - hero.GetPosition().x) < 200 &&
-                hero.GetIsHeavy()) {
-                delete enemies[i];
-                enemies[i] = nullptr;
-                enemies.erase(enemies.begin() + i);
-            }
-        }
-    }
-    //interact with elite
-    for (int i = enemies.size() - 1; i >= 0; i--) {
-        if (auto* eliteEnemy = dynamic_cast<EliteEnemy*>(enemies[i])) {  // case1: air
-            if (abs(eliteEnemy->GetPosition().x - hero.GetPosition().x) < 100 &&
-                combination.GetCombination() == Combination::Type::LIGHTLIGHT) {
-                delete enemies[i];
-                enemies[i] = nullptr;
-                enemies.erase(enemies.begin() + i);
-            }
-        }
-    }
-}
+//
+//void Mode1::Skill() {
+//
+//    //interact with light attack
+//    for (int i = enemies.size() - 1; i >= 0; i--) {
+//        if (auto* airEnemy = dynamic_cast<AirEnemy*>(enemies[i])) {  // case1: air
+//            if (abs(airEnemy->GetPosition().x - hero_ptr->GetPosition().x) < 70 &&
+//                abs(airEnemy->GetPosition().y - hero_ptr->GetPosition().y) < 20 &&
+//                hero_ptr->GetIslight()) {
+//                delete enemies[i];
+//                enemies[i] = nullptr;
+//                enemies.erase(enemies.begin() + i);
+//            }
+//        }
+//        else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[i])) {  // case2: ground
+//            if (abs(groundEnemy->GetPosition().x - hero_ptr->GetPosition().x) < 70 &&
+//                hero.GetIslight()) {
+//                delete enemies[i];
+//                enemies[i] = nullptr;
+//                enemies.erase(enemies.begin() + i);
+//            }
+//        }
+//    }
+//
+//    //interact with heavy attack
+//    for (int i = enemies.size() - 1; i >= 0; i--) {
+//        if (auto* airEnemy = dynamic_cast<AirEnemy*>(enemies[i])) {  // case1: air
+//            if (abs(airEnemy->GetPosition().x - hero.GetPosition().x) < 200 &&
+//                abs(airEnemy->GetPosition().y - hero.GetPosition().y) < 20 &&
+//                hero.GetIsHeavy()) {
+//                delete enemies[i];
+//                enemies[i] = nullptr;
+//                enemies.erase(enemies.begin() + i);
+//            }
+//        }
+//        else if (auto* groundEnemy = dynamic_cast<GroundEnemy*>(enemies[i])) {  // case2: ground
+//            if (abs(groundEnemy->GetPosition().x - hero.GetPosition().x) < 200 &&
+//                hero.GetIsHeavy()) {
+//                delete enemies[i];
+//                enemies[i] = nullptr;
+//                enemies.erase(enemies.begin() + i);
+//            }
+//        }
+//    }
+//    //interact with elite
+//    for (int i = enemies.size() - 1; i >= 0; i--) {
+//        if (auto* eliteEnemy = dynamic_cast<EliteEnemy*>(enemies[i])) {  // case1: air
+//            if (abs(eliteEnemy->GetPosition().x - hero.GetPosition().x) < 100 &&
+//                combination.GetCombination() == Combination::Type::LIGHTLIGHT) {
+//                delete enemies[i];
+//                enemies[i] = nullptr;
+//                enemies.erase(enemies.begin() + i);
+//            }
+//        }
+//    }
+//}

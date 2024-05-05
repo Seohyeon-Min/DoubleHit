@@ -153,7 +153,7 @@ EliteEnemy::EliteEnemy(Math::vec2 start_position) :Enemy(start_position), start_
 }
 
 void EliteEnemy::Load() {
-    sprite.Load("Assets/elite monster.png",{53,20});
+    sprite.Load("Assets/elite monster.png");
     position = start_position;
 }
 

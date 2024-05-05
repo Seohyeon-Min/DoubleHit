@@ -45,9 +45,7 @@ void Pet::State_Running::Enter(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
     pet->sprite.PlayAnimation(static_cast<int>(Animations::Running));
 }
-void Pet::State_Running::Update(GameObject* object, double dt) {
-    Pet* pet = static_cast<Pet*>(object);
-    pet->update_velocity(dt);
+void Pet::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
 }
 void Pet::State_Running::CheckExit(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
@@ -66,15 +64,29 @@ void Pet::State_Running::CheckExit(GameObject* object) {
 void Pet::State_Light::Enter(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
     pet->sprite.PlayAnimation(static_cast<int>(Animations::Light));
+    pet->MakeAttack();
 }
 void Pet::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Pet::State_Light::CheckExit(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
+    if (pet->GetVelocity().x != 0 || pet->GetVelocity().y != 0) {
+        pet->change_state(&pet->state_running);
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Mouse_Left)) { //light attack
+        pet->change_state(&pet->state_light);
+    }
+    if (pet->GetVelocity().x == 0) {
+        pet->change_state(&pet->state_idle);
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Mouse_Right)) { //heavy attack
+        pet->change_state(&pet->state_heavy);
+    }
 }
 
 void Pet::State_Heavy::Enter(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
-    pet->sprite.PlayAnimation(static_cast<int>(Animations::Light));
+    pet->sprite.PlayAnimation(static_cast<int>(Animations::Heavy));
+    pet->MakeAttack();
 }
 void Pet::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Pet::State_Heavy::CheckExit(GameObject* object) {
@@ -119,45 +131,47 @@ void Pet::Update(double dt, Math::vec2 hero_position) {
 
 
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::Left)) { //follow hero
-        destination = follow - space;
+        destination = hero_position - space;
 
-        if (velocity.x <= 0) {
-            velocity.x -= x_acceleration * dt;
-            if (position.x <= destination.x) {
-                position.x = destination.x;
-                velocity = { 0,0 };
+        if (GetVelocity().x <= 0) {
+            UpdateVelocity({ -(x_acceleration * dt), 0 });
+            //velocity.x -= x_acceleration * dt;
+            if (GetPosition().x <= destination.x) {
+                SetPosition({ destination.x, GetPosition().y });
+                SetVelocity({ 0,0 });
             }
         }
         else {
-            velocity.x -= x_drag * 2 * dt;
+            //velocity.x -= x_drag * 2 * dt;
+            UpdateVelocity({ -(x_drag * 2 * dt), 0 });
         }
     }
     else if (Engine::GetInput().KeyDown(CS230::Input::Keys::Right)) {
-        destination = follow + space;
+        destination = hero_position + space;
 
-        if (velocity.x >= 0) {
-            velocity.x += x_acceleration * dt;
-            if (position.x >= destination.x) {
-                position.x = destination.x;
-                velocity = { 0,0 };
+        if (GetVelocity().x >= 0) {
+            UpdateVelocity({ (x_acceleration * dt), 0 });
+            //velocity.x += x_acceleration * dt;
+            if (GetPosition().x >= destination.x) {
+                SetPosition({ destination.x, GetPosition().y});
+                SetVelocity({ 0,0 });
             }
         }
         else {
-            velocity.x += x_drag * 2 * dt;
+            //velocity.x += x_drag * 2 * dt;
+            UpdateVelocity({ (x_drag * 2 * dt), 0 });
         }
     }
 
-    if ((double)GetMouseX() > position.x && flipped) {  // flip
-        flipped = false;
+    if ((double)GetMouseX() > GetPosition().x && GetScale().x == -1) {  // flip
+        SetScale({ 1,1 });
         Engine::GetLogger().LogDebug("flip true");
     }
-    else if ((double)GetMouseX() <= position.x && !flipped) {
-        flipped = true;
+    else if ((double)GetMouseX() <= GetPosition().x && !(GetScale().x == -1)) {
+        SetScale({ -1,1 });
         Engine::GetLogger().LogDebug("flip false");
         }
-    }
 
- 
     for (Bullet* bullet : attacks) {
         bullet->Update(dt);
     }
@@ -168,6 +182,7 @@ void Pet::Update(double dt, Math::vec2 hero_position) {
         }
     }
 }
+ 
 
 void Pet::MakeAttack()
 {
@@ -176,21 +191,19 @@ void Pet::MakeAttack()
     mouse_position.y *= -1;
     mouse_position.y += Engine::GetWindow().GetSize().y;
 
-    attacks.push_back(new Bullet(position, { (position.x - Engine::GetWindow().GetSize().x / 2 + mouse_position.x), (position.y - Engine::GetWindow().GetSize().y / 6 + mouse_position.y) }));
-    attacks[attacks.size() - 1]->attack.Load("Assets/bullet.png");
+    attacks.push_back(new Bullet(GetPosition(), {(GetPosition().x - Engine::GetWindow().GetSize().x / 2 + mouse_position.x), (GetPosition().y - Engine::GetWindow().GetSize().y / 6 + mouse_position.y)}));
 }
 
 void Bullet::Update(double dt) {
-    velocity.x = attack_speed * distance.x;
-    velocity.y = attack_speed * distance.y;
+    //velocity.x = attack_speed * distance.x;
+    //velocity.y = attack_speed * distance.y;
+    UpdateVelocity({ attack_speed * distance.x , attack_speed * distance.y });
     //Engine::GetLogger().LogDebug(std::to_string(position.x) + "  " + std::to_string(position.y));
-    position += velocity * dt;
-    object_matrix = Math::TranslationMatrix(position);
     life -= dt;
 }
 
 Math::vec2 Bullet::GetAttackDirection() {
-    distance = destination - position;
+    distance = destination - GetPosition();
     double angle = atan2(distance.y, distance.x);
     distance.x = cos(angle);
     distance.y = sin(angle);
