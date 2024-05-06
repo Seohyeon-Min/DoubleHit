@@ -1,5 +1,4 @@
 Assets/robot.png
-FrameSize 21 26
-HotSpot 10 26
+FrameSize 46 46
+HotSpot 23 0
 Frame 0 0
-Frame 21 0

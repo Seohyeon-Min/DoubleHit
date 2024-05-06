@@ -35,7 +35,7 @@ void Hero::State_Jumping::CheckExit(GameObject* object) {
 
 void Hero::State_Idle::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
+    hero->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
 }
 void Hero::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Idle::CheckExit(GameObject* object) {
@@ -77,7 +77,7 @@ void Hero::State_Falling::CheckExit(GameObject* object) {
 
 void Hero::State_Running::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Running));
+    hero->sprite.PlayAnimation(static_cast<int>(Animations::Running));
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         hero->SetScale({ -1,1 });
     }
@@ -131,7 +131,7 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
 }
 
-void Hero::Update(double dt, Combination& combination) {
+void Hero::Update(double dt) {
     GameObject::Update(dt);
 
     // Boundary Check

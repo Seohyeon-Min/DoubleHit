@@ -1,13 +1,10 @@
 #pragma once
-#include "..\Engine\Sprite.h"
-#include "..\Engine\Input.h"
-#include "..\Engine\Vec2.h"
 #include "..\Engine\Camera.h"
-#include "..\Engine\Matrix.h"
+#include "..\Engine\GameObject.h"
 #include "Hero.h"
 
 
-class Enemy {
+class Enemy : public CS230::GameObject {
 public:
     Enemy(Math::vec2 start_position);
     virtual void Load();

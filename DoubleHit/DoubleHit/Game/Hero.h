@@ -1,7 +1,6 @@
 #pragma once
 #include "..\Engine\Camera.h"
 #include "..\Engine\GameObject.h"
-#include "Enemy.h"
 #include "Combination.h"
 
 //constexpr float jumping_speed = 300;
@@ -9,7 +8,7 @@
 class Hero : public CS230::GameObject {
 public:
     Hero(Math::vec2 start_position, const CS230::Camera& camera);
-    void Update(double dt, Combination& combination);
+    void Update(double dt) override;
     void update_x_velocity(double dt);
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
     double GetHealth();
@@ -90,11 +89,11 @@ private:
 
     enum class Animations {
         Idle,
-        Running,
-        Jumping,
-        Falling,
-        Light,
-        Heavy,
-        LightLight
+        Running
+        //Jumping,
+        //Falling,
+        //Light,
+        //Heavy,
+        //LightLight
     };
 };

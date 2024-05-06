@@ -30,7 +30,7 @@ public:
     void Skill();
     void MakeEnemy();
     Enemy* MakeGroundEnemy();
-    //Enemy* MakeAirEnemy();
+    Enemy* MakeAirEnemy();
     //Enemy* MakeEliteEnemy();
     static constexpr double gravity = 800;
     static constexpr double floor = 80;
@@ -47,5 +47,5 @@ private:
     std::vector<Enemy*> enemies; //enemy vectors
     double spawn_time = 0;
     double elite_spawn_time = 0;
-    const double enemy_spawn_time = 0.5; // every x second
+    const double enemy_spawn_time = 2; // every x second
 };

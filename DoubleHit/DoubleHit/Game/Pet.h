@@ -17,7 +17,8 @@ private:
 class Pet : public CS230::GameObject {
 public:
     Pet(Math::vec2 start_position);
-    void Update(double dt, Math::vec2 hero_position);
+    void Update(double dt) override;
+    void Draw(Math::TransformationMatrix camera_matrix) override;
     void MakeAttack();
     bool combiActiveFlag = false;
     double combiTimer = 0;
@@ -26,7 +27,6 @@ public:
 private:
     Math::vec2 destination;
     Math::vec2 space = { 30 , 0 };
-    Math::TransformationMatrix camera_offset;
 
     static constexpr double x_acceleration = 100;
     static constexpr double x_drag = 200;
@@ -52,31 +52,13 @@ private:
         std::string GetName() override { return "Running"; }
     };
 
-    class State_Light : public State {
-    public:
-        virtual void Enter(GameObject* object) override;
-        virtual void Update(GameObject* object, double dt) override;
-        virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Light attack"; }
-    };
-
-    class State_Heavy : public State {
-    public:
-        virtual void Enter(GameObject* object) override;
-        virtual void Update(GameObject* object, double dt) override;
-        virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Heavy attack"; }
-    };
-
     State_Idle state_idle;
     State_Running state_running;
-    State_Light state_light;
-    State_Heavy state_heavy;
 
     enum class Animations {
-        Idle,
-        Running,
+        Idle
+ /*       Running,
         Light,
-        Heavy
+        Heavy*/
     };
 };

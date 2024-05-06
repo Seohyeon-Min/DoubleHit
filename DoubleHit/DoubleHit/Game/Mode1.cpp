@@ -22,7 +22,7 @@ Created:    March 8, 2023
 
 
 Mode1::Mode1() : 
-    camera({ { 0.30 * Engine::GetWindow().GetSize().x, 0 }, { 0.34 * Engine::GetWindow().GetSize().x, 0 } })
+    camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } })
 {
 }
 
@@ -44,13 +44,13 @@ void Mode1::Load() {
 void Mode1::Update([[maybe_unused]] double dt) {
 
     camera.Update(hero_ptr->GetPosition());
-    //pet.Update(dt, hero_ptr->GetPosition());
     gameobjectmanager.UpdateAll(dt);
     spawn_time += dt;
     if (spawn_time > enemy_spawn_time) { // spawn logic
         MakeEnemy();
         spawn_time = 0;
     }
+
     //elite_spawn_time += dt;
     //if (elite_spawn_time > enemy_spawn_time * 24) { // spawn logic
     //    enemies.push_back(MakeEliteEnemy());
@@ -102,11 +102,11 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-    background.Draw(camera, 1.5);
+    background.Draw(camera, 1);
     gameobjectmanager.DrawAll(camera.GetMatrix());
 
     for (Enemy* enemy : enemies) {
-        enemy->Draw(camera, 1.5);
+        enemy->Draw(camera, 1);
     }
     
     //if (pet.combiActiveFlag == true) {
@@ -126,17 +126,17 @@ Enemy* Mode1::MakeGroundEnemy(){
     g_enemy->Load();
     return g_enemy;
 }
-//
-//Enemy* Mode1::MakeAirEnemy() {
-//
-//    double randomX = GetRandomValue(0, GetScreenWidth());
-//    double randomY = GetRandomValue(500, GetScreenHeight() - 100);
-//    Math::vec2 air_position = { randomX, randomY };    //random position
-//
-//    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition());
-//    a_enemy->Load();
-//    return a_enemy;
-//}
+
+Enemy* Mode1::MakeAirEnemy() {
+
+    double randomX = GetRandomValue(0, GetScreenWidth());
+    double randomY = GetRandomValue(500, GetScreenHeight() - 100);
+    Math::vec2 air_position = { randomX, randomY };    //random position
+
+    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition());
+    a_enemy->Load();
+    return a_enemy;
+}
 //
 //Enemy* Mode1::MakeEliteEnemy()
 //{
@@ -149,8 +149,8 @@ Enemy* Mode1::MakeGroundEnemy(){
 //}
 
 void Mode1::MakeEnemy() {
-    //GetRandomValue(1, 0) ? enemies.push_back(MakeGroundEnemy()) : enemies.push_back(MakeAirEnemy());
-    enemies.push_back(MakeGroundEnemy());
+    GetRandomValue(1, 0) ? enemies.push_back(MakeGroundEnemy()) : enemies.push_back(MakeAirEnemy());
+    //enemies.push_back(MakeGroundEnemy());
 
 }
 void Mode1::Unload() {
