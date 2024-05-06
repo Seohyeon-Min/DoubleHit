@@ -6,7 +6,7 @@
 #include "../Engine/logger.h"
 #include "../Engine/Vec2.h"
 #include "../Engine/Sprite.h"
-
+#include "Pet.h"
 
 
 class Combination {
@@ -53,6 +53,7 @@ public:
 private:
     Type type; // current combination state
     CS230::Sprite sprite;
+    Pet* petPtr = nullptr;
 };
 
 enum IconState {
