@@ -1,6 +1,6 @@
 #include "Combination.h"
 #include "../Engine/Engine.h"
-#include "Pet.h"
+
 
 Icon icons[2][2];
 
@@ -15,11 +15,6 @@ void Combination::InitIcons() {
         }
     }
     type = Type::NONE;
-    /*if (pet.combiActiveFlag == false) {
-        currentInputState = NONE;
-        currentKeyboardState = KEY_NONE;
-        currentMouseState = MOUSE_NONE;
-    }*/
 }
 
 void Combination::UpdateIcons() {
@@ -29,7 +24,15 @@ void Combination::UpdateIcons() {
             icons[i][j].state = INACTIVE;
         }
     }
+
     type = Type::NONE;
+
+    if (petPtr && petPtr->combiActiveFlag == false) {
+        currentInputState = NONE;
+        currentKeyboardState = KEY_NONE;
+        currentMouseState = MOUSE_NONE;
+    }
+
     // Keyboard Input
     if (currentInputState == NONE || currentInputState == MOUSE_ACTIVATED) {
         if (IsKeyPressed(KEY_J) && currentKeyboardState == KEY_NONE) {
@@ -119,32 +122,33 @@ void Combination::DrawIcons() {
 
 void Combination::comb_skill1() {
     Engine::GetLogger().LogDebug("(0,0)");
-    currentInputState = NONE;
-    currentKeyboardState = KEY_NONE;
-    currentMouseState = MOUSE_NONE;
     type = Type::LIGHTLIGHT;
+    if (petPtr) {
+        petPtr->combiActiveFlag = false;
+    }
 }
 
 void Combination::comb_skill2() {
     Engine::GetLogger().LogDebug("(0,1)");
-    currentInputState = NONE;
-    currentKeyboardState = KEY_NONE;
-    currentMouseState = MOUSE_NONE;
     type = Type::LIGHTHEAVY;
+    if (petPtr) {
+        petPtr->combiActiveFlag = false;
+
+    }
 }
 
 void Combination::comb_skill3() {
     Engine::GetLogger().LogDebug("(1,0)");
-    currentInputState = NONE;
-    currentKeyboardState = KEY_NONE;
-    currentMouseState = MOUSE_NONE;
     type = Type::HEAVYLIGHT;
+    if (petPtr) {
+        petPtr->combiActiveFlag = false;
+    }
 }
 
 void Combination::comb_skill4() {
     Engine::GetLogger().LogDebug("(1,1)");
-    currentInputState = NONE;
-    currentKeyboardState = KEY_NONE;
-    currentMouseState = MOUSE_NONE;
     type = Type::HEAVYHEAVY;
+    if (petPtr) {
+        petPtr->combiActiveFlag = false;
+    }
 }
