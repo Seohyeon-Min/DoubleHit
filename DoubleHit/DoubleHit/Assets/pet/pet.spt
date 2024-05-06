@@ -1,0 +1,12 @@
+Assets/pet/pet.png
+FrameSize 21 26
+Hotspot 10 13
+Frame 0 0
+Frame 21 0
+Frame 42 0
+Frame 63 0
+Frame 84 0
+Frame 105 0
+Frame 126 0
+Anim Assets/pet/pet.anm
+Anim Assets/pet/pet_skill.anm

@@ -1,0 +1,8 @@
+Assets/hero_idle.png
+FrameSize 39 60
+Hotspot 19 0
+Frame 0 0
+Frame 39 0
+Frame 78 0
+Frame 117 0
+Anim Assets/hero_walk.anm

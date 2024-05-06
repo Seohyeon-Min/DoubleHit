@@ -30,8 +30,8 @@ public:
     void Skill();
     void MakeEnemy();
     Enemy* MakeGroundEnemy();
-    Enemy* MakeAirEnemy();
-    Enemy* MakeEliteEnemy();
+    //Enemy* MakeAirEnemy();
+    //Enemy* MakeEliteEnemy();
     static constexpr double gravity = 800;
     static constexpr double floor = 80;
 

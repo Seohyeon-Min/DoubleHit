@@ -13,8 +13,8 @@ Created:    March 8, 2023
 #include "Mode1.h"
 #include <iostream>
 #include "Hero.h"
-#include "Pet.h"
 #include "Combination.h"
+#include "Pet.h"
 
 //random
 #include<cstdlib>
@@ -46,17 +46,16 @@ void Mode1::Update([[maybe_unused]] double dt) {
     camera.Update(hero_ptr->GetPosition());
     //pet.Update(dt, hero_ptr->GetPosition());
     gameobjectmanager.UpdateAll(dt);
-
     spawn_time += dt;
     if (spawn_time > enemy_spawn_time) { // spawn logic
         MakeEnemy();
         spawn_time = 0;
     }
-    elite_spawn_time += dt;
-    if (elite_spawn_time > enemy_spawn_time * 24) { // spawn logic
-        enemies.push_back(MakeEliteEnemy());
-        elite_spawn_time = 0;
-    }
+    //elite_spawn_time += dt;
+    //if (elite_spawn_time > enemy_spawn_time * 24) { // spawn logic
+    //    enemies.push_back(MakeEliteEnemy());
+    //    elite_spawn_time = 0;
+    //}
 
     //for (Enemy* enemy : enemies) {
     //    enemy->Update(dt, hero_ptr->GetPosition());
@@ -127,30 +126,31 @@ Enemy* Mode1::MakeGroundEnemy(){
     g_enemy->Load();
     return g_enemy;
 }
-
-Enemy* Mode1::MakeAirEnemy() {
-
-    double randomX = GetRandomValue(0, GetScreenWidth());
-    double randomY = GetRandomValue(500, GetScreenHeight() - 100);
-    Math::vec2 air_position = { randomX, randomY };    //random position
-
-    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition());
-    a_enemy->Load();
-    return a_enemy;
-}
-
-Enemy* Mode1::MakeEliteEnemy()
-{
-    double randomX = GetRandomValue(0, 100);
-    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
-
-    EliteEnemy* e_enemy = new EliteEnemy(ground_position + camera.GetPosition());
-    e_enemy->Load();
-    return e_enemy;
-}
+//
+//Enemy* Mode1::MakeAirEnemy() {
+//
+//    double randomX = GetRandomValue(0, GetScreenWidth());
+//    double randomY = GetRandomValue(500, GetScreenHeight() - 100);
+//    Math::vec2 air_position = { randomX, randomY };    //random position
+//
+//    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition());
+//    a_enemy->Load();
+//    return a_enemy;
+//}
+//
+//Enemy* Mode1::MakeEliteEnemy()
+//{
+//    double randomX = GetRandomValue(0, 100);
+//    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
+//
+//    EliteEnemy* e_enemy = new EliteEnemy(ground_position + camera.GetPosition());
+//    e_enemy->Load();
+//    return e_enemy;
+//}
 
 void Mode1::MakeEnemy() {
-    GetRandomValue(1, 0) ? enemies.push_back(MakeGroundEnemy()) : enemies.push_back(MakeAirEnemy());
+    //GetRandomValue(1, 0) ? enemies.push_back(MakeGroundEnemy()) : enemies.push_back(MakeAirEnemy());
+    enemies.push_back(MakeGroundEnemy());
 
 }
 void Mode1::Unload() {

@@ -11,7 +11,7 @@ Pet::Pet(Math::vec2 start_position) :
     GameObject(start_position),
     destination(start_position)
 {
-    sprite.Load("Assets/pet.png");
+    sprite.Load("Assets/pet/pet.spt");
     current_state = &state_idle;
     current_state->Enter(this);
 }
@@ -25,7 +25,7 @@ Bullet::Bullet(Math::vec2 position, Math::vec2 targetPosition) :
 
 void Pet::State_Idle::Enter(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
-    pet->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
+    //pet->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
 }
 void Pet::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Pet::State_Idle::CheckExit(GameObject* object) {
@@ -43,7 +43,7 @@ void Pet::State_Idle::CheckExit(GameObject* object) {
 
 void Pet::State_Running::Enter(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
-    pet->sprite.PlayAnimation(static_cast<int>(Animations::Running));
+    //pet->sprite.PlayAnimation(static_cast<int>(Animations::Running));
 }
 void Pet::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
 }
@@ -63,7 +63,7 @@ void Pet::State_Running::CheckExit(GameObject* object) {
 
 void Pet::State_Light::Enter(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
-    pet->sprite.PlayAnimation(static_cast<int>(Animations::Light));
+    //pet->sprite.PlayAnimation(static_cast<int>(Animations::Light));
     pet->MakeAttack();
 }
 void Pet::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
@@ -85,7 +85,7 @@ void Pet::State_Light::CheckExit(GameObject* object) {
 
 void Pet::State_Heavy::Enter(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
-    pet->sprite.PlayAnimation(static_cast<int>(Animations::Heavy));
+    //pet->sprite.PlayAnimation(static_cast<int>(Animations::Heavy));
     pet->MakeAttack();
 }
 void Pet::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }

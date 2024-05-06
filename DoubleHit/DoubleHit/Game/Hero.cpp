@@ -9,7 +9,7 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
     GameObject(start_position),
     camera(camera)
 {
-    sprite.Load("Assets/player.png");
+    sprite.Load("Assets/hero/hero.spt");
     HeroHealth = HealthMax;
     BarCurrentWidth = BarMaxWidth;
     current_state = &state_idle;
@@ -18,7 +18,7 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
 
 void Hero::State_Jumping::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->sprite.PlayAnimation(static_cast<int>(Animations::Jumping));
+    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Jumping));
     hero->SetVelocity({ hero->GetVelocity().x, Hero::velocity.y });
 }
 void Hero::State_Jumping::Update(GameObject* object, double dt) {
@@ -35,31 +35,31 @@ void Hero::State_Jumping::CheckExit(GameObject* object) {
 
 void Hero::State_Idle::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
+    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
 }
 void Hero::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Idle::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Left)) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         hero->change_state(&hero->state_running);
     }
-    else if (Engine::GetInput().KeyDown(CS230::Input::Keys::Right)) {
+    else if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
         hero->change_state(&hero->state_running);
     }
-    else if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Up)) {
+    else if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
         hero->change_state(&hero->state_jumping);
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+    else if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
         hero->change_state(&hero->state_light);
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+    else if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
         hero->change_state(&hero->state_heavy);
     }
 }
 
 void Hero::State_Falling::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->sprite.PlayAnimation(static_cast<int>(Animations::Falling));
+    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Falling));
 }
 void Hero::State_Falling::Update(GameObject* object, double dt) {
     Hero* hero = static_cast<Hero*>(object);
@@ -77,21 +77,28 @@ void Hero::State_Falling::CheckExit(GameObject* object) {
 
 void Hero::State_Running::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->sprite.PlayAnimation(static_cast<int>(Animations::Running));
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Left)) {
+    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Running));
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         hero->SetScale({ -1,1 });
     }
-    else if (Engine::GetInput().KeyDown(CS230::Input::Keys::Right)) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
         hero->SetScale({ 1,1 });
     }
 }
 void Hero::State_Running::Update(GameObject* object, double dt) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->update_x_velocity(dt);
+    hero->update_x_velocity(dt);    
 }
 void Hero::State_Running::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Up)) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+        hero->change_state(&hero->state_running);
+    }
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+        hero->change_state(&hero->state_running);
+    }
+
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
         hero->change_state(&hero->state_jumping);
     }
     if (hero->GetVelocity().x == 0) {
@@ -108,7 +115,7 @@ void Hero::State_Running::CheckExit(GameObject* object) {
 
 void Hero::State_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->sprite.PlayAnimation(static_cast<int>(Animations::Light));
+    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Light));
 }
 void Hero::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Light::CheckExit(GameObject* object) {
@@ -117,7 +124,7 @@ void Hero::State_Light::CheckExit(GameObject* object) {
 
 void Hero::State_Heavy::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->sprite.PlayAnimation(static_cast<int>(Animations::Light));
+    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Light));
 }
 void Hero::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Heavy::CheckExit(GameObject* object) {
