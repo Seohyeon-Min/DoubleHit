@@ -9,7 +9,7 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
     GameObject(start_position),
     camera(camera)
 {
-    sprite.Load("Assets/hero/hero.spt");
+    sprite.Load("Assets/hero/spt/hero.spt");
     HeroHealth = HealthMax;
     BarCurrentWidth = BarMaxWidth;
     current_state = &state_idle;
@@ -43,18 +43,19 @@ void Hero::State_Idle::CheckExit(GameObject* object) {
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         hero->change_state(&hero->state_running);
     }
-    else if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
         hero->change_state(&hero->state_running);
     }
-    else if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
+
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
         hero->change_state(&hero->state_jumping);
     }
-    else if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
         hero->change_state(&hero->state_light);
     }
-    else if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
-        hero->change_state(&hero->state_heavy);
-    }
+    //if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+    //    hero->change_state(&hero->state_heavy);
+    //}
 }
 
 void Hero::State_Falling::Enter(GameObject* object) {
@@ -78,12 +79,6 @@ void Hero::State_Falling::CheckExit(GameObject* object) {
 void Hero::State_Running::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->sprite.PlayAnimation(static_cast<int>(Animations::Running));
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
-        hero->SetScale({ -1,1 });
-    }
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
-        hero->SetScale({ 1,1 });
-    }
 }
 void Hero::State_Running::Update(GameObject* object, double dt) {
     Hero* hero = static_cast<Hero*>(object);
@@ -91,12 +86,6 @@ void Hero::State_Running::Update(GameObject* object, double dt) {
 }
 void Hero::State_Running::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
-        hero->change_state(&hero->state_running);
-    }
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
-        hero->change_state(&hero->state_running);
-    }
 
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
         hero->change_state(&hero->state_jumping);
@@ -107,19 +96,22 @@ void Hero::State_Running::CheckExit(GameObject* object) {
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
         hero->change_state(&hero->state_light);
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
-        hero->change_state(&hero->state_heavy);
-    }
+    //if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+    //    hero->change_state(&hero->state_heavy);
+    //}
 }
 
 
 void Hero::State_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Light));
+    hero->sprite.PlayAnimation(static_cast<int>(Animations::Light));
+    hero->SetVelocity({ 0, hero->GetVelocity().y });
 }
 void Hero::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Light::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
+    if (hero->sprite.AnimationEnded())
+        hero->change_state(&hero->state_idle);
 }
 
 void Hero::State_Heavy::Enter(GameObject* object) {
@@ -146,13 +138,22 @@ void Hero::Update(double dt) {
 }
 
 void Hero::update_x_velocity(double dt) {
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+    // flip
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A) && !Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+        SetScale({ -1,1 });
+    }
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D) && !Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+        SetScale({ 1,1 });
+    }
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D) && !Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         SetVelocity({ velocity.x, GetVelocity().y });
+        std::cout << "D" << std::endl;
     }
-    else if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A) && !Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
         SetVelocity({ -velocity.x, GetVelocity().y });
+        std::cout << "A" << std::endl;
     }
-    else {
+    if (!Engine::GetInput().KeyDown(CS230::Input::Keys::A) && !Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
         SetVelocity({ 0, GetVelocity().y });
     }
 }

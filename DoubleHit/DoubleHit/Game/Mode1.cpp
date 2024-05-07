@@ -29,7 +29,7 @@ Mode1::Mode1() :
 void Mode1::Load() {
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }, camera);
     gameobjectmanager.Add(hero_ptr);
-    gameobjectmanager.Add(new Pet(hero_ptr->GetPosition()));        
+    gameobjectmanager.Add(new Pet(hero_ptr->GetPosition()));
     combination.InitIcons();
     
     background.Add("Assets/background.png", 1);

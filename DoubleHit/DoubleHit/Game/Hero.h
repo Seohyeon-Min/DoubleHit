@@ -89,10 +89,10 @@ private:
 
     enum class Animations {
         Idle,
-        Running
+        Running,
+        Light
         //Jumping,
         //Falling,
-        //Light,
         //Heavy,
         //LightLight
     };

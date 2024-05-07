@@ -1,4 +1,4 @@
-Assets/skill_p1_gg.png
+Assets/hero/png/skill_p1_gg.png
 FrameSize 104 70
 HotSpot 67 0
 Frame 0 0
@@ -12,4 +12,4 @@ Frame 728 0
 Frame 832 0
 Frame 936 0
 Frame 1040 0
-Anim Assets/skill_p1_gg.anm
+Anim Assets/hero/anm/skill_p1_gg.anm
