@@ -73,7 +73,7 @@ private:
     Math::vec2 direction;
 
     double speed = 80;
-    double min_distance = 50;
+    double min_distance = 70;
     double damage = 10;     //unused... yet
     double distance;
     double counter = 0;    //attack time count

@@ -8,16 +8,16 @@ Frame 70 70
 Frame 140 70
 Frame 210 70
 Frame 0 140
-Frame 110 140
-Frame 220 140
-Frame 330 140
-Frame 440 140
-Frame 550 140
-Frame 660 140
-Frame 770 140
-Frame 880 140
-Frame 990 140
-Frame 1100 140
+Frame 70 140
+Frame 140 140
+Frame 210 140
+Frame 280 140
+Frame 350 140
+Frame 420 140
+Frame 490 140
+Frame 560 140
+Frame 630 140
+Frame 700 140
 Anim Assets/hero/anm/hero_idle.anm
 Anim Assets/hero/anm/hero_walk.anm
 Anim Assets/hero/anm/hero_punch.anm

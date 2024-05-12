@@ -63,8 +63,10 @@ void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[m
             robot->SetScale({ -1,1 });
         }
     }
-    else {
+    else if(robot->distance <= robot->min_distance) {
+        robot->SetVelocity({0,0});
         if (robot->counter >= 1.0) {   //attack per 1 second
+            //attack hero
             robot->counter = 0;
         }
         robot->counter += dt;
@@ -99,12 +101,12 @@ void AirEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[mayb
     Hero* hero = static_cast<Hero*>(object);
     AirEnemy* robot = static_cast<AirEnemy*>(object);
 
-    Math::vec2 direction =  const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - robot->GetPosition();
+    robot-> direction =  const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - robot->GetPosition();
 
-    robot->distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
+    robot->distance = std::sqrt((robot->direction.x * robot->direction.x) + (robot->direction.y * robot->direction.y));     //calculate distance
 
     if (robot->distance > robot->min_distance) {  //collision
-        robot->SetVelocity({ robot->Normalize(direction).x * robot->speed , robot->Normalize(direction).y * robot->speed });
+        robot->SetVelocity({ robot->Normalize(robot->direction).x * robot->speed , robot->Normalize(robot->direction).y * robot->speed });
         if (robot->GetVelocity().x < 0) {
             robot->SetScale({ 1,1 });
         }
@@ -112,8 +114,10 @@ void AirEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[mayb
             robot->SetScale({ -1,1 });
         }
     }
-    else {
+    else if (robot->distance <= robot->min_distance) {
+        robot->SetVelocity({ 0,0 });
         if (robot->counter >= 1.0) {   //attack per 1 second
+            //attack hero
             robot->counter = 0;
         }
         robot->counter += dt;
