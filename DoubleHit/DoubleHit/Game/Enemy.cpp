@@ -7,23 +7,14 @@
 #include <iostream> //delete later
 
 Enemy::Enemy(Math::vec2 start_position) :
-    GameObject(start_position),
-    start_position(start_position),
-    position(start_position)
+    GameObject(start_position)
 {
+    sprite.Load("Assets/robot.spt");
+    //current_state = &state_idle;
+    //current_state->Enter(this);
 }
 
-void Enemy::Load() {
-    AddGOComponent(new CS230::Sprite("Assets/robot.spt"));
-}
-
-void Enemy::Update(double dt, Math::vec2 hero_position) {
-    Enemy::Move(dt, hero_position, speed);
-}
-
-void Enemy::Draw(const CS230::Camera& camera, const double zoom) {
-    GetGOComponent<CS230::Sprite>()->Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
-}
+void Enemy::Update(double dt, Math::vec2 hero_position) {}
 
 Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
     double length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
@@ -37,98 +28,67 @@ Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
     return normalized_vec;
 }
 
-void Enemy::Move(double dt, Math::vec2 hero_position, double speed) {
-
-}
-
-void Enemy::TakeDamage(double damage)
-{
-    health -= damage;
-}
-
-void Enemy::Attack(Math::vec2 hero_position) {
-    std::cout << "Attacked Hero." << std::endl; 
-    IsAttacking = true;
-}
-
 
 
 //#####################################################################
 
-
-GroundEnemy::GroundEnemy(Math::vec2 start_position):Enemy(start_position), start_position(start_position) {
+GroundEnemy::GroundEnemy(Math::vec2 start_position ):
+    Enemy(start_position)
+{
     distance = 600;
+    sprite.Load("Assets/robot.spt");
 }
 
-void GroundEnemy::Load() {
-    AddGOComponent(new CS230::Sprite("Assets/robot.spt"));
-    position = start_position;
-}
 void GroundEnemy::Update(double dt, Math::vec2 hero_position) {
-    GroundEnemy::Move(dt, hero_position, speed);
-}
-
-void GroundEnemy::Draw(const CS230::Camera& camera, const double zoom) {
-    GetGOComponent<CS230::Sprite>()->Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
-}
-void GroundEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
-    Math::vec2 direction;
-    double x_distance = hero_position.x - position.x;
+    
+    x_distance = hero_position.x - GetPosition().x;
     direction = Math::vec2(x_distance, 0.0);    //no direction in y
-    
-    
     distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
 
     if (distance > min_distance) {  //collision
-        position += Normalize(direction) * speed;
+        SetVelocity({ Normalize(direction).x * speed , Normalize(direction).y * speed });
+        if (GetVelocity().x < 0) {
+            SetScale({ 1,1 });
+        }
+        else if (GetVelocity().x >= 0) {
+            SetScale({ -1,1 });
+        }
     }
     else {
         if (counter >= 1.0) {   //attack per 1 second
-            Enemy::Attack(hero_position);
             counter = 0;
         }
         counter += dt;
     }
-
+    
 }
 
-void GroundEnemy::TakeDamage(double damage)
-{
-    health -= damage;
-}
 
 //#####################################################################
 
-AirEnemy::AirEnemy(Math::vec2 start_position) :Enemy(start_position), start_position(start_position) {
+AirEnemy::AirEnemy(Math::vec2 start_position) :
+    Enemy(start_position) {
     distance = 600;
-}
-
-void AirEnemy::Load() {
-    AddGOComponent(new CS230::Sprite("Assets/flying_robot.spt"));
-    position = start_position;
+    sprite.Load("Assets/flying_robot.spt");
 }
 
 void AirEnemy::Update(double dt, Math::vec2 hero_position) {
-    AirEnemy::Move(dt, hero_position, speed);
-}
-
-void AirEnemy::Draw(const CS230::Camera& camera, const double zoom) {
-    GetGOComponent<CS230::Sprite>()->Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
-}
-
-void AirEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
-    Math::vec2 direction;
-
-    direction = hero_position - position;
     
+    Math::vec2 direction = hero_position - GetPosition();
+
     distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
 
     if (distance > min_distance) {  //collision
-        position += Normalize(direction) * speed;
+        SetVelocity({ Normalize(direction).x * speed , Normalize(direction).y * speed });
+        if (GetVelocity().x < 0) {
+            SetScale({1,1});
+        }
+        else if (GetVelocity().x >= 0) {
+            SetScale({ -1,1 });
+        }
     }
     else {
         if (counter >= 1.0) {   //attack per 1 second
-            Enemy::Attack(hero_position);
             counter = 0;
         }
         counter += dt;
@@ -136,10 +96,6 @@ void AirEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
 
 }
 
-void AirEnemy::TakeDamage(double damage)
-{
-    health -= damage;
-}
 
 ////#####################################################################
 //
@@ -179,3 +135,70 @@ void AirEnemy::TakeDamage(double damage)
 //        counter += dt;
 //    }
 //}
+
+//###############################################################
+/*
+void Enemy::State_Idle::Enter(GameObject* object) {
+    Enemy* hero = static_cast<Enemy*>(object);
+    enemy->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
+}
+void Enemy::State_Idle::Update(GameObject* object, double dt) {
+    Enemy* hero = static_cast<Enemy*>(object);
+}
+void Enemy::State_Idle::CheckExit(GameObject* object) {
+    Enemy* enemy = static_cast<Enemy*>(object);
+
+    if (the player is near) {
+        enemy->change_state(&enemy->state_running);
+    }
+
+    if (the player attacked enemy) {
+        enemy->change_state(&enemy->state_attacked);
+    }
+
+}
+
+
+void Enemy::State_Running::Enter(GameObject* object) {
+    Enemy* hero = static_cast<Enemy*>(object);
+    enemy->sprite.PlayAnimation(static_cast<int>(Animations::Running));
+}
+void Enemy::State_Running::Update(GameObject* object, double dt) {
+    Enemy* hero = static_cast<Enemy*>(object);
+    //moving logic
+}
+void Enemy::State_Running::CheckExit(GameObject* object) {
+    Enemy* enemy = static_cast<Enemy*>(object);
+    if (distance <= min_distance) {
+        enemy->change_state(&enemy->state_attacking);
+    }
+
+}
+
+
+void Enemy::State_Attacking::Enter(GameObject* object) {
+    Enemy* hero = static_cast<Enemy*>(object);
+    enemy->sprite.PlayAnimation(static_cast<int>(Animations::Attacking));
+}
+void Enemy::State_Attacking::Update(GameObject* object, double dt) {
+    Enemy* hero = static_cast<Enemy*>(object);
+    if (counter >= 1.0) {   //attack per 1 second
+        counter = 0;
+    }
+    counter += dt;
+}
+void Enemy::State_Attacking::CheckExit(GameObject* object) {
+    Enemy* enemy = static_cast<Enemy*>(object);
+    if (distance > min_distance) {
+        enemy->change_state(&enemy->state_running)
+    }
+
+}
+
+void Enemy::State_Attacked::Enter(GameObject* object) {
+    Enemy* hero = static_cast<Enemy*>(object);
+    enemy->sprite.PlayAnimation(static_cast<int>(Animations::Attacked));
+}
+void Enemy::State_Attacked::Update(GameObject* object, double dt) {}
+void Enemy::State_Attacked::CheckExit(GameObject* object) {}
+*/

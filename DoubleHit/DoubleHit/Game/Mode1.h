@@ -29,8 +29,9 @@ public:
     void Draw() override;
     void Skill();
     void MakeEnemy();
-    Enemy* MakeGroundEnemy();
-    Enemy* MakeAirEnemy();
+    CS230::GameObjectManager GetGameObjectManager() { return gameobjectmanager; }
+    void MakeGroundEnemy();
+    void MakeAirEnemy();
     //Enemy* MakeEliteEnemy();
     static constexpr double gravity = 800;
     static constexpr double floor = 80;

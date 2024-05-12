@@ -48,6 +48,10 @@ void Mode1::Update([[maybe_unused]] double dt) {
         MakeEnemy();
         spawn_time = 0;
     }
+    
+    for (Enemy* enemy : enemies) {
+        enemy->Update(dt, hero_ptr->GetPosition());
+    }
 
     //elite_spawn_time += dt;
     //if (elite_spawn_time > enemy_spawn_time * 24) { // spawn logic
@@ -100,12 +104,8 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-    background.Draw(*GetGSComponent<CS230::Camera>(), 1);
-    gameobjectmanager.DrawAll(GetGSComponent<CS230::Camera>()->GetMatrix());
-
-    for (Enemy* enemy : enemies) {
-        enemy->Draw(*GetGSComponent<CS230::Camera>(), 1);
-    }
+    background.Draw(camera, 1);
+    gameobjectmanager.DrawAll(camera.GetMatrix());
     
     //if (pet.combiActiveFlag == true) {
     //    combination.DrawIcons();
@@ -115,25 +115,27 @@ void Mode1::Draw() {
 //####################################################################################
 
 
-Enemy* Mode1::MakeGroundEnemy(){
-   
+void Mode1::MakeGroundEnemy(){
+
     double randomX = GetRandomValue(0, 100);
     Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
 
-    GroundEnemy* g_enemy = new GroundEnemy( ground_position + GetGSComponent<CS230::Camera>()->GetPosition());
-    g_enemy->Load();
-    return g_enemy;
+    GroundEnemy* g_enemy = new GroundEnemy( ground_position + camera.GetPosition());
+
+    enemies.push_back(g_enemy);
+    gameobjectmanager.Add(g_enemy);
 }
 
-Enemy* Mode1::MakeAirEnemy() {
+void Mode1::MakeAirEnemy() {
 
     double randomX = GetRandomValue(0, GetScreenWidth());
     double randomY = GetRandomValue(500, GetScreenHeight() - 100);
     Math::vec2 air_position = { randomX, randomY };    //random position
 
-    AirEnemy* a_enemy = new AirEnemy( air_position + GetGSComponent<CS230::Camera>()->GetPosition());
-    a_enemy->Load();
-    return a_enemy;
+    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition());
+
+    enemies.push_back(a_enemy);
+    gameobjectmanager.Add(a_enemy);
 }
 //
 //Enemy* Mode1::MakeEliteEnemy()
@@ -147,9 +149,7 @@ Enemy* Mode1::MakeAirEnemy() {
 //}
 
 void Mode1::MakeEnemy() {
-    GetRandomValue(1, 0) ? enemies.push_back(MakeGroundEnemy()) : enemies.push_back(MakeAirEnemy());
-    //enemies.push_back(MakeGroundEnemy());
-
+    GetRandomValue(1, 0) ? MakeGroundEnemy() : MakeAirEnemy();  
 }
 void Mode1::Unload() {
     background.Unload();
