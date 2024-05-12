@@ -52,9 +52,9 @@ void Hero::State_Idle::CheckExit(GameObject* object) {
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
         hero->change_state(&hero->state_light);
     }
-    //if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
-    //    hero->change_state(&hero->state_heavy);
-    //}
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+        hero->change_state(&hero->state_heavy);
+    }
 }
 
 void Hero::State_Falling::Enter(GameObject* object) {
@@ -95,9 +95,9 @@ void Hero::State_Running::CheckExit(GameObject* object) {
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
         hero->change_state(&hero->state_light);
     }
-    //if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
-    //    hero->change_state(&hero->state_heavy);
-    //}
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+        hero->change_state(&hero->state_heavy);
+    }
 }
 
 
@@ -115,11 +115,13 @@ void Hero::State_Light::CheckExit(GameObject* object) {
 
 void Hero::State_Heavy::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light));
+    hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Heavy));
 }
 void Hero::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Heavy::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
+    if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded())
+        hero->change_state(&hero->state_idle);
 }
 
 void Hero::Update(double dt) {

@@ -91,9 +91,9 @@ private:
         Idle,
         Running,
         Light,
+        Heavy,
         Jumping,
         Falling
-        //Heavy,
         //LightLight
     };
 };
