@@ -11,8 +11,8 @@ Created:    March 22, 2023
 
 #include "Sprite.h"
 
-CS230::Sprite::Sprite() : current_animation(0)
-{
+CS230::Sprite::Sprite(const std::filesystem::path& sprite_file) {
+    Load(sprite_file);
 }
 
 CS230::Sprite::Sprite(Sprite&& temporary) noexcept :

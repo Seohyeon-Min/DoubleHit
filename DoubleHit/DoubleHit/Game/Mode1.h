@@ -29,7 +29,6 @@ public:
     void Draw() override;
     void Skill();
     void MakeEnemy();
-    CS230::GameObjectManager GetGameObjectManager() { return gameobjectmanager; }
     Enemy* MakeGroundEnemy();
     Enemy* MakeAirEnemy();
     //Enemy* MakeEliteEnemy();
@@ -42,9 +41,7 @@ public:
 private:
     Hero* hero_ptr;
     CS230::GameObjectManager gameobjectmanager;
-    CS230::Camera camera;
     Background  background;
-    Combination combination;
     std::vector<Enemy*> enemies; //enemy vectors
     double spawn_time = 0;
     double elite_spawn_time = 0;

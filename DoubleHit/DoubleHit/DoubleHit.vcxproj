@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="Engine\Animation.h" />
     <ClInclude Include="Engine\Camera.h" />
+    <ClInclude Include="Engine\Component.h" />
+    <ClInclude Include="Engine\ComponentManager.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Font.h" />
     <ClInclude Include="Engine\GameObject.h" />

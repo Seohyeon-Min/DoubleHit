@@ -28,10 +28,10 @@ CS230::GameObject::GameObject(Math::vec2 position, double rotation, Math::vec2 s
 
 void CS230::GameObject::Update(double dt) {
     current_state->Update(this, dt);
-    sprite.Update(dt);
     if (velocity.x != 0 || velocity.y != 0) {
         UpdatePosition(velocity * dt);
     }
+    UpdateGOComponents(dt);
     current_state->CheckExit(this);
 }
 
@@ -42,7 +42,11 @@ void CS230::GameObject::change_state(State* new_state) {
 
 
 void CS230::GameObject::Draw(Math::TransformationMatrix camera_matrix) {
-    sprite.Draw(camera_matrix * GetMatrix());
+    Sprite* sprite = GetGOComponent<Sprite>();
+    if (sprite != nullptr) {
+        sprite->Draw(camera_matrix * GetMatrix());
+    }
+
 }
 
 const Math::TransformationMatrix& CS230::GameObject::GetMatrix() {

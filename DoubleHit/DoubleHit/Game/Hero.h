@@ -7,15 +7,14 @@
 
 class Hero : public CS230::GameObject {
 public:
-    Hero(Math::vec2 start_position, const CS230::Camera& camera);
+    Hero(Math::vec2 start_position);
     void Update(double dt) override;
-    void update_x_velocity(double dt);
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
     double GetHealth();
     void TakeDamage(double damage);
  
 private:
-    const CS230::Camera& camera;
+    void update_x_velocity(double dt);
     static inline const  Math::vec2 velocity = { 140, 300 };
     double HeroHealth = 100.0;
     double HealthMax = 100.0;

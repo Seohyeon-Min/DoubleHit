@@ -14,7 +14,7 @@ Enemy::Enemy(Math::vec2 start_position) :
 }
 
 void Enemy::Load() {
-    sprite.Load("Assets/robot.spt");
+    AddGOComponent(new CS230::Sprite("Assets/robot.spt"));
 }
 
 void Enemy::Update(double dt, Math::vec2 hero_position) {
@@ -22,7 +22,7 @@ void Enemy::Update(double dt, Math::vec2 hero_position) {
 }
 
 void Enemy::Draw(const CS230::Camera& camera, const double zoom) {
-    sprite.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
+    GetGOComponent<CS230::Sprite>()->Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
 }
 
 Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
@@ -61,7 +61,7 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position):Enemy(start_position), start
 }
 
 void GroundEnemy::Load() {
-    sprite.Load("Assets/robot.spt");
+    AddGOComponent(new CS230::Sprite("Assets/robot.spt"));
     position = start_position;
 }
 void GroundEnemy::Update(double dt, Math::vec2 hero_position) {
@@ -69,7 +69,7 @@ void GroundEnemy::Update(double dt, Math::vec2 hero_position) {
 }
 
 void GroundEnemy::Draw(const CS230::Camera& camera, const double zoom) {
-    sprite.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
+    GetGOComponent<CS230::Sprite>()->Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
 }
 void GroundEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
     Math::vec2 direction;
@@ -104,7 +104,7 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :Enemy(start_position), start_posi
 }
 
 void AirEnemy::Load() {
-    sprite.Load("Assets/flying_robot.spt");
+    AddGOComponent(new CS230::Sprite("Assets/flying_robot.spt"));
     position = start_position;
 }
 
@@ -113,7 +113,7 @@ void AirEnemy::Update(double dt, Math::vec2 hero_position) {
 }
 
 void AirEnemy::Draw(const CS230::Camera& camera, const double zoom) {
-    sprite.Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
+    GetGOComponent<CS230::Sprite>()->Draw(Math::ScaleMatrix(zoom) * Math::TranslationMatrix((position - const_cast<Math::vec2&>(camera.GetPosition()))));
 }
 
 void AirEnemy::Move(double dt, Math::vec2 hero_position, double speed) {

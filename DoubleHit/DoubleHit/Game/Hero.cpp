@@ -5,11 +5,10 @@
 #include "../Engine/Engine.h"
 #include <iostream> //delete later
 
-Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
-    GameObject(start_position),
-    camera(camera)
+Hero::Hero(Math::vec2 start_position) :
+    GameObject(start_position)
 {
-    sprite.Load("Assets/hero/spt/hero.spt");
+    AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero.spt"));
     HeroHealth = HealthMax;
     BarCurrentWidth = BarMaxWidth;
     current_state = &state_idle;
@@ -18,7 +17,7 @@ Hero::Hero(Math::vec2 start_position, const CS230::Camera& camera) :
 
 void Hero::State_Jumping::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Jumping));
+    //hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Jumping));
     hero->SetVelocity({ hero->GetVelocity().x, Hero::velocity.y });
 }
 void Hero::State_Jumping::Update(GameObject* object, double dt) {
@@ -35,7 +34,7 @@ void Hero::State_Jumping::CheckExit(GameObject* object) {
 
 void Hero::State_Idle::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
+    hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
 }
 void Hero::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Idle::CheckExit(GameObject* object) {
@@ -60,7 +59,7 @@ void Hero::State_Idle::CheckExit(GameObject* object) {
 
 void Hero::State_Falling::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Falling));
+    //hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Falling));
 }
 void Hero::State_Falling::Update(GameObject* object, double dt) {
     Hero* hero = static_cast<Hero*>(object);
@@ -78,7 +77,7 @@ void Hero::State_Falling::CheckExit(GameObject* object) {
 
 void Hero::State_Running::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->sprite.PlayAnimation(static_cast<int>(Animations::Running));
+    hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Running));
 }
 void Hero::State_Running::Update(GameObject* object, double dt) {
     Hero* hero = static_cast<Hero*>(object);
@@ -104,19 +103,19 @@ void Hero::State_Running::CheckExit(GameObject* object) {
 
 void Hero::State_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->sprite.PlayAnimation(static_cast<int>(Animations::Light));
+    hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light));
     hero->SetVelocity({ 0, hero->GetVelocity().y });
 }
 void Hero::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Light::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    if (hero->sprite.AnimationEnded())
+    if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded())
         hero->change_state(&hero->state_idle);
 }
 
 void Hero::State_Heavy::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->sprite.PlayAnimation(static_cast<int>(Animations::Light));
+    //hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light));
 }
 void Hero::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Heavy::CheckExit(GameObject* object) {
@@ -127,12 +126,12 @@ void Hero::Update(double dt) {
     GameObject::Update(dt);
 
     // Boundary Check
-    if (GetPosition().x < camera.GetPosition().x + sprite.GetFrameSize().x / 2) {
-        SetPosition({ camera.GetPosition().x + sprite.GetFrameSize().x / 2, GetPosition().y });
+    if (GetPosition().x < Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2) {
+        SetPosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2, GetPosition().y });
         SetVelocity({ 0, GetVelocity().y });
     }
-    if (GetPosition().x + sprite.GetFrameSize().x / 2 > camera.GetPosition().x + Engine::GetWindow().GetSize().x) {
-        SetPosition({ camera.GetPosition().x + Engine::GetWindow().GetSize().x - sprite.GetFrameSize().x / 2, GetPosition().y });
+    if (GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2 > Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x) {
+        SetPosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x - GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2, GetPosition().y });
         SetVelocity({ 0, GetVelocity().y });
     }
 }

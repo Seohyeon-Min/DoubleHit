@@ -12,7 +12,7 @@ public:
     virtual void Draw(const CS230::Camera& camera, const double zoom);
     virtual void Move(double dt, Math::vec2 hero_position, double speed);
     virtual void TakeDamage(double damage);
-    virtual const Math::vec2& GetPosition() { return position; }
+    virtual const Math::vec2& GetPosition() { return GameObject::GetPosition(); }
     void Attack(Math::vec2 hero_position);
     Math::vec2 Normalize(const Math::vec2& vec);
     bool IsAttacking;
@@ -20,7 +20,6 @@ public:
 
 private:
     Math::TransformationMatrix object_matrix;
-    CS230::Sprite sprite;
     Math::vec2 start_position;
     Math::vec2 position;
     CS230::Sprite health_bar;

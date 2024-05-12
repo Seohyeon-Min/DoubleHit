@@ -14,12 +14,13 @@ Created:    March 8, 2023
 #include "Matrix.h"
 #include "Texture.h"
 #include "Animation.h"
+#include "Component.h"
 #include "engine.h"
 
 namespace CS230 {
-    class Sprite {
+    class Sprite :public Component {
     public:
-        Sprite();
+        Sprite(const std::filesystem::path& sprite_file);
         ~Sprite();
 
         Sprite(const Sprite&) = delete;
@@ -27,7 +28,7 @@ namespace CS230 {
 
         Sprite(Sprite&& temporary) noexcept;
         Sprite& operator=(Sprite&& temporary) noexcept;
-        void Update(double dt);
+        void Update(double dt) override;
         void Load(const std::filesystem::path& sprite_file);
         void Draw(Math::TransformationMatrix display_matrix);
         Math::ivec2 GetHotSpot(int index);

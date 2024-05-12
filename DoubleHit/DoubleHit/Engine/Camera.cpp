@@ -10,7 +10,7 @@ Created:    March 22, 2023
 
 #include "Camera.h"
 
-CS230::Camera::Camera(Math::rect player_zone) : player_zone(player_zone)
+CS230::Camera::Camera(Math::rect player_zone) : player_zone(player_zone), position({ 0,0 })
 {
 
 }

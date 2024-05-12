@@ -10,6 +10,7 @@ Created:    March 8, 2023
 
 #pragma once
 #include "Sprite.h"
+#include "ComponentManager.h"
 
 namespace Math { class TransformationMatrix; }
 
@@ -39,8 +40,15 @@ namespace CS230 {
         State* current_state;
         void change_state(State* new_state);
 
-    protected:
         void SetPosition(Math::vec2 new_position);
+
+        template<typename T>
+        T* GetGOComponent() {
+            return componentmanager.GetComponent<T>();
+        }
+
+
+    protected:
         void UpdatePosition(Math::vec2 delta);
         void SetVelocity(Math::vec2 new_velocity);
         void UpdateVelocity(Math::vec2 delta);
@@ -49,9 +57,22 @@ namespace CS230 {
         void SetRotation(double new_rotation);
         void UpdateRotation(double delta);
 
-        Sprite sprite;
+        void AddGOComponent(Component* component) {
+            componentmanager.AddComponent(component);
+        }
+        template<typename T>
+        void RemoveGOComponent() {
+            componentmanager.RemoveComponent<T>();
+        }
+        void ClearGOComponents() {
+            componentmanager.Clear();
+        }
+        void UpdateGOComponents(double dt) {
+            componentmanager.UpdateAll(dt);
+        }
 
     private:
+        ComponentManager componentmanager;
         Math::TransformationMatrix object_matrix;
 
         double rotation;
