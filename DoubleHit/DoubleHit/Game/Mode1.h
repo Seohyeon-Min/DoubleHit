@@ -16,6 +16,7 @@ Created:    March 8, 2023
 #include "Background.h"
 #include "Enemy.h"
 #include "raylib.h"
+#include "Pet.h"
 
 class Hero;
 class Pet;
@@ -34,12 +35,12 @@ public:
     //Enemy* MakeEliteEnemy();
     static constexpr double gravity = 800;
     static constexpr double floor = 80;
-
     std::string GetName() override {
         return "Mode1";
     }
 private:
     Hero* hero_ptr;
+    Pet* pet_ptr;
     std::vector<Enemy*> enemies; //enemy vectors
     double spawn_time = 0;
     double elite_spawn_time = 0;

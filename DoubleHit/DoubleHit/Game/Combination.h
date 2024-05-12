@@ -10,7 +10,7 @@
 
 class Pet;
 
-class Combination{
+class Combination : public CS230::Component{
 public:
     Combination();
     void InitIcons();
@@ -54,6 +54,7 @@ public:
 private:
     Type type; // current combination state
     Pet* petPtr;
+    //Mode1* mode1ptr;
 };
 
 enum IconState {

@@ -1,5 +1,6 @@
 #include "Combination.h"
 #include "../Engine/Engine.h"
+#include "Mode1.h"
 
 
 Icon icons[2][2];
@@ -10,7 +11,7 @@ Combination::MouseState currentMouseState = Combination::MouseState::MOUSE_NONE;
 
 Combination::Combination()
 {
-    Pet* petPtr = nullptr;
+    //Pet* petPtr = nullptr;
 }
 
 void Combination::InitIcons() {
@@ -24,19 +25,19 @@ void Combination::InitIcons() {
 
 void Combination::UpdateIcons() {
     // Icon state initialization
-    for (int i = 0; i < 2; i++) {
+    /*for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
             icons[i][j].state = INACTIVE;
         }
-    }
+    }*/
 
     type = Type::NONE;
 
-    if (petPtr && petPtr->combiActiveFlag == false) {
+    /*if (Engine::GetGameStateManager().GetGSComponent<Pet>()->GetCombFlag() == false) {
         currentInputState = NONE;
         currentKeyboardState = KEY_NONE;
         currentMouseState = MOUSE_NONE;
-    }
+    }*/
 
     // Keyboard Input
     if (currentInputState == NONE || currentInputState == MOUSE_ACTIVATED) {
@@ -128,32 +129,55 @@ void Combination::DrawIcons() {
 void Combination::comb_skill1() {
     Engine::GetLogger().LogDebug("(0,0)");
     type = Type::LIGHTLIGHT;
-    if (petPtr) {
-        petPtr->combiActiveFlag = false;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            icons[i][j].state = INACTIVE;
+        }
     }
+    currentInputState = NONE;
+    currentKeyboardState = KEY_NONE;
+    currentMouseState = MOUSE_NONE;
+    Engine::GetGameStateManager().GetGSComponent<Pet>()->ResetCombFlag();
 }
 
 void Combination::comb_skill2() {
     Engine::GetLogger().LogDebug("(0,1)");
     type = Type::LIGHTHEAVY;
-    if (petPtr) {
-        petPtr->combiActiveFlag = false;
-
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            icons[i][j].state = INACTIVE;
+        }
     }
+    currentInputState = NONE;
+    currentKeyboardState = KEY_NONE;
+    currentMouseState = MOUSE_NONE;
+    Engine::GetGameStateManager().GetGSComponent<Pet>()->ResetCombFlag();
 }
 
 void Combination::comb_skill3() {
     Engine::GetLogger().LogDebug("(1,0)");
     type = Type::HEAVYLIGHT;
-    if (petPtr) {
-        petPtr->combiActiveFlag = false;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            icons[i][j].state = INACTIVE;
+        }
     }
+    currentInputState = NONE;
+    currentKeyboardState = KEY_NONE;
+    currentMouseState = MOUSE_NONE;
+    Engine::GetGameStateManager().GetGSComponent<Pet>()->ResetCombFlag();
 }
 
 void Combination::comb_skill4() {
     Engine::GetLogger().LogDebug("(1,1)");
     type = Type::HEAVYHEAVY;
-    if (petPtr) {
-        petPtr->combiActiveFlag = false;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            icons[i][j].state = INACTIVE;
+        }
     }
+    currentInputState = NONE;
+    currentKeyboardState = KEY_NONE;
+    currentMouseState = MOUSE_NONE;
+    Engine::GetGameStateManager().GetGSComponent<Pet>()->ResetCombFlag();
 }

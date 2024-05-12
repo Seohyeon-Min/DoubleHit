@@ -15,7 +15,7 @@ private:
     friend class Pet;
 };
 
-class Pet : public CS230::GameObject {
+class Pet : public CS230::GameObject, public CS230::Component {
 public:
     Pet(Math::vec2 start_position);
     void Update(double dt) override;
@@ -25,7 +25,8 @@ public:
     bool combiActiveFlag = false;
     double combiTimer = 0;
     std::vector <Bullet*> getAttack() { return attacks; };
-
+    bool& GetCombFlag() { return combiActiveFlag; }
+    void ResetCombFlag() { combiActiveFlag = false; }
 private:
     void move(double dt);
     Math::vec2 destination;
