@@ -153,7 +153,8 @@ void Bullet::Update(double dt) {
 }
 
 Math::vec2 Bullet::GetAttackDirection() {
-    distance = {destination.x - (double)Engine::GetWindow().GetSize().x / 2, destination.y - GetPosition().y}; // make it easier
+    std::cout << GetPosition().x << std::endl;
+    distance = { destination.x - (GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x), destination.y - GetPosition().y };
     double angle = atan2(distance.y, distance.x);
     distance.x = cos(angle);
     distance.y = sin(angle);

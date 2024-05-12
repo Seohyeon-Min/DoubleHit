@@ -30,24 +30,23 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position ):
     Enemy(start_position)
 {
     distance = 600;
-    CS230::GameObject::AddGOComponent(new CS230::Sprite("Assets/robot.spt"));
+    CS230::GameObject::AddGOComponent(new CS230::Sprite("Assets/enemy/robot.spt"));
     current_state = &state_running;
     current_state->Enter(this);
 }
 
 
 void GroundEnemy::State_Idle::Enter(GameObject* object) {
-    Hero* hero = static_cast<Hero*>(object);
+    AirEnemy* robot = static_cast<AirEnemy*>(object);
 }
 void GroundEnemy::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void GroundEnemy::State_Idle::CheckExit(GameObject* object) {
 }
 
 void GroundEnemy::State_Running::Enter(GameObject* object) {
-    Hero* hero = static_cast<Hero*>(object);
+    AirEnemy* robot = static_cast<AirEnemy*>(object);
 }
 void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
-    Hero* hero = static_cast<Hero*>(object);
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
 
     robot->x_distance = Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition().x - robot->GetPosition().x;
@@ -82,23 +81,23 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :
     Enemy(start_position)
 {
     distance = 600;
-    AddGOComponent(new CS230::Sprite("Assets/flying_robot.spt"));
+    AddGOComponent(new CS230::Sprite("Assets/enemy/flying_robot.spt"));
     current_state = &state_running;
     current_state->Enter(this);
 }
 
 void AirEnemy::State_Idle::Enter(GameObject* object) {
-    Hero* hero = static_cast<Hero*>(object);
+    AirEnemy* robot = static_cast<AirEnemy*>(object);
 }
 void AirEnemy::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void AirEnemy::State_Idle::CheckExit(GameObject* object) {
 }
 
 void AirEnemy::State_Running::Enter(GameObject* object) {
-    Hero* hero = static_cast<Hero*>(object);
+    AirEnemy* robot = static_cast<AirEnemy*>(object);
 }
 void AirEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { 
-    Hero* hero = static_cast<Hero*>(object);
+    //Hero* hero = static_cast<Hero*>(object);
     AirEnemy* robot = static_cast<AirEnemy*>(object);
 
     robot-> direction =  const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - robot->GetPosition();

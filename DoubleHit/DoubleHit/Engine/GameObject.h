@@ -15,7 +15,7 @@ Created:    March 8, 2023
 namespace Math { class TransformationMatrix; }
 
 namespace CS230 {
-    class GameObject {
+    class GameObject : public Component {
     public:
         GameObject(Math::vec2 position);
         GameObject(Math::vec2 position, double rotation, Math::vec2 scale);

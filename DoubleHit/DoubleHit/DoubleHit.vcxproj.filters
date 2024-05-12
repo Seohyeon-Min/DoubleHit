@@ -90,6 +90,9 @@
     <ClInclude Include="Engine\ComponentManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Gravity.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">

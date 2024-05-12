@@ -12,8 +12,9 @@ Created:    March 8, 2023
 #include "../Engine/Texture.h"
 #include "../Engine/Camera.h"
 #include "../Engine/Engine.h"
+#include "../Engine/Component.h"
 
-class Background {
+class Background : public CS230::Component {
 public:
     void Add(const std::filesystem::path& texture_path, double speed);
     void Unload();

@@ -21,6 +21,7 @@ public:
     void Update(double dt) override;
     void Draw(Math::TransformationMatrix camera_matrix) override;
     void MakeAttack();
+    const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
     bool combiActiveFlag = false;
     double combiTimer = 0;
     std::vector <Bullet*> getAttack() { return attacks; };
@@ -59,8 +60,5 @@ private:
 
     enum class Animations {
         Idle
- /*       Running,
-        Light,
-        Heavy*/
     };
 };

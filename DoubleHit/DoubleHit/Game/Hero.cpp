@@ -2,6 +2,7 @@
 
 #include "Hero.h"
 #include "Mode1.h"
+#include "Gravity.h"
 #include "../Engine/Engine.h"
 #include <iostream> //delete later
 
@@ -22,7 +23,7 @@ void Hero::State_Jumping::Enter(GameObject* object) {
 }
 void Hero::State_Jumping::Update(GameObject* object, double dt) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->UpdateVelocity({ 0,  -Mode1::gravity * dt });
+    hero->UpdateVelocity({ 0,  -Engine::GetGameStateManager().GetGSComponent<Gravity>()->GetValue() * dt });
     hero->update_x_velocity(dt);
 }
 void Hero::State_Jumping::CheckExit(GameObject* object) {
@@ -63,7 +64,7 @@ void Hero::State_Falling::Enter(GameObject* object) {
 }
 void Hero::State_Falling::Update(GameObject* object, double dt) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->UpdateVelocity({ 0,  -Mode1::gravity * dt });
+    hero->UpdateVelocity({ 0,  -Engine::GetGameStateManager().GetGSComponent<Gravity>()->GetValue() * dt });
     hero->update_x_velocity(dt);
 }
 void Hero::State_Falling::CheckExit(GameObject* object) {
@@ -156,16 +157,6 @@ void Hero::update_x_velocity(double dt) {
         SetVelocity({ 0, GetVelocity().y });
     }
 }
-
-//
-//void Hero::lightLightAtack(float dt)
-//{
-//    light_light_long -= dt;
-//    if (light_light_long < 0) {
-//        is_light_light = false;
-//        light_light_long = 1;
-//    }
-//}
 
 double Hero::GetHealth() {
     return HeroHealth;
