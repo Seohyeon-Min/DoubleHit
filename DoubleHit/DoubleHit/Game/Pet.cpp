@@ -1,4 +1,5 @@
 #include "Pet.h"
+#include "Mode1.h"
 #include "../Engine/Engine.h"
 #include <cmath>
 
@@ -45,8 +46,11 @@ void Pet::State_Running::Enter(GameObject* object) {
     //pet->sprite.PlayAnimation(static_cast<int>(Animations::Running));
 }
 void Pet::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
+    Pet* pet = static_cast<Pet*>(object);
 }
-void Pet::State_Running::CheckExit(GameObject* object) {
+
+void Pet::State_Running::CheckExit(GameObject* object) 
+{
     Pet* pet = static_cast<Pet*>(object);
     if (pet->GetVelocity().x == 0) {
         pet->change_state(&pet->state_idle);
@@ -70,6 +74,38 @@ void Pet::Update(double dt) {
             
         }
         combiTimer += dt;
+    }
+
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) { //follow hero
+        destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - space;
+
+        if ( GetVelocity().x <= 0) {
+             UpdateVelocity({ -x_acceleration * dt, 0 });
+            if ( GetPosition().x <=  destination.x) {
+                 SetPosition({  destination.x, GetPosition().y });
+                 SetVelocity({ 0,0 });
+                 destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) -  space;
+            }
+            else {
+                 UpdateVelocity({ -(x_drag * 2 * dt), 0 });
+            }
+        }
+    }
+    else if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+         destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) +  space;
+
+        if ( GetVelocity().x >= 0) {
+             UpdateVelocity({ x_acceleration * dt, 0 });
+            if ( GetPosition().x >=  destination.x) {
+                 SetPosition({  destination.x,  GetPosition().y });
+                 SetVelocity({ 0,0 });
+                 destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) +  space;
+            }
+            else {
+                //velocity.x += x_drag * 2 * dt;
+                 UpdateVelocity({ (x_drag * 2 * dt), 0 });
+            }
+        }
     }
 
     // flip
@@ -103,6 +139,11 @@ void Pet::MakeAttack()
 
     attacks.push_back(new Bullet(GetPosition(), {mouse_position.x, mouse_position.y}));
     
+}
+
+void Pet::move(double dt)
+{
+
 }
 
 void Bullet::Update(double dt) {

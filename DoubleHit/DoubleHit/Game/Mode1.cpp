@@ -25,10 +25,12 @@ Mode1::Mode1()
 
 void Mode1::Load() {
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 });
+    //gameobjectmanager.Add(new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }));
     gameobjectmanager.Add(hero_ptr);
     gameobjectmanager.Add(new Pet(hero_ptr->GetPosition()));
     //combination.InitIcons();
-    AddGSComponent(new CS230::Camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }));
+    AddGSComponent(new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }));
+    AddGSComponent(new CS230::Camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } }));
     background.Add("Assets/background.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, { background.GetSize() - Engine::GetWindow().GetSize() } });
@@ -42,6 +44,7 @@ void Mode1::Load() {
 void Mode1::Update([[maybe_unused]] double dt) {
 
     GetGSComponent<CS230::Camera>()->Update(hero_ptr->GetPosition());
+    GetGSComponent<Hero>()->Update(dt);
     gameobjectmanager.UpdateAll(dt);
     spawn_time += dt;
     if (spawn_time > enemy_spawn_time) { // spawn logic
@@ -50,7 +53,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
     }
     
     for (Enemy* enemy : enemies) {
-        enemy->Update(dt, hero_ptr->GetPosition());
+        enemy->Update(dt);
     }
 
     //elite_spawn_time += dt;

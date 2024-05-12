@@ -146,11 +146,9 @@ void Hero::update_x_velocity(double dt) {
     }
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::D) && !Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         SetVelocity({ velocity.x, GetVelocity().y });
-        std::cout << "D" << std::endl;
     }
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A) && !Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
         SetVelocity({ -velocity.x, GetVelocity().y });
-        std::cout << "A" << std::endl;
     }
     if (!Engine::GetInput().KeyDown(CS230::Input::Keys::A) && !Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
         SetVelocity({ 0, GetVelocity().y });

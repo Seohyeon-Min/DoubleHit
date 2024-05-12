@@ -71,6 +71,7 @@ void CS230::GameStateManager::Update(double dt) {
     case Status::UNLOADING:
         Engine::GetLogger().LogEvent("Unload " + current_gamestate->GetName());
         current_gamestate->Unload();
+        Engine::GetTextureManager().Unload();
         Engine::GetLogger().LogEvent("Unload Complete.");
         if (next_gamestate == nullptr) {
             status = Status::STOPPING;

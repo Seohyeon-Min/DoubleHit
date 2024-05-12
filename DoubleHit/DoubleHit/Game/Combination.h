@@ -8,10 +8,11 @@
 #include "../Engine/Sprite.h"
 #include "Pet.h"
 
+class Pet;
 
-class Combination {
+class Combination{
 public:
-
+    Combination();
     void InitIcons();
     void UpdateIcons();
     void DrawIcons();
@@ -52,8 +53,7 @@ public:
 
 private:
     Type type; // current combination state
-    CS230::Sprite sprite;
-    Pet* petPtr = nullptr;
+    Pet* petPtr;
 };
 
 enum IconState {

@@ -8,6 +8,11 @@ Combination::InputState currentInputState = Combination::InputState::NONE;
 Combination::KeyboardState currentKeyboardState = Combination::KeyboardState::KEY_NONE;
 Combination::MouseState currentMouseState = Combination::MouseState::MOUSE_NONE;
 
+Combination::Combination()
+{
+    Pet* petPtr = nullptr;
+}
+
 void Combination::InitIcons() {
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {

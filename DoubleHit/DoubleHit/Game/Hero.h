@@ -1,11 +1,12 @@
 #pragma once
 #include "..\Engine\Camera.h"
 #include "..\Engine\GameObject.h"
+#include "..\Engine\Component.h"
 #include "Combination.h"
 
 //constexpr float jumping_speed = 300;
 
-class Hero : public CS230::GameObject {
+class Hero : public CS230::GameObject, public CS230::Component{
 public:
     Hero(Math::vec2 start_position);
     void Update(double dt) override;

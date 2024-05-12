@@ -26,8 +26,9 @@ public:
     std::vector <Bullet*> getAttack() { return attacks; };
 
 private:
+    void move(double dt);
     Math::vec2 destination;
-    Math::vec2 space = { 30 , 0 };
+    Math::vec2 space = { 30 , 50 };
 
     static constexpr double x_acceleration = 100;
     static constexpr double x_drag = 200;
