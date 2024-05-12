@@ -18,6 +18,13 @@ Frame 490 140
 Frame 560 140
 Frame 630 140
 Frame 700 140
+Frame 0 210
+Frame 70 210
+Frame 140 210
+Frame 210 210
+Frame 280 210
 Anim Assets/hero/anm/hero_idle.anm
 Anim Assets/hero/anm/hero_walk.anm
 Anim Assets/hero/anm/hero_punch.anm
+Anim Assets/hero/anm/hero_jump.anm
+Anim Assets/hero/anm/hero_fall.anm

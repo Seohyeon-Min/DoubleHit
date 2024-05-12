@@ -17,7 +17,7 @@ Hero::Hero(Math::vec2 start_position) :
 
 void Hero::State_Jumping::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Jumping));
+    hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Jumping));
     hero->SetVelocity({ hero->GetVelocity().x, Hero::velocity.y });
 }
 void Hero::State_Jumping::Update(GameObject* object, double dt) {
@@ -59,7 +59,7 @@ void Hero::State_Idle::CheckExit(GameObject* object) {
 
 void Hero::State_Falling::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Falling));
+    hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Falling));
 }
 void Hero::State_Falling::Update(GameObject* object, double dt) {
     Hero* hero = static_cast<Hero*>(object);

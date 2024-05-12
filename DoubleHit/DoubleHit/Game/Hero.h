@@ -16,7 +16,7 @@ public:
  
 private:
     void update_x_velocity(double dt);
-    static inline const  Math::vec2 velocity = { 140, 300 };
+    static inline const  Math::vec2 velocity = { 140, 500 };
     double HeroHealth = 100.0;
     double HealthMax = 100.0;
     double BarMaxWidth = 200.0;
@@ -90,9 +90,9 @@ private:
     enum class Animations {
         Idle,
         Running,
-        Light
-        //Jumping,
-        //Falling,
+        Light,
+        Jumping,
+        Falling
         //Heavy,
         //LightLight
     };
