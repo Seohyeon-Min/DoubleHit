@@ -37,15 +37,20 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position ):
 
 
 void GroundEnemy::State_Idle::Enter(GameObject* object) {
-    AirEnemy* robot = static_cast<AirEnemy*>(object);
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
     robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
 }
 void GroundEnemy::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void GroundEnemy::State_Idle::CheckExit(GameObject* object) {
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    if (robot->distance <= robot->min_distance) {
+        robot->change_state(&robot->state_running);
+    }
+   
 }
 
 void GroundEnemy::State_Running::Enter(GameObject* object) {
-    AirEnemy* robot = static_cast<AirEnemy*>(object);
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
     robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Running));
 }
 void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
@@ -66,7 +71,7 @@ void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[m
     }
     else if(robot->distance <= robot->min_distance) {
         robot->SetVelocity({0,0});
-        if (robot->counter >= 1.0) {   //attack per 1 second
+        if ( robot->counter >= 1.0) {   //attack per 1 second
             //attack hero
             robot->counter = 0;
         }
@@ -76,7 +81,7 @@ void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[m
 }
 void GroundEnemy::State_Running::CheckExit(GameObject* object) {
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
-    if (robot->GetVelocity().x == 0) {
+    if (robot->distance <= robot->min_distance && robot->GetVelocity().x == 0) {
         robot->change_state(&robot->state_idle);
     }
 }
@@ -98,6 +103,10 @@ void AirEnemy::State_Idle::Enter(GameObject* object) {
 }
 void AirEnemy::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void AirEnemy::State_Idle::CheckExit(GameObject* object) {
+    AirEnemy* robot = static_cast<AirEnemy*>(object);
+    if (robot->distance <= robot->min_distance) {
+        robot->change_state(&robot->state_running);
+    }
 }
 
 void AirEnemy::State_Running::Enter(GameObject* object) {
@@ -132,7 +141,7 @@ void AirEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[mayb
 }
 void AirEnemy::State_Running::CheckExit(GameObject* object) {
     AirEnemy* robot = static_cast<AirEnemy*>(object);
-    if (robot->GetVelocity().x == 0) {
+    if (robot->distance <= robot->min_distance && robot->GetVelocity().x == 0) {
         robot->change_state(&robot->state_idle);
     }
 }
@@ -176,69 +185,3 @@ void AirEnemy::State_Running::CheckExit(GameObject* object) {
 //    }
 //}
 
-//###############################################################
-/*
-void Enemy::State_Idle::Enter(GameObject* object) {
-    Enemy* hero = static_cast<Enemy*>(object);
-    enemy->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
-}
-void Enemy::State_Idle::Update(GameObject* object, double dt) {
-    Enemy* hero = static_cast<Enemy*>(object);
-}
-void Enemy::State_Idle::CheckExit(GameObject* object) {
-    Enemy* enemy = static_cast<Enemy*>(object);
-
-    if (the player is near) {
-        enemy->change_state(&enemy->state_running);
-    }
-
-    if (the player attacked enemy) {
-        enemy->change_state(&enemy->state_attacked);
-    }
-
-}
-
-
-void Enemy::State_Running::Enter(GameObject* object) {
-    Enemy* hero = static_cast<Enemy*>(object);
-    enemy->sprite.PlayAnimation(static_cast<int>(Animations::Running));
-}
-void Enemy::State_Running::Update(GameObject* object, double dt) {
-    Enemy* hero = static_cast<Enemy*>(object);
-    //moving logic
-}
-void Enemy::State_Running::CheckExit(GameObject* object) {
-    Enemy* enemy = static_cast<Enemy*>(object);
-    if (distance <= min_distance) {
-        enemy->change_state(&enemy->state_attacking);
-    }
-
-}
-
-
-void Enemy::State_Attacking::Enter(GameObject* object) {
-    Enemy* hero = static_cast<Enemy*>(object);
-    enemy->sprite.PlayAnimation(static_cast<int>(Animations::Attacking));
-}
-void Enemy::State_Attacking::Update(GameObject* object, double dt) {
-    Enemy* hero = static_cast<Enemy*>(object);
-    if (counter >= 1.0) {   //attack per 1 second
-        counter = 0;
-    }
-    counter += dt;
-}
-void Enemy::State_Attacking::CheckExit(GameObject* object) {
-    Enemy* enemy = static_cast<Enemy*>(object);
-    if (distance > min_distance) {
-        enemy->change_state(&enemy->state_running)
-    }
-
-}
-
-void Enemy::State_Attacked::Enter(GameObject* object) {
-    Enemy* hero = static_cast<Enemy*>(object);
-    enemy->sprite.PlayAnimation(static_cast<int>(Animations::Attacked));
-}
-void Enemy::State_Attacked::Update(GameObject* object, double dt) {}
-void Enemy::State_Attacked::CheckExit(GameObject* object) {}
-*/
