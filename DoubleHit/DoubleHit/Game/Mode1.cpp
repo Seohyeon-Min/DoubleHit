@@ -13,7 +13,6 @@ Created:    March 8, 2023
 #include "Mode1.h"
 #include <iostream>
 #include "Hero.h"
-#include "Pet.h"
 #include "Gravity.h"
 
 //random
@@ -22,23 +21,26 @@ Created:    March 8, 2023
 
 
 Mode1::Mode1()
-{}
+{ }
 
 void Mode1::Load() {
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 });
+    pet_ptr = new Pet(hero_ptr->GetPosition());
     //gameobjectmanager.Add(new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }));
     //combination.InitIcons();
     AddGSComponent(new CS230::GameObjectManager());
     AddGSComponent(new Background());
+    AddGSComponent(new Combination());
     AddGSComponent(new CS230::Camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } }));
     AddGSComponent(new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }));
+    AddGSComponent(pet_ptr);
     AddGSComponent(new Gravity(Mode1::gravity));
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Pet( hero_ptr->GetPosition()));
+    GetGSComponent<CS230::GameObjectManager>()->Add(pet_ptr);
     GetGSComponent<Background>()->Add("Assets/background.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, {  GetGSComponent<Background>()->GetSize() - Engine::GetWindow().GetSize() } });
-
+    GetGSComponent<Combination>()->InitIcons();
     for (auto& enemyPtr : enemies) {  //reset enemies
         delete enemyPtr; 
     }
@@ -50,12 +52,12 @@ void Mode1::Update([[maybe_unused]] double dt) {
     GetGSComponent<CS230::Camera>()->Update(hero_ptr->GetPosition());
     GetGSComponent<Hero>()->Update(dt);
     GetGSComponent<CS230::GameObjectManager>()->UpdateAll(dt);
+
     spawn_time += dt;
     if (spawn_time > enemy_spawn_time) { // spawn logic
         MakeEnemy();
         spawn_time = 0;
     }
-
     //elite_spawn_time += dt;
     //if (elite_spawn_time > enemy_spawn_time * 24) { // spawn logic
     //    enemies.push_back(MakeEliteEnemy());
@@ -96,9 +98,9 @@ void Mode1::Update([[maybe_unused]] double dt) {
     //        //}
     //    }
     //}
-    //if (pet.combiActiveFlag == true) {
-    //    combination.UpdateIcons();
-    //}
+    if (GetGSComponent<Pet>()->combiActiveFlag == true) {
+        GetGSComponent<Combination>()->UpdateIcons();
+    }
 
     //if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::R)) {
     //    Engine::GetGameStateManager().ReloadState();
@@ -110,9 +112,9 @@ void Mode1::Draw() {
     GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), 1);
     GetGSComponent<CS230::GameObjectManager>()->DrawAll(GetGSComponent<CS230::Camera>()->GetMatrix());
     
-    //if (pet.combiActiveFlag == true) {
-    //    combination.DrawIcons();
-    //}
+    if (GetGSComponent<Pet>()->combiActiveFlag == true) {
+        GetGSComponent<Combination>()->DrawIcons();
+    }
 }
 
 //####################################################################################
