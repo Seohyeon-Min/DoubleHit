@@ -27,11 +27,15 @@ public:
     std::vector <Bullet*> getAttack() { return attacks; };
 
 private:
-    static inline const  Math::vec2 velocity = { 140, 500 };
-    Math::vec2 Normalize(const Math::vec2& vec);
-    Math::vec2 direction;
     double distance;
-    double min_distance = 150;
+    const float radius = 40.0f;
+    bool increasing = true;
+    float angle = PI;
+
+    //static inline const  Math::vec2 velocity = { 140, 400 };
+    //Math::vec2 Normalize(const Math::vec2& vec);
+    //Math::vec2 direction;
+    
     void move(double dt);
     Math::vec2 destination;
     Math::vec2 space = { 30 , 50 };

@@ -34,7 +34,7 @@ void Mode1::Load() {
     AddGSComponent(new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }));
     AddGSComponent(new Gravity(Mode1::gravity));
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Pet( hero_ptr->GetPosition()));
     GetGSComponent<Background>()->Add("Assets/background.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, {  GetGSComponent<Background>()->GetSize() - Engine::GetWindow().GetSize() } });

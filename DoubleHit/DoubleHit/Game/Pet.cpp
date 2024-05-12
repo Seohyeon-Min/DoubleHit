@@ -50,6 +50,28 @@ void Pet::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unu
     if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) { //light attack
         pet->MakeAttack();
     }
+    /*
+    //update position
+    Math::vec2 hero_position = Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition();
+
+    //update angle
+    if (pet->increasing) { //go right
+        if (pet->angle < 2 * PI) {
+            pet->angle += dt * 0.7f;
+        }
+        else { pet->increasing = false; }
+    }
+    else { //go left
+        if (pet->angle > PI) {
+            pet->angle -= dt * 0.7f;
+        }
+        else { pet->increasing = true; }
+    }
+
+    pet->SetPosition({
+        hero_position.x + pet->radius * std::cos(pet->angle),
+        hero_position.y - pet->radius * std::sin(pet->angle) + 50
+        });*/
 }
 
 void Pet::State_Running::CheckExit(GameObject* object) 
@@ -58,19 +80,6 @@ void Pet::State_Running::CheckExit(GameObject* object)
     if (pet->GetVelocity().x == 0) {
         pet->change_state(&pet->state_idle);
     }
-}
-
-
-Math::vec2 Pet::Normalize(const Math::vec2& vec) {
-    double length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
-
-    if (length == 0) { return vec; }
-
-    Math::vec2 normalized_vec;
-    normalized_vec.x = vec.x / length;
-    normalized_vec.y = vec.y / length;
-
-    return normalized_vec;
 }
 
 void Pet::Update(double dt) {
@@ -85,24 +94,33 @@ void Pet::Update(double dt) {
             combiActiveFlag = false;
             combiTimer = 0;
             Engine::GetLogger().LogDebug("End Combination");
-            
+
         }
         combiTimer += dt;
     }
+    
+    //update position
+    Math::vec2 hero_position = Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition();
 
-    direction = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - GetPosition();
-
-    distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
-
-    if (distance > min_distance) {  //collision
-        SetVelocity({ Normalize(direction).x * velocity.x , Normalize(direction).y * velocity.y });
-        if (GetVelocity().x < 0) {
-            SetScale({ 1,1 });
+    //update angle
+    if (increasing) { //go right
+        if (angle < 2 * PI) {
+            angle += dt * 0.7f;
         }
-        else if (GetVelocity().x >= 0) {
-            SetScale({ -1,1 });
-        }
+        else { increasing = false; }
     }
+    else { //go left
+        if (angle > PI) {
+            angle -= dt * 0.7f;
+        }
+        else { increasing = true; }
+    }
+
+    SetPosition({
+        hero_position.x + radius * std::cos(angle),
+        hero_position.y - radius * std::sin(angle) + 60.0f
+        });
+
 
     //if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) { //follow hero
     //    destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - space;
