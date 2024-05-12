@@ -21,6 +21,7 @@ namespace CS230 {
         virtual ~GameObject() {}
 
         virtual void Update(double dt);
+        virtual void Update(double dt, Math::vec2);
         virtual void Draw(Math::TransformationMatrix camera_matrix);
 
         const Math::TransformationMatrix& GetMatrix();

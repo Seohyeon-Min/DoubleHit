@@ -35,11 +35,11 @@ void Mode1::Load() {
     background.Add("Assets/background.png", 1);
     camera.SetPosition({ 0, 0 });
     camera.SetLimit({ { 0,0 }, { background.GetSize() - Engine::GetWindow().GetSize() } });
-    /*
+    
     for (auto& enemyPtr : enemies) {  //reset enemies
         delete enemyPtr; 
     }
-    enemies.clear();*/
+    enemies.clear();
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -50,6 +50,10 @@ void Mode1::Update([[maybe_unused]] double dt) {
     if (spawn_time > enemy_spawn_time) { // spawn logic
         MakeEnemy();
         spawn_time = 0;
+    }
+    
+    for (Enemy* enemy : enemies) {
+        enemy->Update(dt, hero_ptr->GetPosition());
     }
 
     //elite_spawn_time += dt;
@@ -105,11 +109,6 @@ void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
     background.Draw(camera, 1);
     gameobjectmanager.DrawAll(camera.GetMatrix());
-
-    /*
-    for (Enemy* enemy : enemies) {
-        enemy->Draw(camera.GetMatrix());
-    }*/
     
     //if (pet.combiActiveFlag == true) {
     //    combination.DrawIcons();
@@ -120,11 +119,13 @@ void Mode1::Draw() {
 
 
 void Mode1::MakeGroundEnemy(){
-   
+
     double randomX = GetRandomValue(0, 100);
     Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
 
-    GroundEnemy* g_enemy = new GroundEnemy( ground_position + camera.GetPosition(), camera);
+    GroundEnemy* g_enemy = new GroundEnemy( ground_position + camera.GetPosition());
+
+    enemies.push_back(g_enemy);
     gameobjectmanager.Add(g_enemy);
 }
 
@@ -134,7 +135,9 @@ void Mode1::MakeAirEnemy() {
     double randomY = GetRandomValue(500, GetScreenHeight() - 100);
     Math::vec2 air_position = { randomX, randomY };    //random position
 
-    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition(), camera);
+    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition());
+
+    enemies.push_back(a_enemy);
     gameobjectmanager.Add(a_enemy);
 }
 //
