@@ -30,8 +30,8 @@ public:
     void Skill();
     void MakeEnemy();
     CS230::GameObjectManager GetGameObjectManager() { return gameobjectmanager; }
-    Enemy* MakeGroundEnemy();
-    Enemy* MakeAirEnemy();
+    void MakeGroundEnemy();
+    void MakeAirEnemy();
     //Enemy* MakeEliteEnemy();
     static constexpr double gravity = 800;
     static constexpr double floor = 80;

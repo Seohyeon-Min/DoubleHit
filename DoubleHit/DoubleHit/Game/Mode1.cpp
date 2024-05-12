@@ -35,10 +35,11 @@ void Mode1::Load() {
     background.Add("Assets/background.png", 1);
     camera.SetPosition({ 0, 0 });
     camera.SetLimit({ { 0,0 }, { background.GetSize() - Engine::GetWindow().GetSize() } });
+    /*
     for (auto& enemyPtr : enemies) {  //reset enemies
         delete enemyPtr; 
     }
-    enemies.clear();
+    enemies.clear();*/
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -105,9 +106,10 @@ void Mode1::Draw() {
     background.Draw(camera, 1);
     gameobjectmanager.DrawAll(camera.GetMatrix());
 
+    /*
     for (Enemy* enemy : enemies) {
-        enemy->Draw(camera, 1);
-    }
+        enemy->Draw(camera.GetMatrix());
+    }*/
     
     //if (pet.combiActiveFlag == true) {
     //    combination.DrawIcons();
@@ -117,25 +119,23 @@ void Mode1::Draw() {
 //####################################################################################
 
 
-Enemy* Mode1::MakeGroundEnemy(){
+void Mode1::MakeGroundEnemy(){
    
     double randomX = GetRandomValue(0, 100);
     Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
 
-    GroundEnemy* g_enemy = new GroundEnemy( ground_position + camera.GetPosition());
-    g_enemy->Load();
-    return g_enemy;
+    GroundEnemy* g_enemy = new GroundEnemy( ground_position + camera.GetPosition(), camera);
+    gameobjectmanager.Add(g_enemy);
 }
 
-Enemy* Mode1::MakeAirEnemy() {
+void Mode1::MakeAirEnemy() {
 
     double randomX = GetRandomValue(0, GetScreenWidth());
     double randomY = GetRandomValue(500, GetScreenHeight() - 100);
     Math::vec2 air_position = { randomX, randomY };    //random position
 
-    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition());
-    a_enemy->Load();
-    return a_enemy;
+    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition(), camera);
+    gameobjectmanager.Add(a_enemy);
 }
 //
 //Enemy* Mode1::MakeEliteEnemy()
@@ -149,9 +149,7 @@ Enemy* Mode1::MakeAirEnemy() {
 //}
 
 void Mode1::MakeEnemy() {
-    GetRandomValue(1, 0) ? enemies.push_back(MakeGroundEnemy()) : enemies.push_back(MakeAirEnemy());
-    //enemies.push_back(MakeGroundEnemy());
-
+    GetRandomValue(1, 0) ? MakeGroundEnemy() : MakeAirEnemy();  
 }
 void Mode1::Unload() {
     background.Unload();

@@ -6,26 +6,18 @@
 
 class Enemy : public CS230::GameObject {
 public:
-    Enemy(Math::vec2 start_position);
-    virtual void Load();
-    virtual void Update(double dt, Math::vec2 hero_position);
-    virtual void Draw(const CS230::Camera& camera, const double zoom);
-    virtual void Move(double dt, Math::vec2 hero_position, double speed);
+    Enemy(Math::vec2 start_position, const CS230::Camera& camera);
+    virtual void Update(double dt) override;
     virtual void TakeDamage(double damage);
-    virtual const Math::vec2& GetPosition() { return position; }
     void Attack(Math::vec2 hero_position);
     Math::vec2 Normalize(const Math::vec2& vec);
     bool IsAttacking;
 
-
+protected:
 private:
-    Math::TransformationMatrix object_matrix;
-    CS230::Sprite sprite;
-    Math::vec2 start_position;
-    Math::vec2 position;
+    const CS230::Camera& camera;
     CS230::Sprite health_bar;
 
-    bool flipped = false;
     double speed = 3;
     double min_distance = 60;
     double damage = 10;     //unused... yet
@@ -37,19 +29,12 @@ private:
 
 class GroundEnemy : public Enemy {
 public:
-    GroundEnemy(Math::vec2 start_position);
-
-    void Load() override;
-    void Update(double dt, Math::vec2 hero_position) override;
-    void Draw(const CS230::Camera& camera, const double zoom) override;
-    void Move(double dt, Math::vec2 hero_position, double speed) override;
+    GroundEnemy(Math::vec2 start_position, const CS230::Camera& camera);
+    void Update(double dt) override;
     void TakeDamage(double damage) override;
-    const Math::vec2& GetPosition() override { return position; }
 
 private:
-    Math::vec2 start_position;
-    Math::vec2 position;
-    CS230::Sprite sprite;
+    const CS230::Camera& camera;
     CS230::Sprite health_bar;
     double speed = 3;
     double min_distance = 60;
@@ -62,18 +47,12 @@ private:
 class AirEnemy : public Enemy {
 public:
 
-    AirEnemy(Math::vec2 start_position);
-    void Load() override;
-    void Update(double dt, Math::vec2 hero_position) override;
-    void Draw(const CS230::Camera& camera, const double zoom) override;
-    void Move(double dt, Math::vec2 hero_position, double speed) override;
+    AirEnemy(Math::vec2 start_position, const CS230::Camera& camera);
+    void Update(double dt) override;
     void TakeDamage(double damage) override;
-    const Math::vec2& GetPosition() override { return position; }
 
 private:
-    Math::vec2 start_position;
-    Math::vec2 position;
-    CS230::Sprite sprite;
+    const CS230::Camera& camera;
     CS230::Sprite health_bar;
     double speed = 3;
     double min_distance = 60;
@@ -82,12 +61,11 @@ private:
     double counter = 0;    //attack time count
     double health = 10;
 };
-
+/*
 class EliteEnemy : public Enemy {
 public:
 
     EliteEnemy(Math::vec2 start_position);
-    void Load() override;
     void Update(double dt, Math::vec2 hero_position) override;
     void Draw(const CS230::Camera& camera, const double zoom) override;
     void Move(double dt, Math::vec2 hero_position, double speed) override;
@@ -103,3 +81,4 @@ private:
     double distance;
     double counter = 0;    //attack time count
 };
+*/
