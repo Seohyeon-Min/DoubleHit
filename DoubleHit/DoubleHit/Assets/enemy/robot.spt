@@ -1,6 +1,7 @@
 Assets/enemy/robot.png
 FrameSize 45 45
 HotSpot 23 0
+RectCollision -18 0 18 35
 Frame 0 0
 Frame 45 0
 Frame 0 45

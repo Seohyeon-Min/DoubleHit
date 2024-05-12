@@ -45,8 +45,8 @@ void CS230::Font::FindCharRects() {
 
         check_color = next_color;
 
-        char_rects[index].top_right = { x + width - 1, 1 };
-        char_rects[index].bottom_left = { x, char_rects[index].top_right.y + height - 1 };
+        char_rects[index].point_2 = { x + width - 1, 1 };
+        char_rects[index].point_1 = { x, char_rects[index].point_2.y + height - 1 };
         x += width;
     }
 }
@@ -73,7 +73,7 @@ Math::ivec2 CS230::Font::MeasureText(std::string text)
 
 void CS230::Font::DrawChar(Math::TransformationMatrix& matrix, char c, unsigned int color) {
     const Math::irect& display_rect = GetCharRect(c);
-    const Math::ivec2 top_left_texel = { display_rect.bottom_left.x, display_rect.top_right.y };
+    const Math::ivec2 top_left_texel = { display_rect.point_1.x, display_rect.point_2.y };
     if (c != ' ') {
         const auto to_center = Math::TranslationMatrix(Math::vec2(-display_rect.Size().x / 2.0, -display_rect.Size().y / 2.0));
         const auto flip = Math::ScaleMatrix(Math::vec2{ 1, -1 });
@@ -84,9 +84,13 @@ void CS230::Font::DrawChar(Math::TransformationMatrix& matrix, char c, unsigned 
     matrix *= Math::TranslationMatrix(Math::ivec2{ display_rect.Size().x, 0 });
 }
 
-unsigned int CS230::Font::GetPixel([[maybe_unused]] Math::ivec2 texel)
-{
-    return 0;
+unsigned int CS230::Font::GetPixel(Math::ivec2 texel) {
+    Color raylib_color = GetImageColor(original_image, texel.x, texel.y);
+    unsigned int color = ((static_cast<unsigned int>(raylib_color.r) << 24) & 0xFF000000) |
+        ((static_cast<unsigned int>(raylib_color.g) << 16) & 0x00FF0000) |
+        ((static_cast<unsigned int>(raylib_color.b) << 8) & 0x0000FF00) |
+        ((static_cast<unsigned int>(raylib_color.a) << 0) & 0x000000FF);
+    return color;
 }
 
 CS230::Texture* CS230::Font::PrintToTexture(const std::string& text, unsigned int color) {

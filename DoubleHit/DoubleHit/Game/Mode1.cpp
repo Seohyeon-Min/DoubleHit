@@ -28,6 +28,10 @@ void Mode1::Load() {
     pet_ptr = new Pet(hero_ptr->GetPosition());
     //gameobjectmanager.Add(new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }));
     //combination.InitIcons();
+#ifdef _DEBUG
+    AddGSComponent(new CS230::ShowCollision());
+#else
+#endif
     AddGSComponent(new CS230::GameObjectManager());
     AddGSComponent(new Background());
     AddGSComponent(new Combination());
@@ -48,9 +52,8 @@ void Mode1::Load() {
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
-
+    UpdateGSComponents(dt);
     GetGSComponent<CS230::Camera>()->Update(hero_ptr->GetPosition());
-    GetGSComponent<Hero>()->Update(dt);
     GetGSComponent<CS230::GameObjectManager>()->UpdateAll(dt);
 
     spawn_time += dt;

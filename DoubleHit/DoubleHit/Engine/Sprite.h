@@ -9,18 +9,18 @@ Created:    March 8, 2023
 */
 
 #pragma once
+#include "GameObject.h"
 #include <string>
-#include "Vec2.h"
-#include "Matrix.h"
 #include "Texture.h"
 #include "Animation.h"
 #include "Component.h"
+#include "Collision.h"
 #include "engine.h"
 
 namespace CS230 {
     class Sprite :public Component {
     public:
-        Sprite(const std::filesystem::path& sprite_file);
+        Sprite(const std::filesystem::path& sprite_file, GameObject* given_object);
         ~Sprite();
 
         Sprite(const Sprite&) = delete;
@@ -29,7 +29,7 @@ namespace CS230 {
         Sprite(Sprite&& temporary) noexcept;
         Sprite& operator=(Sprite&& temporary) noexcept;
         void Update(double dt) override;
-        void Load(const std::filesystem::path& sprite_file);
+        void Load(const std::filesystem::path& sprite_file, GameObject* given_object);
         void Draw(Math::TransformationMatrix display_matrix);
         Math::ivec2 GetHotSpot(int index);
         Math::ivec2 GetFrameSize() { return frame_size; };

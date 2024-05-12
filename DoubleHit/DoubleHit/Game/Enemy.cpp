@@ -30,7 +30,7 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position ):
     Enemy(start_position)
 {
     distance = 600;
-    CS230::GameObject::AddGOComponent(new CS230::Sprite("Assets/enemy/robot.spt"));
+    CS230::GameObject::AddGOComponent(new CS230::Sprite("Assets/enemy/robot.spt", this));
     current_state = &state_running;
     current_state->Enter(this);
 }
@@ -92,7 +92,7 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :
     Enemy(start_position)
 {
     distance = 600;
-    AddGOComponent(new CS230::Sprite("Assets/enemy/flying_robot.spt"));
+    AddGOComponent(new CS230::Sprite("Assets/enemy/flying_robot.spt", this));
     current_state = &state_running;
     current_state->Enter(this);
 }

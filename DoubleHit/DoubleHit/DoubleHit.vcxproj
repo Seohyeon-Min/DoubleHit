@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\Animation.h" />
     <ClInclude Include="Engine\Camera.h" />
+    <ClInclude Include="Engine\Collision.h" />
     <ClInclude Include="Engine\Component.h" />
     <ClInclude Include="Engine\ComponentManager.h" />
     <ClInclude Include="Engine\Engine.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="Engine\logger.h" />
     <ClInclude Include="Engine\Matrix.h" />
     <ClInclude Include="Engine\Rect.h" />
+    <ClInclude Include="Engine\ShowCollision.h" />
     <ClInclude Include="Engine\Sprite.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\TextureManager.h" />
@@ -51,6 +53,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Animation.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
+    <ClCompile Include="Engine\Collision.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Font.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
@@ -59,6 +62,7 @@
     <ClCompile Include="Engine\Input.cpp" />
     <ClCompile Include="Engine\logger.cpp" />
     <ClCompile Include="Engine\Matrix.cpp" />
+    <ClCompile Include="Engine\ShowCollision.cpp" />
     <ClCompile Include="Engine\Sprite.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\TextureManager.cpp" />

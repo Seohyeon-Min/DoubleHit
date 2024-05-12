@@ -1,6 +1,7 @@
 Assets/enemy/flying_robot.png
 FrameSize 45 50
 HotSpot 23 23
+CircleCollision 20
 Frame 0 0
 Frame 45 0
 Frame 90 0

@@ -11,7 +11,7 @@ Pet::Pet(Math::vec2 start_position) :
     GameObject(start_position),
     destination(start_position)
 {
-    AddGOComponent(new CS230::Sprite("Assets/pet/pet.spt"));
+    AddGOComponent(new CS230::Sprite("Assets/pet/pet.spt",this));
     current_state = &state_idle;
     current_state->Enter(this);
 }
@@ -20,7 +20,7 @@ Bullet::Bullet(Math::vec2 start_position, Math::vec2 targetPosition) :
     GameObject(start_position),
     destination(targetPosition)
 {
-    AddGOComponent(new CS230::Sprite("Assets/pet/bullet.spt"));
+    AddGOComponent(new CS230::Sprite("Assets/pet/bullet.spt", this));
     distance = GetAttackDirection();
 }
 

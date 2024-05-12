@@ -75,10 +75,12 @@ constexpr int cs230_to_rl(CS230::Input::Keys cs230_key) noexcept {
         return KEY_LEFT;
     case CS230::Input::Keys::Right:
         return KEY_RIGHT;
-    case CS230::Input::Keys::Mouse_Left:
-        return MOUSE_BUTTON_LEFT;
-    case CS230::Input::Keys::Mouse_Right:
-        return MOUSE_BUTTON_RIGHT;
+    case CS230::Input::Keys::Up:
+        return KEY_UP;
+    case CS230::Input::Keys::Down:
+        return KEY_DOWN;
+    case CS230::Input::Keys::Tab:
+        return KEY_TAB;
     default:
         return -1;
     }
@@ -108,14 +110,13 @@ void CS230::Input::Update() {
         const auto rl_key = cs230_to_rl(static_cast<Keys>(key));
         SetKeyDown(key, IsKeyDown(rl_key));
         if (KeyJustPressed(key)) {
-            //Engine::GetLogger().LogDebug("Key Pressed");
+            Engine::GetLogger().LogDebug("Key Pressed");
         }
         else if (KeyJustReleased(key)) {
-            //Engine::GetLogger().LogDebug("Key Released");
+            Engine::GetLogger().LogDebug("Key Released");
         }
     }
 }
-
 
 bool CS230::Input::KeyDown(Keys key) {
     return keys_down[static_cast<int>(key)];

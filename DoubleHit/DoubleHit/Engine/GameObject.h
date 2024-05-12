@@ -11,6 +11,13 @@ Created:    March 8, 2023
 #pragma once
 #include "Sprite.h"
 #include "ComponentManager.h"
+#include <string>
+#include "Texture.h"
+#include "vec2.h"
+#include "Component.h"
+#include "Collision.h"
+#include "ShowCollision.h"
+#include "engine.h"
 
 namespace Math { class TransformationMatrix; }
 
@@ -89,6 +96,7 @@ namespace CS230 {
             std::string GetName() { return ""; }
         };
         State_None state_none;
+        friend class Sprite;
     };
 
 

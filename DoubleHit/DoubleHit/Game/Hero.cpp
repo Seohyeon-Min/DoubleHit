@@ -9,7 +9,7 @@
 Hero::Hero(Math::vec2 start_position) :
     GameObject(start_position)
 {
-    AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero.spt"));
+    AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero.spt", this));
     HeroHealth = HealthMax;
     BarCurrentWidth = BarMaxWidth;
     current_state = &state_idle;

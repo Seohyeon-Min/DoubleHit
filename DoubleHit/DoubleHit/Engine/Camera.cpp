@@ -36,24 +36,24 @@ Math::TransformationMatrix CS230::Camera::GetMatrix() {
 
 
 void CS230::Camera::Update(const Math::vec2& player_position) {
-    if (player_position.x > player_zone.top_right.x + position.x) {
-        position.x = player_position.x - player_zone.top_right.x;
+    if (player_position.x > player_zone.Right() + position.x) {
+        position.x = player_position.x - player_zone.Right();
     }
-    if (player_position.x - position.x < player_zone.bottom_left.x) {
-        position.x = player_position.x - player_zone.bottom_left.x;
+    if (player_position.x - position.x < player_zone.Left()) {
+        position.x = player_position.x - player_zone.Left();
     }
 
-    if (position.x < limit.bottom_left.x) {
-        position.x = limit.bottom_left.x;
+    if (position.x < limit.Left()) {
+        position.x = limit.Left();
     }
-    if (position.x > limit.top_right.x) {
-        position.x = limit.top_right.x;
+    if (position.x > limit.Right()) {
+        position.x = limit.Right();
     }
-    if (position.y < limit.bottom_left.y) {
-        position.y = limit.bottom_left.y;
+    if (position.y < limit.Bottom()) {
+        position.y = limit.Bottom();
     }
-    if (position.y > limit.top_right.y) {
-        position.y = limit.top_right.y;
+    if (position.y > limit.Top()) {
+        position.y = limit.Top();
     }
 }
 

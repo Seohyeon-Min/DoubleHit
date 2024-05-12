@@ -93,6 +93,12 @@
     <ClInclude Include="Game\Gravity.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Collision.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShowCollision.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
@@ -160,6 +166,12 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Font.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ShowCollision.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>

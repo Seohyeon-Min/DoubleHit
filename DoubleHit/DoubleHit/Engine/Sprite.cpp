@@ -11,8 +11,8 @@ Created:    March 22, 2023
 
 #include "Sprite.h"
 
-CS230::Sprite::Sprite(const std::filesystem::path& sprite_file) {
-    Load(sprite_file);
+CS230::Sprite::Sprite(const std::filesystem::path& sprite_file, GameObject* given_object) {
+    Load(sprite_file, given_object);
 }
 
 CS230::Sprite::Sprite(Sprite&& temporary) noexcept :
@@ -38,7 +38,7 @@ CS230::Sprite::~Sprite()
 {
 }
 
-void CS230::Sprite::Load(const std::filesystem::path& sprite_file) {
+void CS230::Sprite::Load(const std::filesystem::path& sprite_file, GameObject* object) {
 
 
     if (sprite_file.extension() != ".spt") {
@@ -89,6 +89,26 @@ void CS230::Sprite::Load(const std::filesystem::path& sprite_file) {
             in_file >> anim_file_path;
             Animation* animation = new Animation(std::filesystem::path(anim_file_path));
             animations.push_back(animation);
+        }
+        else if (text == "RectCollision") {
+            Math::irect boundary;
+            in_file >> boundary.point_1.x >> boundary.point_1.y >> boundary.point_2.x >> boundary.point_2.y;
+            if (object == nullptr) {
+                Engine::GetLogger().LogError("Cannot add collision to a null object");
+            }
+            else {
+                object->AddGOComponent(new RectCollision(boundary, object));
+            }
+        }
+        else if (text == "CircleCollision") {
+            double radius;
+            in_file >> radius;
+            if (object == nullptr) {
+                Engine::GetLogger().LogError("Cannot add collision to a null object");
+            }
+            else {
+                object->AddGOComponent(new CircleCollision(radius, object));
+            }
         }
         else {
             Engine::GetLogger().LogError("Unknown command: " + text);
