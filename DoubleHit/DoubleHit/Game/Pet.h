@@ -1,5 +1,6 @@
 #pragma once
 #include "..\Engine\GameObject.h"
+#include "Combination.h"
 
 class Bullet : public CS230::GameObject {
 public:

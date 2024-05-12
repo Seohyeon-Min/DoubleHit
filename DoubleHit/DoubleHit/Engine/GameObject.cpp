@@ -35,15 +35,6 @@ void CS230::GameObject::Update(double dt) {
     current_state->CheckExit(this);
 }
 
-void CS230::GameObject::Update(double dt, Math::vec2 position) {
-    current_state->Update(this, dt);
-    sprite.Update(dt);
-    if (velocity.x != 0 || velocity.y != 0) {
-        UpdatePosition(velocity * dt);
-    }
-    current_state->CheckExit(this);
-}
-
 void CS230::GameObject::change_state(State* new_state) {
     current_state = new_state;
     current_state->Enter(this);

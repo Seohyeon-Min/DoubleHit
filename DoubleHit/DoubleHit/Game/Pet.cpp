@@ -1,7 +1,6 @@
 #include "Pet.h"
 #include "../Engine/Engine.h"
 #include <cmath>
-#include "Combination.h"
 
 Combination combination;
 
@@ -11,7 +10,7 @@ Pet::Pet(Math::vec2 start_position) :
     GameObject(start_position),
     destination(start_position)
 {
-    sprite.Load("Assets/pet/pet.spt");
+    AddGOComponent(new CS230::Sprite("Assets/pet/pet.spt"));
     current_state = &state_idle;
     current_state->Enter(this);
 }
@@ -20,13 +19,13 @@ Bullet::Bullet(Math::vec2 start_position, Math::vec2 targetPosition) :
     GameObject(start_position),
     destination(targetPosition)
 {
-    sprite.Load("Assets/pet/bullet.spt");
+    AddGOComponent(new CS230::Sprite("Assets/pet/bullet.spt"));
     distance = GetAttackDirection();
 }
 
 void Pet::State_Idle::Enter(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
-    pet->sprite.PlayAnimation(static_cast<int>(Animations::Idle));
+    pet->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
 }
 void Pet::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { 
     Pet* pet = static_cast<Pet*>(object);

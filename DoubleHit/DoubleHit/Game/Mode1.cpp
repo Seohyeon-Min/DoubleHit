@@ -104,8 +104,8 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-    background.Draw(camera, 1);
-    gameobjectmanager.DrawAll(camera.GetMatrix());
+    background.Draw(*GetGSComponent<CS230::Camera>(), 1);
+    gameobjectmanager.DrawAll(GetGSComponent<CS230::Camera>()->GetMatrix());
     
     //if (pet.combiActiveFlag == true) {
     //    combination.DrawIcons();
@@ -120,7 +120,7 @@ void Mode1::MakeGroundEnemy(){
     double randomX = GetRandomValue(0, 100);
     Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
 
-    GroundEnemy* g_enemy = new GroundEnemy( ground_position + camera.GetPosition());
+    GroundEnemy* g_enemy = new GroundEnemy( ground_position + GetGSComponent<CS230::Camera>()->GetPosition());
 
     enemies.push_back(g_enemy);
     gameobjectmanager.Add(g_enemy);
@@ -132,7 +132,7 @@ void Mode1::MakeAirEnemy() {
     double randomY = GetRandomValue(500, GetScreenHeight() - 100);
     Math::vec2 air_position = { randomX, randomY };    //random position
 
-    AirEnemy* a_enemy = new AirEnemy( air_position + camera.GetPosition());
+    AirEnemy* a_enemy = new AirEnemy( air_position + GetGSComponent<CS230::Camera>()->GetPosition());
 
     enemies.push_back(a_enemy);
     gameobjectmanager.Add(a_enemy);
