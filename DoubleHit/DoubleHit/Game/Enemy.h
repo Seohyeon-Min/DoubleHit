@@ -59,7 +59,8 @@ private:
 
     enum class Animations {
         Idle,
-        Running
+        Running,
+        Attack
     };
 };
 
@@ -101,7 +102,7 @@ private:
 
     enum class Animations {
         Idle,
-        Running
+        Attack
     };
 };
 /*

@@ -1,4 +1,14 @@
 Assets/enemy/robot.png
-FrameSize 46 46
+FrameSize 45 45
 HotSpot 23 0
 Frame 0 0
+Frame 45 0
+Frame 0 45
+Frame 45 45
+Frame 90 45
+Frame 135 45
+Frame 180 45
+Frame 225 45
+Anim Assets/enemy/robot_idle.anm
+Anim Assets/enemy/robot_move.anm
+Anim Assets/enemy/robot_attack.anm

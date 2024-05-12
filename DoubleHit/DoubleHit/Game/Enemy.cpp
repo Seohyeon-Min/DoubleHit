@@ -38,6 +38,7 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position ):
 
 void GroundEnemy::State_Idle::Enter(GameObject* object) {
     AirEnemy* robot = static_cast<AirEnemy*>(object);
+    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
 }
 void GroundEnemy::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void GroundEnemy::State_Idle::CheckExit(GameObject* object) {
@@ -45,6 +46,7 @@ void GroundEnemy::State_Idle::CheckExit(GameObject* object) {
 
 void GroundEnemy::State_Running::Enter(GameObject* object) {
     AirEnemy* robot = static_cast<AirEnemy*>(object);
+    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Running));
 }
 void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
@@ -73,6 +75,10 @@ void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[m
 
 }
 void GroundEnemy::State_Running::CheckExit(GameObject* object) {
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    if (robot->GetVelocity().x == 0) {
+        robot->change_state(&robot->state_idle);
+    }
 }
 
 //#####################################################################
@@ -88,6 +94,7 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :
 
 void AirEnemy::State_Idle::Enter(GameObject* object) {
     AirEnemy* robot = static_cast<AirEnemy*>(object);
+    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
 }
 void AirEnemy::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void AirEnemy::State_Idle::CheckExit(GameObject* object) {
@@ -95,6 +102,7 @@ void AirEnemy::State_Idle::CheckExit(GameObject* object) {
 
 void AirEnemy::State_Running::Enter(GameObject* object) {
     AirEnemy* robot = static_cast<AirEnemy*>(object);
+    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
 }
 void AirEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { 
     //Hero* hero = static_cast<Hero*>(object);
@@ -123,6 +131,10 @@ void AirEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[mayb
     }
 }
 void AirEnemy::State_Running::CheckExit(GameObject* object) {
+    AirEnemy* robot = static_cast<AirEnemy*>(object);
+    if (robot->GetVelocity().x == 0) {
+        robot->change_state(&robot->state_idle);
+    }
 }
 
 ////#####################################################################

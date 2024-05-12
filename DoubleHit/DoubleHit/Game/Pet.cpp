@@ -47,6 +47,9 @@ void Pet::State_Running::Enter(GameObject* object) {
 }
 void Pet::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
     Pet* pet = static_cast<Pet*>(object);
+    if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) { //light attack
+        pet->MakeAttack();
+    }
 }
 
 void Pet::State_Running::CheckExit(GameObject* object) 
@@ -58,6 +61,17 @@ void Pet::State_Running::CheckExit(GameObject* object)
 }
 
 
+Math::vec2 Pet::Normalize(const Math::vec2& vec) {
+    double length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
+
+    if (length == 0) { return vec; }
+
+    Math::vec2 normalized_vec;
+    normalized_vec.x = vec.x / length;
+    normalized_vec.y = vec.y / length;
+
+    return normalized_vec;
+}
 
 void Pet::Update(double dt) {
     GameObject::Update(dt);
@@ -76,37 +90,51 @@ void Pet::Update(double dt) {
         combiTimer += dt;
     }
 
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) { //follow hero
-        destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - space;
+    direction = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - GetPosition();
 
-        if ( GetVelocity().x <= 0) {
-             UpdateVelocity({ -x_acceleration * dt, 0 });
-            if ( GetPosition().x <=  destination.x) {
-                 SetPosition({  destination.x, GetPosition().y });
-                 SetVelocity({ 0,0 });
-                 destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) -  space;
-            }
-            else {
-                 UpdateVelocity({ -(x_drag * 2 * dt), 0 });
-            }
+    distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
+
+    if (distance > min_distance) {  //collision
+        SetVelocity({ Normalize(direction).x * velocity.x , Normalize(direction).y * velocity.y });
+        if (GetVelocity().x < 0) {
+            SetScale({ 1,1 });
+        }
+        else if (GetVelocity().x >= 0) {
+            SetScale({ -1,1 });
         }
     }
-    else if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
-         destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) +  space;
 
-        if ( GetVelocity().x >= 0) {
-             UpdateVelocity({ x_acceleration * dt, 0 });
-            if ( GetPosition().x >=  destination.x) {
-                 SetPosition({  destination.x,  GetPosition().y });
-                 SetVelocity({ 0,0 });
-                 destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) +  space;
-            }
-            else {
-                //velocity.x += x_drag * 2 * dt;
-                 UpdateVelocity({ (x_drag * 2 * dt), 0 });
-            }
-        }
-    }
+    //if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) { //follow hero
+    //    destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - space;
+
+    //    if ( GetVelocity().x <= 0) {
+    //         UpdateVelocity({ -x_acceleration * dt, 0 });
+    //        if ( GetPosition().x <=  destination.x) {
+    //             SetPosition({  destination.x, GetPosition().y });
+    //             SetVelocity({ 0,0 });
+    //             destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) -  space;
+    //        }
+    //        else {
+    //             UpdateVelocity({ -(x_drag * 2 * dt), 0 });
+    //        }
+    //    }
+    //}
+    //else if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+    //     destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) +  space;
+
+    //    if ( GetVelocity().x >= 0) {
+    //         UpdateVelocity({ x_acceleration * dt, 0 });
+    //        if ( GetPosition().x >=  destination.x) {
+    //             SetPosition({  destination.x,  GetPosition().y });
+    //             SetVelocity({ 0,0 });
+    //             destination = const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) +  space;
+    //        }
+    //        else {
+    //            //velocity.x += x_drag * 2 * dt;
+    //             UpdateVelocity({ (x_drag * 2 * dt), 0 });
+    //        }
+    //    }
+    //}
 
     // flip
     if ((double)GetMouseX() > GetPosition().x && GetScale().x == -1) {  

@@ -1,4 +1,22 @@
 Assets/enemy/flying_robot.png
-FrameSize 45 45
+FrameSize 45 50
 HotSpot 23 23
 Frame 0 0
+Frame 45 0
+Frame 90 0
+Frame 135 0
+Frame 180 0
+Frame 225 0
+Frame 0 0
+Frame 45 50
+Frame 90 50
+Frame 135 50
+Frame 180 50
+Frame 225 50
+Frame 270 50
+Frame 315 50
+Frame 360 50
+Frame 405 50
+Frame 450 50
+Anim Assets/enemy/flying_robot_idle.anm
+Anim Assets/enemy/flying_robot_attack.anm
