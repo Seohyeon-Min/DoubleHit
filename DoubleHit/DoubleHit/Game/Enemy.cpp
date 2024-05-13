@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include <cmath>
 #include <iostream> //delete later
+#include "Hero.h"
 
 Enemy::Enemy(Math::vec2 start_position) :
     start_position(start_position),
@@ -98,6 +99,9 @@ void GroundEnemy::Move(double dt, Math::vec2 hero_position, double speed) {
 void GroundEnemy::TakeDamage(double damage)
 {
     health -= damage;
+    if (health <= 0) {
+        hero->exp;
+    }
 }
 
 //#####################################################################

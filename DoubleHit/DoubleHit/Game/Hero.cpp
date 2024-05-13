@@ -184,3 +184,23 @@ void Hero::TakeDamage(double damage) {
         BarCurrentWidth = HeroHealth * HealthRatio;
     }  
 }
+
+void Hero::GetHeroExp(int exp) {
+    Hero::HeroExp = 0;
+
+    Hero::HeroLevel = HeroExp / 250;
+
+    switch (HeroLevel) {
+    case1:
+        Engine::GetLogger().LogEvent("Hero Level 2");
+
+    case2:
+        Engine::GetLogger().LogEvent("Hero Level 3");
+
+    case3:
+        Engine::GetLogger().LogEvent("Hero Level 4");
+
+
+    }
+}
+

@@ -14,6 +14,9 @@ public:
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
     double GetHealth();
     void TakeDamage(double damage);
+    void GetHeroExp(int exp);
+    int HeroExp = 0;
+    int HeroLevel = 1;
  
 private:
     const CS230::Camera& camera;

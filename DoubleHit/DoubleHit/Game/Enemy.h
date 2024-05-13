@@ -4,7 +4,7 @@
 #include "..\Engine\Vec2.h"
 #include "..\Engine\Camera.h"
 #include "..\Engine\Matrix.h"
-#include "Hero.h"
+
 
 
 class Enemy {
