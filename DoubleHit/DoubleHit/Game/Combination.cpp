@@ -10,9 +10,7 @@ Combination::KeyboardState currentKeyboardState = Combination::KeyboardState::KE
 Combination::MouseState currentMouseState = Combination::MouseState::MOUSE_NONE;
 
 Combination::Combination()
-{
-    //Pet* petPtr = nullptr;
-}
+{}
 
 void Combination::InitIcons() {
     for (int i = 0; i < 2; i++) {
@@ -24,20 +22,14 @@ void Combination::InitIcons() {
 }
 
 void Combination::UpdateIcons() {
-    // Icon state initialization
-    /*for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2; j++) {
-            icons[i][j].state = INACTIVE;
-        }
-    }*/
 
     type = Type::NONE;
 
-    /*if (Engine::GetGameStateManager().GetGSComponent<Pet>()->GetCombFlag() == false) {
+    if (!GetCombFlag()) {
         currentInputState = NONE;
         currentKeyboardState = KEY_NONE;
         currentMouseState = MOUSE_NONE;
-    }*/
+    }
 
     // Keyboard Input
     if (currentInputState == NONE || currentInputState == MOUSE_ACTIVATED) {
@@ -126,6 +118,28 @@ void Combination::DrawIcons() {
     }
 }
 
+void Combination::Update(double dt)
+{
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Down)) {
+        combiActiveFlag = true;
+        Engine::GetLogger().LogDebug("Start Combination");
+    }
+
+    if (combiActiveFlag == true) {
+        if (combiTimer >= 5.0) {
+            combiActiveFlag = false;
+            combiTimer = 0;
+            Engine::GetLogger().LogDebug("End Combination");
+
+        }
+        combiTimer += dt;
+    }
+
+    if (combiActiveFlag) {
+        UpdateIcons();
+    }
+}
+
 void Combination::comb_skill1() {
     Engine::GetLogger().LogDebug("(0,0)");
     type = Type::LIGHTLIGHT;
@@ -137,7 +151,7 @@ void Combination::comb_skill1() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
-    Engine::GetGameStateManager().GetGSComponent<Pet>()->ResetCombFlag();
+    ResetCombFlag();
 }
 
 void Combination::comb_skill2() {
@@ -151,7 +165,7 @@ void Combination::comb_skill2() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
-    Engine::GetGameStateManager().GetGSComponent<Pet>()->ResetCombFlag();
+    ResetCombFlag();
 }
 
 void Combination::comb_skill3() {
@@ -165,7 +179,7 @@ void Combination::comb_skill3() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
-    Engine::GetGameStateManager().GetGSComponent<Pet>()->ResetCombFlag();
+    ResetCombFlag();
 }
 
 void Combination::comb_skill4() {
@@ -179,5 +193,5 @@ void Combination::comb_skill4() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
-    Engine::GetGameStateManager().GetGSComponent<Pet>()->ResetCombFlag();
+    ResetCombFlag();
 }

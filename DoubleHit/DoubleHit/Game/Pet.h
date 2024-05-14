@@ -1,6 +1,5 @@
 #pragma once
 #include "..\Engine\GameObject.h"
-#include "Combination.h"
 
 class Bullet : public CS230::GameObject {
 public:
@@ -22,32 +21,16 @@ public:
     void Draw(Math::TransformationMatrix camera_matrix) override;
     void MakeAttack();
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
-    bool combiActiveFlag = false;
-    double combiTimer = 0;
     std::vector <Bullet*> getAttack() { return attacks; };
-    bool& GetCombFlag() { return combiActiveFlag; }
-    void ResetCombFlag() { combiActiveFlag = false; }
+
 private:
-    double distance;
     const float radius = 40.0f;
     bool increasing = true;
     float angle = PI;
-
-    //static inline const  Math::vec2 velocity = { 140, 400 };
-    //Math::vec2 Normalize(const Math::vec2& vec);
-    //Math::vec2 direction;
-    
-    void move(double dt);
-    Math::vec2 destination;
-    Math::vec2 space = { 30 , 50 };
-
-    static constexpr double x_acceleration = 100;
-    static constexpr double x_drag = 200;
-    static constexpr double max_velocity = 400;
     static constexpr int mouse_radius = 15; //temporary mouse asset
     Color mouse_color = { 230 , 116 , 92, 125 }; //temporary mouse asset
 
-    std::vector <Bullet*>attacks; 
+    std::vector <Bullet*>attacks; //is it nesessary?
 
     class State_Idle : public State {
     public:

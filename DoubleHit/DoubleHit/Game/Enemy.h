@@ -12,13 +12,8 @@ public:
 
 private:
     Math::vec2 direction;
-
-    double speed = 3;
-    double min_distance = 60;
-    double damage = 10;     //unused... yet
-    double distance;
-    double counter = 0;    //attack time count
-    double health = 10;
+    Math::vec2 normalized_vec;
+    double length;
 };
 
 class GroundEnemy : public Enemy{

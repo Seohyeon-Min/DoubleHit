@@ -16,10 +16,8 @@ Created:    March 8, 2023
 #include "Background.h"
 #include "Enemy.h"
 #include "raylib.h"
-#include "Pet.h"
 
 class Hero;
-class Pet;
 
 class Mode1 : public CS230::GameState {
 public:
@@ -28,11 +26,9 @@ public:
     void Update(double dt) override;
     void Unload() override;
     void Draw() override;
-    void Skill();
     void MakeEnemy();
     void MakeGroundEnemy();
     void MakeAirEnemy();
-    //Enemy* MakeEliteEnemy();
     static constexpr double gravity = 800;
     static constexpr double floor = 80;
     std::string GetName() override {
@@ -40,9 +36,7 @@ public:
     }
 private:
     Hero* hero_ptr;
-    Pet* pet_ptr;
     std::vector<Enemy*> enemies; //enemy vectors
     double spawn_time = 0;
-    double elite_spawn_time = 0;
     const double enemy_spawn_time = 3; // every x second
 };

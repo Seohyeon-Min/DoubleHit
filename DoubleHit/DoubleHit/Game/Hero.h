@@ -4,7 +4,6 @@
 #include "..\Engine\Component.h"
 #include "Combination.h"
 
-//constexpr float jumping_speed = 300;
 
 class Hero : public CS230::GameObject, public CS230::Component{
 public:

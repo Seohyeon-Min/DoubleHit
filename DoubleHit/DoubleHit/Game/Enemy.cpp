@@ -3,26 +3,22 @@
 #include "Enemy.h"
 #include "Mode1.h"
 #include <cmath>
-#include <iostream> //delete later
 
 Enemy::Enemy(Math::vec2 start_position) :
     GameObject(start_position)
 {}
 
 Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
-    double length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
+    length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
 
     if (length == 0) {return vec;}
 
-    Math::vec2 normalized_vec;
+    
     normalized_vec.x = vec.x / length;
     normalized_vec.y = vec.y / length;
 
     return normalized_vec;
 }
-
-
-
 
 //#####################################################################
 

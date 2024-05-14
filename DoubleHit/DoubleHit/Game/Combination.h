@@ -6,9 +6,6 @@
 #include "../Engine/logger.h"
 #include "../Engine/Vec2.h"
 #include "../Engine/Sprite.h"
-#include "Pet.h"
-
-class Pet;
 
 class Combination : public CS230::Component{
 public:
@@ -16,6 +13,8 @@ public:
     void InitIcons();
     void UpdateIcons();
     void DrawIcons();
+    void Update(double dt);
+    bool& GetCombFlag() { return combiActiveFlag; }
 
     void comb_skill1();
     void comb_skill2();
@@ -50,11 +49,11 @@ public:
         RIGHT_PRESSED
     };
 
-
 private:
     Type type; // current combination state
-    Pet* petPtr;
-    //Mode1* mode1ptr;
+    bool combiActiveFlag = false;
+    double combiTimer = 0;
+    void ResetCombFlag() { combiActiveFlag = false; }
 };
 
 enum IconState {
