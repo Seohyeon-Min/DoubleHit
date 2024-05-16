@@ -6,7 +6,9 @@
 
 Enemy::Enemy(Math::vec2 start_position) :
     GameObject(start_position)
-{}
+{
+    SetScale({ 2,2 });
+}
 
 Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
     length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
@@ -27,6 +29,7 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position ):
 {
     distance = 600;
     CS230::GameObject::AddGOComponent(new CS230::Sprite("Assets/enemy/robot.spt", this));
+    SetScale({2,2});
     current_state = &state_running;
     current_state->Enter(this);
 }
@@ -59,10 +62,10 @@ void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[m
     if (robot->distance > robot->min_distance) {  //collision
         robot->SetVelocity({ robot->Normalize(robot->direction).x * robot->speed , robot->Normalize(robot->direction).y * robot->speed });
         if (robot->GetVelocity().x < 0) {
-            robot->SetScale({ 1,1 });
+            robot->SetScale({ 2,2 });
         }
         else if (robot->GetVelocity().x >= 0) {
-            robot->SetScale({ -1,1 });
+            robot->SetScale({ -2,2 });
         }
     }
     else if(robot->distance <= robot->min_distance) {
@@ -89,6 +92,8 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :
 {
     distance = 600;
     AddGOComponent(new CS230::Sprite("Assets/enemy/flying_robot.spt", this));
+    SetScale({ 2,2 });
+
     current_state = &state_running;
     current_state->Enter(this);
 }
@@ -120,10 +125,10 @@ void AirEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[mayb
     if (robot->distance > robot->min_distance) {  //collision
         robot->SetVelocity({ robot->Normalize(robot->direction).x * robot->speed , robot->Normalize(robot->direction).y * robot->speed });
         if (robot->GetVelocity().x < 0) {
-            robot->SetScale({ 1,1 });
+            robot->SetScale({ 2,2 });
         }
         else if (robot->GetVelocity().x >= 0) {
-            robot->SetScale({ -1,1 });
+            robot->SetScale({ -2,2 });
         }
     }
     else if (robot->distance <= robot->min_distance) {

@@ -25,7 +25,7 @@ Mode1::Mode1()
 { }
 
 void Mode1::Load() {
-    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 });
+    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 240 });
 #ifdef _DEBUG
     AddGSComponent(new CS230::ShowCollision());
 #else
@@ -34,11 +34,11 @@ void Mode1::Load() {
     AddGSComponent(new CS230::Camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } }));
     AddGSComponent(new Background());
     AddGSComponent(new Combination());
-    AddGSComponent(new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }));
+    AddGSComponent(new Hero({ (double)Engine::GetWindow().GetSize().x / 2, floor }));
     AddGSComponent(new Gravity(Mode1::gravity));
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
-    GetGSComponent<Background>()->Add("Assets/background.png", 1);
+    GetGSComponent<Background>()->Add("Assets/background_tempo_2.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, {  GetGSComponent<Background>()->GetSize() - Engine::GetWindow().GetSize() } });
     GetGSComponent<Combination>()->InitIcons();
@@ -46,6 +46,9 @@ void Mode1::Load() {
         delete enemyPtr; 
     }
     enemies.clear();
+
+    
+        
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -57,6 +60,9 @@ void Mode1::Update([[maybe_unused]] double dt) {
     if (spawn_time > enemy_spawn_time) { // spawn logic
         MakeEnemy();
         spawn_time = 0;
+    }
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Escape)) {
+        Engine::GetGameStateManager().ClearNextGameState();
     }
 }
 
@@ -75,7 +81,7 @@ void Mode1::Draw() {
 void Mode1::MakeGroundEnemy(){
 
     double randomX = GetRandomValue(0, 100);
-    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
+    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
 
     GroundEnemy* g_enemy = new GroundEnemy( ground_position + GetGSComponent<CS230::Camera>()->GetPosition());
 
