@@ -11,6 +11,7 @@ Updated:    03/14/2024
 
 #include "GameStateManager.h"
 #include "Engine.h"
+#include "GameObjectManager.h"
 
 CS230::GameStateManager::GameStateManager() :
     current_gamestate(nullptr),
@@ -64,6 +65,9 @@ void CS230::GameStateManager::Update(double dt) {
         else {
             Engine::GetLogger().LogVerbose("Update" + current_gamestate->GetName());
             current_gamestate->Update(dt);
+            if (Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>() != nullptr) {
+                Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->CollisionTest();
+            }
             current_gamestate->Draw();
         }
 

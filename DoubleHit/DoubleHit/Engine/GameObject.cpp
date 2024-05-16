@@ -54,6 +54,15 @@ void CS230::GameObject::Draw(Math::TransformationMatrix camera_matrix) {
     }
 }
 
+bool CS230::GameObject::IsCollidingWith(GameObject* other_object) {
+    Collision* collider = GetGOComponent<Collision>();
+    return collider != nullptr && collider->IsCollidingWith(other_object);
+}
+
+bool CS230::GameObject::CanCollideWith([[maybe_unused]] GameObjectTypes other_object_type) {
+    return false;
+}
+
 const Math::TransformationMatrix& CS230::GameObject::GetMatrix() {
     if (matrix_outdated) {
         object_matrix = Math::TranslationMatrix(position) * Math::RotationMatrix(rotation) * Math::ScaleMatrix(scale);

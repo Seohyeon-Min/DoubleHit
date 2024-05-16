@@ -99,6 +99,12 @@
     <ClInclude Include="Engine\ShowCollision.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Timer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObjectTypes.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
@@ -172,6 +178,9 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ShowCollision.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Timer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>

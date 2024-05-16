@@ -37,3 +37,16 @@ void CS230::GameObjectManager::DrawAll(Math::TransformationMatrix camera_matrix)
 		object->Draw(camera_matrix);
 	}
 }
+
+void CS230::GameObjectManager::CollisionTest() {
+	for (auto object_1 : objects) {
+		for (auto object_2 : objects) {
+			if (object_1 != object_2 && object_1->CanCollideWith(object_2->Type())) {
+				if (object_1->IsCollidingWith(object_2)) {
+					Engine::GetLogger().LogEvent("Collision Detected: " + object_1->TypeName() + " and " + object_2->TypeName());
+					object_1->ResolveCollision(object_2);
+				}
+			}
+		}
+	}
+}
