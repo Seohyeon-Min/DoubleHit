@@ -2,7 +2,7 @@
 
 #include "..\Engine\GameObject.h"
 #include "Hero.h"
-
+#include "GameObjectTypes.h"
 
 class Enemy : public CS230::GameObject {
 public:
@@ -19,6 +19,8 @@ private:
 class GroundEnemy : public Enemy{
 public:
     GroundEnemy(Math::vec2 start_position);
+    GameObjectTypes Type() override { return GameObjectTypes::GroundEnemy; }
+    std::string TypeName() override { return "GroundEnemy"; }
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
@@ -63,6 +65,8 @@ class AirEnemy : public Enemy {
 public:
 
     AirEnemy(Math::vec2 start_position);
+    GameObjectTypes Type() override { return GameObjectTypes::AirEnemy; }
+    std::string TypeName() override { return "AirEnemy"; }
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:

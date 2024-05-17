@@ -3,11 +3,14 @@
 #include "..\Engine\GameObject.h"
 #include "..\Engine\Component.h"
 #include "Combination.h"
+#include "GameObjectTypes.h"
 
 
 class Hero : public CS230::GameObject, public CS230::Component{
 public:
     Hero(Math::vec2 start_position);
+    GameObjectTypes Type() override { return GameObjectTypes::Hero; }
+    std::string TypeName() override { return "Hero"; }
     void Update(double dt) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
     double GetHealth();

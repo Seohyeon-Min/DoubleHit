@@ -21,13 +21,24 @@ namespace CS230 {
 
     class Collision : public Component {
     public:
+        enum class CollisionShape {
+            Rect,
+            Circle
+        };
+        virtual CollisionShape Shape() = 0;
         virtual void Draw(Math::TransformationMatrix display_matrix) = 0;
+        virtual bool IsCollidingWith(GameObject* other_object) = 0;
+
     };
 
     class RectCollision : public Collision {
     public:
         RectCollision(Math::irect boundary, GameObject* object);
-        void Draw(Math::TransformationMatrix display_matrix) override;
+        CollisionShape Shape() override {
+            return CollisionShape::Rect;
+        }
+        void Draw(Math::TransformationMatrix display_matrix);
+        bool IsCollidingWith(GameObject* other_object) override;
         Math::rect WorldBoundary();
     private:
         GameObject* object;
@@ -37,11 +48,14 @@ namespace CS230 {
     class CircleCollision : public Collision {
     public:
         CircleCollision(double radius, GameObject* object);
+        CollisionShape Shape() override {
+            return CollisionShape::Circle;
+        }
         void Draw(Math::TransformationMatrix display_matrix);
+        bool IsCollidingWith(GameObject* other_object) override;
         double GetRadius();
     private:
         GameObject* object;
         double radius;
     };
-
 }

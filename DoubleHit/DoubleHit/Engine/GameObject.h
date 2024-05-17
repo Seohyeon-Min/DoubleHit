@@ -20,6 +20,7 @@ Created:    March 8, 2023
 #include "engine.h"
 
 namespace Math { class TransformationMatrix; }
+enum class GameObjectTypes;
 
 namespace CS230 {
     class GameObject : public Component {
@@ -28,6 +29,11 @@ namespace CS230 {
         GameObject(Math::vec2 position, double rotation, Math::vec2 scale);
         virtual ~GameObject() {}
 
+        virtual GameObjectTypes Type() = 0;
+        virtual std::string TypeName() = 0;
+        bool IsCollidingWith(GameObject* other_object);
+        virtual bool CanCollideWith(GameObjectTypes other_object_type);
+        virtual void ResolveCollision([[maybe_unused]] GameObject* other_object) { };
         virtual void Update(double dt);
         virtual void Draw(Math::TransformationMatrix camera_matrix);
 

@@ -1,9 +1,12 @@
 #pragma once
 #include "..\Engine\GameObject.h"
+#include "GameObjectTypes.h"
 
 class Bullet : public CS230::GameObject {
 public:
     Bullet(Math::vec2 position, Math::vec2 targetPosition);
+    GameObjectTypes Type() override { return GameObjectTypes::Bullet; }
+    std::string TypeName() override { return "Bullet"; }
     void Update(double dt) override;
     Math::vec2 GetAttackDirection();
 private:
@@ -17,6 +20,8 @@ private:
 class Pet : public CS230::GameObject, public CS230::Component {
 public:
     Pet(Math::vec2 start_position);
+    GameObjectTypes Type() override { return GameObjectTypes::Pet; }
+    std::string TypeName() override { return "Pet"; }
     void Update(double dt) override;
     void Draw(Math::TransformationMatrix camera_matrix) override;
     void MakeAttack();
