@@ -20,7 +20,7 @@ public:
 private:
     GameObject* standing_on;
     void update_x_velocity(double dt);
-    static inline const  Math::vec2 velocity = { 200, 400 };
+    static inline const  Math::vec2 velocity = { 200, 500 };
     double HeroHealth = 100.0;
     double HealthMax = 100.0;
     double BarMaxWidth = 200.0;
