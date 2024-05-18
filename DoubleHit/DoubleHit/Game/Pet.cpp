@@ -11,7 +11,7 @@ Pet::Pet(Math::vec2 start_position) :
     GameObject(start_position)
 {
     AddGOComponent(new CS230::Sprite("Assets/pet/pet.spt",this));
-    SetScale({ 2,2 });
+    SetScale({ 1,1 });
     current_state = &state_idle;
     current_state->Enter(this);
 }
@@ -87,11 +87,11 @@ void Pet::Update(double dt) {
 
     // flip
     if ((double)GetMouseX() > GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x && GetScale().x == -1) {
-        SetScale({ 2,2 });
+        SetScale({ 1,1 });
         Engine::GetLogger().LogDebug("flip true");
     }
     else if ((double)GetMouseX() <= GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x && !(GetScale().x == -1)) {
-        SetScale({ -2,2 });
+        SetScale({ -1,1 });
         Engine::GetLogger().LogDebug("flip false");
         }
 

@@ -17,7 +17,7 @@ public:
  
 private:
     void update_x_velocity(double dt);
-    static inline const  Math::vec2 velocity = { 400, 700 };
+    static inline const  Math::vec2 velocity = { 200, 400 };
     double HeroHealth = 100.0;
     double HealthMax = 100.0;
     double BarMaxWidth = 200.0;

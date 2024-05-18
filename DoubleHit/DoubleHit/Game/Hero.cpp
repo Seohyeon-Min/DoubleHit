@@ -12,7 +12,7 @@ Hero::Hero(Math::vec2 start_position) :
     AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero.spt", this));
     HeroHealth = HealthMax;
     BarCurrentWidth = BarMaxWidth;
-    SetScale({ 2,2 });
+    SetScale({ 1,1 });
 
     current_state = &state_idle;
     current_state->Enter(this);
@@ -144,10 +144,10 @@ void Hero::Update(double dt) {
 void Hero::update_x_velocity(double dt) {
     // flip
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::A) && !Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
-        SetScale({ -2,2 });
+        SetScale({ -1,1 });
     }
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::D) && !Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
-        SetScale({ 2,2 });
+        SetScale({ 1,1 });
     }
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::D) && !Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         SetVelocity({ velocity.x, GetVelocity().y });

@@ -30,7 +30,7 @@ public:
     void MakeGroundEnemy();
     void MakeAirEnemy();
     static constexpr double gravity = 800;
-    static constexpr double floor = 240;
+    static constexpr double floor = 110;
     std::string GetName() override {
         return "Mode1";
     }

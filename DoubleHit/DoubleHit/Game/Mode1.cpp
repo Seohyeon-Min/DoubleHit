@@ -25,7 +25,7 @@ Mode1::Mode1()
 { }
 
 void Mode1::Load() {
-    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 240 });
+    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, floor });
 #ifdef _DEBUG
     AddGSComponent(new CS230::ShowCollision());
 #else
@@ -38,7 +38,7 @@ void Mode1::Load() {
     AddGSComponent(new Gravity(Mode1::gravity));
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
-    GetGSComponent<Background>()->Add("Assets/background_tempo_2.png", 1);
+    GetGSComponent<Background>()->Add("Assets/background_1280.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, {  GetGSComponent<Background>()->GetSize() - Engine::GetWindow().GetSize() } });
     GetGSComponent<Combination>()->InitIcons();
