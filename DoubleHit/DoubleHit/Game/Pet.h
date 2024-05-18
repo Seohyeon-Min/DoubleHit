@@ -17,7 +17,7 @@ private:
     friend class Pet;
 };
 
-class Pet : public CS230::GameObject, public CS230::Component {
+class Pet : public CS230::GameObject {
 public:
     Pet(Math::vec2 start_position);
     GameObjectTypes Type() override { return GameObjectTypes::Pet; }

@@ -6,8 +6,9 @@
 #include "../Engine/Engine.h"
 #include <iostream> //delete later
 
-Hero::Hero(Math::vec2 start_position) :
-    GameObject(start_position)
+Hero::Hero(Math::vec2 start_position, GameObject* standing_on) :
+    GameObject(start_position),
+    standing_on(standing_on)
 {
     AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero.spt", this));
     HeroHealth = HealthMax;
@@ -18,6 +19,7 @@ Hero::Hero(Math::vec2 start_position) :
 
 void Hero::State_Jumping::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
+    hero->standing_on = nullptr;
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Jumping));
     hero->SetVelocity({ hero->GetVelocity().x, Hero::velocity.y });
 }
@@ -69,9 +71,9 @@ void Hero::State_Falling::Update(GameObject* object, double dt) {
 }
 void Hero::State_Falling::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    if (hero->GetPosition().y <= Mode1::floor) {
+
+    if (hero->standing_on != nullptr) {
         hero->SetVelocity({ hero->GetVelocity().x, 0 });
-        hero->SetPosition({ hero->GetPosition().x, Mode1::floor });
         hero->change_state(&hero->state_idle);
     }
 }
@@ -98,6 +100,10 @@ void Hero::State_Running::CheckExit(GameObject* object) {
     }
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
         hero->change_state(&hero->state_heavy);
+    }
+    if (hero->standing_on != nullptr && hero->standing_on->IsCollidingWith(hero) == false) {
+        hero->standing_on = nullptr;
+        hero->change_state(&hero->state_falling);
     }
 }
 
@@ -129,13 +135,47 @@ void Hero::Update(double dt) {
     GameObject::Update(dt);
 
     // Boundary Check
-    if (GetPosition().x < Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2) {
-        SetPosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2, GetPosition().y });
-        SetVelocity({ 0, GetVelocity().y });
+    CS230::RectCollision* collider = GetGOComponent<CS230::RectCollision>();
+    if (collider != nullptr) {
+        if (collider->WorldBoundary().Left() < Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x) {
+            UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x - collider->WorldBoundary().Left(),0 });
+            SetVelocity({ 0, GetVelocity().y });
+        }
+        if (collider->WorldBoundary().Right() > Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x) {
+            UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x - collider->WorldBoundary().Right(),0 });
+            SetVelocity({ 0, GetVelocity().y });
+        }
     }
-    if (GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2 > Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x) {
-        SetPosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x - GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2, GetPosition().y });
-        SetVelocity({ 0, GetVelocity().y });
+}
+
+bool Hero::CanCollideWith(GameObjectTypes other_object)
+{
+    switch (other_object) {
+    case GameObjectTypes::Floor:
+        return true;
+        break;
+    }
+    return false;
+}
+
+void Hero::ResolveCollision(GameObject* other_object)
+{
+    Math::rect hero_rect = GetGOComponent<CS230::RectCollision>()->WorldBoundary();
+    Math::rect other_rect = other_object->GetGOComponent<CS230::RectCollision>()->WorldBoundary();
+
+    switch (other_object->Type()) {
+        case GameObjectTypes::Floor:
+
+            if (current_state == &state_falling) {
+                if (hero_rect.Top() > other_rect.Top()) {
+                    SetPosition({ GetPosition().x, other_rect.Top() });
+                    standing_on = other_object;
+                    current_state->CheckExit(this);
+                    return;
+                }
+            }
+
+            break;
     }
 }
 

@@ -51,8 +51,9 @@ void GroundEnemy::State_Running::Enter(GameObject* object) {
 }
 void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
 
-    robot->x_distance = Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition().x - robot->GetPosition().x;
+    robot->x_distance = hero->GetPosition().x - robot->GetPosition().x;
     robot->direction = Math::vec2(robot->x_distance, 0.0);    //no direction in y
     robot->distance = std::sqrt(robot->direction.x * robot->direction.x + robot->direction.y * robot->direction.y);     //calculate distance
 
@@ -112,9 +113,9 @@ void AirEnemy::State_Running::Enter(GameObject* object) {
 void AirEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { 
     //Hero* hero = static_cast<Hero*>(object);
     AirEnemy* robot = static_cast<AirEnemy*>(object);
+    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
 
-    robot-> direction =  const_cast<Math::vec2&>(Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition()) - robot->GetPosition();
-
+    robot-> direction =  const_cast<Math::vec2&>(hero->GetPosition()) - robot->GetPosition();
     robot->distance = std::sqrt((robot->direction.x * robot->direction.x) + (robot->direction.y * robot->direction.y));     //calculate distance
 
     if (robot->distance > robot->min_distance) {  //collision

@@ -15,17 +15,18 @@ Created:    March 8, 2023
 #include "Hero.h"
 #include "Gravity.h"
 #include "Pet.h"
+#include "Floor.h"
 
 //random
 #include<cstdlib>
 #include<ctime> 
 
 
-Mode1::Mode1()
+Mode1::Mode1() : hero_ptr()
 { }
 
 void Mode1::Load() {
-    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 });
+
 #ifdef _DEBUG
     AddGSComponent(new CS230::ShowCollision());
 #else
@@ -34,16 +35,38 @@ void Mode1::Load() {
     AddGSComponent(new CS230::Camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } }));
     AddGSComponent(new Background());
     AddGSComponent(new Combination());
-    AddGSComponent(new Hero({ (double)Engine::GetWindow().GetSize().x / 2, 80 }));
     AddGSComponent(new Gravity(Mode1::gravity));
-    GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
+    GetGSComponent<Combination>()->InitIcons();
     GetGSComponent<Background>()->Add("Assets/background.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, {  GetGSComponent<Background>()->GetSize() - Engine::GetWindow().GetSize() } });
-    GetGSComponent<Combination>()->InitIcons();
+
+
+    Floor* starting_floor_ptr = new Floor(Math::irect{ { 0, 0 }, { 2560, static_cast<int>(floor) } });
+    GetGSComponent<CS230::GameObjectManager>()->Add(starting_floor_ptr);
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 256, 352 }, { 576, 384 } }));//1
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 672, 352 }, { 992, 384 } }));
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 992, 224 }, { 1152, 256 } })); 
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1152, 320 }, { 1248, 352 } }));
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1280, 352 }, { 1440, 384 } }));//5
+
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1472, 416 }, { 1792, 448 } }));//6
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1824, 320 }, { 1920, 352 } }));
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1952, 224 }, { 2112, 256 } }));
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 96, 576 }, { 576, 608 } }));
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 928, 608 }, { 1568, 640 } }));//10
+
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1888, 480 }, { 2048, 512 } }));
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 608 }, { 2176, 640 } }));//10
+
+
+    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, floor }, starting_floor_ptr);
+    GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
+
+
     for (auto& enemyPtr : enemies) {  //reset enemies
-        delete enemyPtr; 
+        delete enemyPtr;
     }
     enemies.clear();
 }
@@ -75,7 +98,7 @@ void Mode1::Draw() {
 void Mode1::MakeGroundEnemy(){
 
     double randomX = GetRandomValue(0, 100);
-    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, 80.0 };    //random position
+    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
 
     GroundEnemy* g_enemy = new GroundEnemy( ground_position + GetGSComponent<CS230::Camera>()->GetPosition());
 
@@ -98,6 +121,7 @@ void Mode1::MakeAirEnemy() {
 void Mode1::MakeEnemy() {
     GetRandomValue(1, 0) ? MakeGroundEnemy() : MakeAirEnemy();  
 }
+
 void Mode1::Unload() {
     GetGSComponent<Background>()->Unload();
     hero_ptr = nullptr;

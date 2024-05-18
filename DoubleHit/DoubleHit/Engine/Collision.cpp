@@ -49,7 +49,6 @@ bool CS230::RectCollision::IsCollidingWith(GameObject* other_object) {
 
 
     if (other_collider == nullptr) {
-        Engine::GetLogger().LogError("No collision component found");
         return false;
     }
 
@@ -66,6 +65,19 @@ bool CS230::RectCollision::IsCollidingWith(GameObject* other_object) {
         rectangle_1.Left() <= rectangle_2.Right() &&
         rectangle_1.Top() >= rectangle_2.Bottom() &&
         rectangle_1.Bottom() <= rectangle_2.Top()) {
+        return true;
+    }
+    return false;
+}
+
+bool CS230::RectCollision::IsCollidingWith(Math::vec2 point)
+{
+    Math::rect rectangle_1 = WorldBoundary();
+
+    if (rectangle_1.Right() >= point.x &&
+        rectangle_1.Left() <= point.x &&
+        rectangle_1.Top() >= point.y &&
+        rectangle_1.Bottom() <= point.y) {
         return true;
     }
     return false;
@@ -113,7 +125,6 @@ bool CS230::CircleCollision::IsCollidingWith(GameObject* other_object)
 
 
     if (other_collider == nullptr) {
-        Engine::GetLogger().LogError("No collision component found");
         return false;
     }
 
@@ -131,4 +142,14 @@ bool CS230::CircleCollision::IsCollidingWith(GameObject* other_object)
         (GetRadius() + dynamic_cast<CircleCollision*>(other_object->GetGOComponent<Collision>())->GetRadius());
 
     return distance <= sum_of_squared_radii;
+}
+
+
+bool CS230::CircleCollision::IsCollidingWith(Math::vec2 point)
+{
+    double dx = object->GetPosition().x - point.x;
+    double dy = object->GetPosition().y - point.y;
+    double distance = dx * dx + dy * dy;
+
+    return distance <= GetRadius();
 }
