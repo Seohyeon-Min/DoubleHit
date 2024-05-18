@@ -1,4 +1,3 @@
-#pragma once
 /*
 Copyright (C) 2023 DigiPen Institute of Technology
 Reproduction or distribution of this file or its contents without
@@ -12,7 +11,6 @@ Updated:    May 12, 2023
 
 #include "Component.h"
 #include "Engine.h"
-//#include "Fonts.h"
 
 #pragma once
 namespace CS230 {

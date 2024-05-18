@@ -4,7 +4,6 @@
 #include <cmath>
 
 Combination combination;
-
 Icon icon;
 
 Pet::Pet(Math::vec2 start_position) :
@@ -61,9 +60,7 @@ void Pet::State_Running::CheckExit(GameObject* object)
 
 void Pet::Update(double dt) {
     GameObject::Update(dt);
-    
-    //update position
-    Math::vec2 hero_position = Engine::GetGameStateManager().GetGSComponent<Hero>()->GetPosition();
+
 
     //update angle
     if (increasing) { //go right
@@ -79,20 +76,21 @@ void Pet::Update(double dt) {
         else { increasing = true; }
     }
 
+    Hero* hero =  Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
     SetPosition({
-        hero_position.x + radius * std::cos(angle),
-        hero_position.y - radius * std::sin(angle) + 60.0f
-        });
+        hero->GetPosition().x + radius * std::cos(angle),
+        hero->GetPosition().y - radius * std::sin(angle) + 60.0f
+    });
+ 
+
 
 
     // flip
     if ((double)GetMouseX() > GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x && GetScale().x == -1) {
         SetScale({ 1,1 });
-        Engine::GetLogger().LogDebug("flip true");
     }
     else if ((double)GetMouseX() <= GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x && !(GetScale().x == -1)) {
         SetScale({ -1,1 });
-        Engine::GetLogger().LogDebug("flip false");
         }
 
     for (Bullet* bullet : attacks) {

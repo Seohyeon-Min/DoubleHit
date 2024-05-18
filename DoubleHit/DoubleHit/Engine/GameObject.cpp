@@ -59,6 +59,11 @@ bool CS230::GameObject::IsCollidingWith(GameObject* other_object) {
     return collider != nullptr && collider->IsCollidingWith(other_object);
 }
 
+bool CS230::GameObject::IsCollidingWith(Math::vec2 point) {
+    Collision* collider = GetGOComponent<Collision>();
+    return collider != nullptr && collider->IsCollidingWith(point);
+}
+
 bool CS230::GameObject::CanCollideWith([[maybe_unused]] GameObjectTypes other_object_type) {
     return false;
 }

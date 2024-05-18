@@ -24,6 +24,16 @@ namespace CS230 {
         void UpdateAll(double dt);
         void DrawAll(Math::TransformationMatrix camera_matrix);
         void CollisionTest();
+        template<typename T>
+        T* GetGOComponent() {
+            for (GameObject* object : objects) {
+                T* ptr = dynamic_cast<T*>(object);
+                if (ptr != nullptr) {
+                    return ptr;
+                }
+            }
+            return nullptr;
+        }
     private:
         std::vector<GameObject*> objects;
     };

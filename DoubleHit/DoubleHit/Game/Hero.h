@@ -5,17 +5,20 @@
 #include "Combination.h"
 #include "GameObjectTypes.h"
 
-class Hero : public CS230::GameObject, public CS230::Component{
+class Hero : public CS230::GameObject{
 public:
-    Hero(Math::vec2 start_position);
+    Hero(Math::vec2 start_position, GameObject* standing_on);
     GameObjectTypes Type() override { return GameObjectTypes::Hero; }
     std::string TypeName() override { return "Hero"; }
     void Update(double dt) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
+    bool CanCollideWith(GameObjectTypes) override;
+    void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     double GetHealth();
     void TakeDamage(double damage);
  
 private:
+    GameObject* standing_on;
     void update_x_velocity(double dt);
     static inline const  Math::vec2 velocity = { 200, 400 };
     double HeroHealth = 100.0;
