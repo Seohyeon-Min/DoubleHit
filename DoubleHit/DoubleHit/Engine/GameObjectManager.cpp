@@ -26,8 +26,16 @@ void CS230::GameObjectManager::Unload()
 
 void CS230::GameObjectManager::UpdateAll(double dt)
 {
+	std::vector<GameObject*> destroy_objects;
 	for (auto object : objects) {
 		object->Update(dt);
+		if (object->Destroyed()) {
+			destroy_objects.push_back(object);
+		}
+	}
+	for (auto d_object : destroy_objects) {
+		objects.remove(d_object);
+		delete d_object;
 	}
 }
 

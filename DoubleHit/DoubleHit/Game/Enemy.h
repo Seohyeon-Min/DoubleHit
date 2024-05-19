@@ -71,6 +71,7 @@ public:
     AirEnemy(Math::vec2 start_position);
     GameObjectTypes Type() override { return GameObjectTypes::AirEnemy; }
     std::string TypeName() override { return "AirEnemy"; }
+    void Update(double dt) override;
     bool CanCollideWith(GameObjectTypes) override;
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
@@ -82,32 +83,12 @@ private:
     double min_distance = 150;
     double damage = 10;     //unused... yet
     double distance;
-    double counter = 0;    //attack time count
     double health = 10;
-
-    class State_Idle : public State {
-    public:
-        virtual void Enter(GameObject* object) override;
-        virtual void Update(GameObject* object, double dt) override;
-        virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Idle"; }
-    };
-
-    class State_Running : public State {
-    public:
-        virtual void Enter(GameObject* object) override;
-        virtual void Update(GameObject* object, double dt) override;
-        virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Running"; }
-    };
-
-    State_Idle state_idle;
-    State_Running state_running;
-
 
     enum class Animations {
         Idle,
-        Attack
+        Attack,
+        Die
     };
 };
 /*

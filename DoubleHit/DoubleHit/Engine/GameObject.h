@@ -37,6 +37,8 @@ namespace CS230 {
         virtual void ResolveCollision([[maybe_unused]] GameObject* other_object) { };
         virtual void Update(double dt);
         virtual void Draw(Math::TransformationMatrix camera_matrix);
+        virtual void Destroy() { destroy = true; }
+        virtual bool Destroyed() { return destroy; }
 
         const Math::TransformationMatrix& GetMatrix();
         const Math::vec2& GetPosition() const;
@@ -91,6 +93,7 @@ namespace CS230 {
 
         double rotation;
         bool matrix_outdated = true;
+        bool destroy;
         Math::vec2 scale;
         Math::vec2 position;
         Math::vec2 velocity;

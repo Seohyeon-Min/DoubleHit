@@ -12,16 +12,15 @@ Updated:    04/30/2024
 #include "GameObject.h"
 
 CS230::GameObject::GameObject(Math::vec2 position) :
-    GameObject(position, 0, { 1, 1 })
-{
-}
+    GameObject(position, 0, { 1, 1 }) {}
 
 CS230::GameObject::GameObject(Math::vec2 position, double rotation, Math::vec2 scale) :
     velocity({ 0,0 }),
     position(position),
     scale(scale),
     rotation(rotation),
-    current_state(&state_none)
+    current_state(&state_none),
+    destroy(false)
 {
     current_state->Enter(this);
 }

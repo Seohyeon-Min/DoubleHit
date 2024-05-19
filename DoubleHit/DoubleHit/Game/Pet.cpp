@@ -1,5 +1,6 @@
 #include "Pet.h"
 #include "Mode1.h"
+#include "Bullet.h"
 #include "../Engine/Engine.h"
 #include <cmath>
 
@@ -13,14 +14,6 @@ Pet::Pet(Math::vec2 start_position) :
     SetScale({ 1,1 });
     current_state = &state_idle;
     current_state->Enter(this);
-}
-
-Bullet::Bullet(Math::vec2 start_position, Math::vec2 targetPosition) :
-    GameObject(start_position),
-    destination(targetPosition)
-{
-    AddGOComponent(new CS230::Sprite("Assets/pet/bullet.spt", this));
-    distance = GetAttackDirection();
 }
 
 void Pet::State_Idle::Enter(GameObject* object) {
@@ -61,7 +54,6 @@ void Pet::State_Running::CheckExit(GameObject* object)
 void Pet::Update(double dt) {
     GameObject::Update(dt);
 
-
     //update angle
     if (increasing) { //go right
         if (angle < 2 * PI) {
@@ -81,9 +73,6 @@ void Pet::Update(double dt) {
         hero->GetPosition().x + radius * std::cos(angle),
         hero->GetPosition().y - radius * std::sin(angle) + 60.0f
     });
- 
-
-
 
     // flip
     if ((double)GetMouseX() > GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x && GetScale().x == -1) {
@@ -92,18 +81,12 @@ void Pet::Update(double dt) {
     else if ((double)GetMouseX() <= GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x && !(GetScale().x == -1)) {
         SetScale({ -1,1 });
         }
-
-    for (Bullet* bullet : attacks) {
-        bullet->Update(dt);
-    }
-    for (int i = attacks.size() - 1; i >= 0; i--) {
-        if (attacks[i]->life < 0) {
-            delete attacks[i];
-            attacks.erase(attacks.begin() + i);
-        }
-    }
 }
  
+void Pet::Draw(Math::TransformationMatrix camera_matrix) {
+    GameObject::Draw(camera_matrix);
+    DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
+}
 
 void Pet::MakeAttack()
 {
@@ -112,54 +95,5 @@ void Pet::MakeAttack()
     mouse_position.y *= -1;
     mouse_position.y += Engine::GetWindow().GetSize().y;
 
-    attacks.push_back(new Bullet(GetPosition(), {mouse_position.x, mouse_position.y}));
-    
-}
-
-
-void Bullet::Update(double dt) {
-    GameObject::Update(dt);
-    SetVelocity({ attack_speed * distance.x , attack_speed * distance.y });
-    life -= dt;
-}
-
-Math::vec2 Bullet::GetAttackDirection() {
-    //distance = { destination.x - (GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x), destination.y - GetPosition().y };
-    distance = { destination.x - (GetPosition().x * 1.0 - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x), 
-                 destination.y - (GetPosition().y * 1.0 - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().y )}; //zoom
-    double angle = atan2(distance.y, distance.x);
-    distance.x = cos(angle);
-    distance.y = sin(angle);
-    
-    return distance;
-}
-
-void Pet::Draw(Math::TransformationMatrix camera_matrix) {
-    GameObject::Draw(camera_matrix);
-    DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
-    
-
-    for (Bullet* bullet : attacks) {
-        bullet->Draw(camera_matrix);
-    }
-}
-
-bool Bullet::CanCollideWith(GameObjectTypes other_object)
-{
-    switch (other_object) {
-    case GameObjectTypes::AirEnemy:
-        return true;
-        break;
-    }
-    return false;
-}
-
-void Bullet::ResolveCollision(GameObject* other_object)
-{
-    switch (other_object->Type()) {
-    case GameObjectTypes::Enemy:
-        std::cout << "Asdf\n";
-
-        break;
-    }
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Bullet(GetPosition(), { mouse_position.x, mouse_position.y }));
 }

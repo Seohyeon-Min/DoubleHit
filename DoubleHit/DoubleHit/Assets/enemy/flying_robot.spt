@@ -19,5 +19,9 @@ Frame 315 50
 Frame 360 50
 Frame 405 50
 Frame 450 50
+Frame 0 100
+Frame 45 100
+Frame 90 100
 Anim Assets/enemy/flying_robot_idle.anm
 Anim Assets/enemy/flying_robot_attack.anm
+Anim Assets/enemy/flying_robot_die.anm

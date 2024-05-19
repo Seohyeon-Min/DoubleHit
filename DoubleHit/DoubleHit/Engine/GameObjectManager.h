@@ -9,7 +9,7 @@ Created:    March 8, 2023
 */
 
 #pragma once
-#include <vector>
+#include <list>
 #include "GameObject.h"
 #include "Matrix.h"
 
@@ -35,6 +35,6 @@ namespace CS230 {
             return nullptr;
         }
     private:
-        std::vector<GameObject*> objects;
+        std::list<GameObject*> objects;
     };
 }

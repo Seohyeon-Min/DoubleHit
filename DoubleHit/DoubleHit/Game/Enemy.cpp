@@ -2,6 +2,7 @@
 
 #include "Enemy.h"
 #include "Mode1.h"
+#include "Bullet.h"
 #include <cmath>
 
 Enemy::Enemy(Math::vec2 start_position) :
@@ -36,25 +37,11 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position ):
 
 bool GroundEnemy::CanCollideWith(GameObjectTypes other_object)
 {
-    switch (other_object) {
-    case GameObjectTypes::Bullet:
-        return true;
-        break;
-    }
     return false;
 }
 
 void GroundEnemy::ResolveCollision(GameObject* other_object)
 {
-    Math::rect hero_rect = GetGOComponent<CS230::RectCollision>()->WorldBoundary();
-    Math::rect other_rect = other_object->GetGOComponent<CS230::RectCollision>()->WorldBoundary();
-
-    switch (other_object->Type()) {
-    case GameObjectTypes::Bullet:
-        std::cout << "Asdf\n";
-
-        break;
-    }
 }
 
 void GroundEnemy::State_Idle::Enter(GameObject* object) {
@@ -116,9 +103,40 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :
     distance = 600;
     AddGOComponent(new CS230::Sprite("Assets/enemy/flying_robot.spt", this));
     SetScale({ 1,1 });
+}
 
-    current_state = &state_running;
-    current_state->Enter(this);
+bool has_run = false;
+
+void AirEnemy::Update(double dt)
+{
+    GameObject::Update(dt);
+    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
+    if (!has_run) {
+        GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
+        has_run = true;
+    }
+    else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Die)){
+        if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+            Destroy();
+        }
+    }
+    else {
+        direction = const_cast<Math::vec2&>(hero->GetPosition()) - GetPosition();
+        distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
+
+        if (distance > min_distance) {  //collision
+            SetVelocity({ Normalize(direction).x * speed , Normalize(direction).y * speed });
+            if (GetVelocity().x < 0) {
+                SetScale({ 1,1 });
+            }
+            else if (GetVelocity().x >= 0) {
+                SetScale({ -1,1 });
+            }
+        }
+        else if (distance <= min_distance) {
+            SetVelocity({ 0,0 });
+        }
+    }
 }
 
 bool AirEnemy::CanCollideWith(GameObjectTypes other_object)
@@ -133,65 +151,18 @@ bool AirEnemy::CanCollideWith(GameObjectTypes other_object)
 
 void AirEnemy::ResolveCollision(GameObject* other_object)
 {
-    Math::rect hero_rect = GetGOComponent<CS230::RectCollision>()->WorldBoundary();
-    Math::rect other_rect = other_object->GetGOComponent<CS230::RectCollision>()->WorldBoundary();
-
     switch (other_object->Type()) {
     case GameObjectTypes::Bullet:
-        std::cout << "Asdf\n";
-
+        health -= Bullet::GetDamage();
+        if (health < 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
         break;
     }
 }
 
-void AirEnemy::State_Idle::Enter(GameObject* object) {
-    AirEnemy* robot = static_cast<AirEnemy*>(object);
-    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
-}
-void AirEnemy::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
-void AirEnemy::State_Idle::CheckExit(GameObject* object) {
-    AirEnemy* robot = static_cast<AirEnemy*>(object);
-    if (robot->distance <= robot->min_distance) {
-        robot->change_state(&robot->state_running);
-    }
-}
-
-void AirEnemy::State_Running::Enter(GameObject* object) {
-    AirEnemy* robot = static_cast<AirEnemy*>(object);
-    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
-}
-void AirEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { 
-    //Hero* hero = static_cast<Hero*>(object);
-    AirEnemy* robot = static_cast<AirEnemy*>(object);
-    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
-
-    robot-> direction =  const_cast<Math::vec2&>(hero->GetPosition()) - robot->GetPosition();
-    robot->distance = std::sqrt((robot->direction.x * robot->direction.x) + (robot->direction.y * robot->direction.y));     //calculate distance
-
-    if (robot->distance > robot->min_distance) {  //collision
-        robot->SetVelocity({ robot->Normalize(robot->direction).x * robot->speed , robot->Normalize(robot->direction).y * robot->speed });
-        if (robot->GetVelocity().x < 0) {
-            robot->SetScale({ 1,1 });
-        }
-        else if (robot->GetVelocity().x >= 0) {
-            robot->SetScale({ -1,1 });
-        }
-    }
-    else if (robot->distance <= robot->min_distance) {
-        robot->SetVelocity({ 0,0 });
-        if (robot->counter >= 1.0) {   //attack per 1 second
-            //attack hero
-            robot->counter = 0;
-        }
-        robot->counter += dt;
-    }
-}
-void AirEnemy::State_Running::CheckExit(GameObject* object) {
-    AirEnemy* robot = static_cast<AirEnemy*>(object);
-    if (robot->distance <= robot->min_distance && robot->GetVelocity().x == 0) {
-        robot->change_state(&robot->state_idle);
-    }
-}
 
 ////#####################################################################
 //
