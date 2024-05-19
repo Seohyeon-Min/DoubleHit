@@ -23,7 +23,7 @@ Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
     return normalized_vec;
 }
 
-//#####################################################################
+//###############################################################################################################################################################################################################
 
 GroundEnemy::GroundEnemy(Math::vec2 start_position ):
     Enemy(start_position)
@@ -31,6 +31,8 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position ):
     distance = 600;
     CS230::GameObject::AddGOComponent(new CS230::Sprite("Assets/enemy/robot.spt", this));
     SetScale({1,1});
+    attack_timer = new CS230::Timer(attack_time);
+    AddGOComponent(attack_timer);
 }
 
 void GroundEnemy::Update(double dt)
@@ -68,6 +70,18 @@ void GroundEnemy::Update(double dt)
                 has_run = false;
             }
         }
+        if (distance <= shooting_range) {
+            if (attack_timer->Remaining() == 0.0) {
+                attack_timer->Set(attack_time);
+                GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+                //Attack();
+            }
+            else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
+                if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+                    has_run = false;
+                }
+            }
+        }
     }
 }
 
@@ -96,7 +110,7 @@ void GroundEnemy::ResolveCollision(GameObject* other_object)
 }
 
 
-//#####################################################################
+//###############################################################################################################################################################################################################
 
 AirEnemy::AirEnemy(Math::vec2 start_position) :
     Enemy(start_position)
@@ -104,12 +118,15 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :
     distance = 600;
     AddGOComponent(new CS230::Sprite("Assets/enemy/flying_robot.spt", this));
     SetScale({ 1,1 });
+    attack_timer = new CS230::Timer(0.0);
+    AddGOComponent(attack_timer);
 }
 
 void AirEnemy::Update(double dt)
 {
     GameObject::Update(dt);
     Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
+
     if (!has_run) {
         GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
         has_run = true;
@@ -118,12 +135,18 @@ void AirEnemy::Update(double dt)
         if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
             Destroy();
         }
+        else if (GetGOComponent<CS230::Collision>() == nullptr) {
+            Destroy();
+        }
     }
     else {
         direction = const_cast<Math::vec2&>(hero->GetPosition()) - GetPosition();
         distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
 
-        if (distance > min_distance) {  //collision
+        if (distance <= min_distance || GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
+            SetVelocity({ 0,0 });
+        }
+        else if (distance > min_distance) {  //collision
             SetVelocity({ Normalize(direction).x * speed , Normalize(direction).y * speed });
             if (GetVelocity().x < 0) {
                 SetScale({ 1,1 });
@@ -132,10 +155,23 @@ void AirEnemy::Update(double dt)
                 SetScale({ -1,1 });
             }
         }
-        else if (distance <= min_distance) {
-            SetVelocity({ 0,0 });
+        if (distance < shooting_range) {
+            if (attack_timer->Remaining() == 0.0) {
+                attack_timer->Set(attack_time);
+                GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+                //Attack();
+            }
+            else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
+                if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+                    has_run = false;
+                }
+            }
         }
     }
+}
+
+void AirEnemy::Attack() {
+
 }
 
 bool AirEnemy::CanCollideWith(GameObjectTypes other_object)
@@ -163,7 +199,7 @@ void AirEnemy::ResolveCollision(GameObject* other_object)
 }
 
 
-////#####################################################################
+////###############################################################################################################################################################################################################
 //
 //EliteEnemy::EliteEnemy(Math::vec2 start_position) :Enemy(start_position), start_position(start_position) {
 //    distance = 600;

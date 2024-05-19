@@ -3,6 +3,7 @@
 #include "..\Engine\GameObject.h"
 #include "Hero.h"
 #include "GameObjectTypes.h"
+#include "..\Engine\Timer.h"
 
 class Enemy : public CS230::GameObject {
 public:
@@ -33,10 +34,13 @@ private:
     bool has_run = false;
     double speed = 80;
     double min_distance = 50;
-    double damage = 10;     //unused... yet
     double x_distance;
     double distance;
     double health = 10;
+    double damage = 10;     //unused... yet
+    static constexpr double shooting_range = 50;
+    CS230::Timer* attack_timer;
+    static constexpr double attack_time = 2.8;
 
     enum class Animations {
         Idle,
@@ -53,6 +57,7 @@ public:
     GameObjectTypes Type() override { return GameObjectTypes::AirEnemy; }
     std::string TypeName() override { return "AirEnemy"; }
     void Update(double dt) override;
+    void Attack();
     bool CanCollideWith(GameObjectTypes) override;
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
@@ -60,11 +65,14 @@ public:
 private:
     Math::vec2 direction;
     bool has_run = false;
-    double speed = 80;
-    double min_distance = 150;
-    double damage = 10;     //unused... yet
-    double distance;
+    double speed = 70;
+    double min_distance = 230;
     double health = 10;
+    double distance;
+    static constexpr double shooting_range = 380;
+    static constexpr double damage = 10;     //unused... yet
+    CS230::Timer* attack_timer;
+    static constexpr double attack_time = 2.8;
 
     enum class Animations {
         Idle,
