@@ -1,6 +1,0 @@
-Assets/pet/bullet_none.png
-FrameSize 10 10
-HotSpot 5 5
-RectCollision -2 -2 2 2
-NumFrames 1
-Anim Assets/None.anm

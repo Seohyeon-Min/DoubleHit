@@ -3,7 +3,9 @@
 #include "Hero.h"
 #include "Mode1.h"
 #include "Gravity.h"
+#include "Skill.h"
 #include "../Engine/Engine.h"
+ 
 #include <iostream> //delete later
 
 Hero::Hero(Math::vec2 start_position, GameObject* standing_on) :
@@ -119,10 +121,14 @@ void Hero::State_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light));
     hero->SetVelocity({ 0, hero->GetVelocity().y });
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Light(hero->GetPosition()));
+    //Math::irect light_rect{ {-14, 0},{14, 10} };
+    //hero->AddGOComponent(new CS230::RectCollision(light_rect, hero));
 }
 void Hero::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Light::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
+    //hero->RemoveGOComponent<CS230::Collision>();
     if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
         hero->change_state(&hero->state_idle);
     }
@@ -133,6 +139,7 @@ void Hero::State_Heavy::Enter(GameObject* object) {
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Heavy));
     hero->IsHeavyReady = false;
     hero->Heavytimer->Set(hero->HeavyTimerMax);
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Heavy(hero->GetPosition()));
 }
 void Hero::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Heavy::CheckExit(GameObject* object) {

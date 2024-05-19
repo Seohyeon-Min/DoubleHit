@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Mode1.h"
 #include "Bullet.h"
+#include "Skill.h"
 #include <cmath>
 
 Enemy::Enemy(Math::vec2 start_position) :
@@ -88,9 +89,15 @@ void GroundEnemy::Update(double dt)
 bool GroundEnemy::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {
-    case GameObjectTypes::Bullet:
-        return true;
-        break;
+        case GameObjectTypes::Bullet:
+            return true;
+            break;
+        case GameObjectTypes::Light:
+            return true;
+            break;
+        case GameObjectTypes::Heavy:
+            return true;
+            break;
     }
     return false;
 }
@@ -100,7 +107,23 @@ void GroundEnemy::ResolveCollision(GameObject* other_object)
     switch (other_object->Type()) {
     case GameObjectTypes::Bullet:
         health -= Bullet::GetDamage() / 2;
-        if (health < 0) {
+        if (health <= 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
+    case GameObjectTypes::Light:
+        health -= Light::GetDamage() ; //should be run only once
+        if (health <= 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
+    case GameObjectTypes::Heavy:
+        health -= Heavy::GetDamage(); //should be run only once
+        if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
             SetVelocity({ 0,0 });
@@ -135,9 +158,9 @@ void AirEnemy::Update(double dt)
         if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
             Destroy();
         }
-        else if (GetGOComponent<CS230::Collision>() == nullptr) {
-            Destroy();
-        }
+        //else if (GetGOComponent<CS230::Collision>() == nullptr) {
+        //    Destroy();
+        //}
     }
     else {
         direction = const_cast<Math::vec2&>(hero->GetPosition()) - GetPosition();
@@ -180,6 +203,9 @@ bool AirEnemy::CanCollideWith(GameObjectTypes other_object)
     case GameObjectTypes::Bullet:
         return true;
         break;
+    case GameObjectTypes::Light:
+        return true;
+        break;
     }
     return false;
 }
@@ -190,6 +216,22 @@ void AirEnemy::ResolveCollision(GameObject* other_object)
     case GameObjectTypes::Bullet:
         health -= Bullet::GetDamage();
         if (health < 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
+    case GameObjectTypes::Light:
+        health -= Light::GetDamage(); //should be run only once
+        if (health <= 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
+    case GameObjectTypes::Heavy:
+        health -= Heavy::GetDamage(); //should be run only once
+        if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
             SetVelocity({ 0,0 });
