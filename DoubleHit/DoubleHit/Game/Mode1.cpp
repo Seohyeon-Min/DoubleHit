@@ -31,7 +31,7 @@ void Mode1::Load() {
 #else
 #endif
     AddGSComponent(new CS230::GameObjectManager());
-    AddGSComponent(new CS230::Camera({ { 0.48 * Engine::GetWindow().GetSize().x, 0 }, { 0.52 * Engine::GetWindow().GetSize().x, 0 } }));
+    AddGSComponent(new CS230::Camera());
     AddGSComponent(new Background());
     AddGSComponent(new Combination());
     AddGSComponent(new Gravity(Mode1::gravity));
@@ -59,7 +59,7 @@ void Mode1::Load() {
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 608 }, { 2176, 640 } }));//10
 
 
-    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / 2, floor }, starting_floor_ptr);
+    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * zoom), floor }, starting_floor_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
 
@@ -90,7 +90,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-    GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), 1);
+    GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), zoom);
     GetGSComponent<CS230::GameObjectManager>()->DrawAll(GetGSComponent<CS230::Camera>()->GetMatrix());
     if (GetGSComponent<Combination>()->GetCombFlag() == true) {
         GetGSComponent<Combination>()->DrawIcons();
@@ -105,7 +105,7 @@ void Mode1::MakeGroundEnemy(){
     double randomX = GetRandomValue(0, 100);
     Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
 
-    GroundEnemy* g_enemy = new GroundEnemy( ground_position + GetGSComponent<CS230::Camera>()->GetPosition());
+    GroundEnemy* g_enemy = new GroundEnemy( ground_position);
 
     enemies.push_back(g_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy);
@@ -117,7 +117,7 @@ void Mode1::MakeAirEnemy() {
     double randomY = GetRandomValue(500, GetScreenHeight() - 100);
     Math::vec2 air_position = { randomX, randomY };    //random position
 
-    AirEnemy* a_enemy = new AirEnemy( air_position + GetGSComponent<CS230::Camera>()->GetPosition());
+    AirEnemy* a_enemy = new AirEnemy( air_position );
 
     enemies.push_back(a_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(a_enemy);

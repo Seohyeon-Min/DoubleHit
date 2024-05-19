@@ -31,6 +31,7 @@ public:
     void MakeAirEnemy();
     static constexpr double gravity = 800;
     static constexpr double floor = 110;
+    static constexpr double zoom = 1.0;
     std::string GetName() override {
         return "Mode1";
     }
@@ -38,5 +39,5 @@ private:
     Hero* hero_ptr;
     std::vector<Enemy*> enemies; //enemy vectors
     double spawn_time = 0;
-    const double enemy_spawn_time = 5; // every x second
+    const double enemy_spawn_time = 1; // every x second
 };

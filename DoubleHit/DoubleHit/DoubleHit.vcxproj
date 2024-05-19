@@ -42,6 +42,7 @@
     <ClInclude Include="Engine\Vec2.h" />
     <ClInclude Include="Engine\Window.h" />
     <ClInclude Include="Game\Background.h" />
+    <ClInclude Include="Game\Bullet.h" />
     <ClInclude Include="Game\Combination.h" />
     <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\Floor.h" />
@@ -73,6 +74,7 @@
     <ClCompile Include="Engine\Vec2.cpp" />
     <ClCompile Include="Engine\Window.cpp" />
     <ClCompile Include="Game\Background.cpp" />
+    <ClCompile Include="Game\Bullet.cpp" />
     <ClCompile Include="Game\Combination.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
     <ClCompile Include="Game\Floor.cpp" />

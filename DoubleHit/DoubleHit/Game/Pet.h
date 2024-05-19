@@ -9,6 +9,8 @@ public:
     std::string TypeName() override { return "Bullet"; }
     void Update(double dt) override;
     Math::vec2 GetAttackDirection();
+    bool CanCollideWith(GameObjectTypes other_object);
+    void ResolveCollision(GameObject* other_object);
 private:
     Math::vec2 destination;
     Math::vec2 distance;

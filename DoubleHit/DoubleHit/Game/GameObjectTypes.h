@@ -14,6 +14,7 @@ enum class GameObjectTypes {
 	Hero,
 	Pet,
 	Bullet,
+	Enemy,
 	GroundEnemy,
 	AirEnemy,
 	Floor,

@@ -124,8 +124,9 @@ void Bullet::Update(double dt) {
 }
 
 Math::vec2 Bullet::GetAttackDirection() {
-    std::cout << GetPosition().x << std::endl;
-    distance = { destination.x - (GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x), destination.y - GetPosition().y };
+    //distance = { destination.x - (GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x), destination.y - GetPosition().y };
+    distance = { destination.x - (GetPosition().x * 1.0 - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x), 
+                 destination.y - (GetPosition().y * 1.0 - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().y )}; //zoom
     double angle = atan2(distance.y, distance.x);
     distance.x = cos(angle);
     distance.y = sin(angle);
@@ -140,5 +141,25 @@ void Pet::Draw(Math::TransformationMatrix camera_matrix) {
 
     for (Bullet* bullet : attacks) {
         bullet->Draw(camera_matrix);
+    }
+}
+
+bool Bullet::CanCollideWith(GameObjectTypes other_object)
+{
+    switch (other_object) {
+    case GameObjectTypes::AirEnemy:
+        return true;
+        break;
+    }
+    return false;
+}
+
+void Bullet::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::Enemy:
+        std::cout << "Asdf\n";
+
+        break;
     }
 }

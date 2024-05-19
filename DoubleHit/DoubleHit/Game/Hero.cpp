@@ -157,6 +157,7 @@ bool Hero::CanCollideWith(GameObjectTypes other_object)
         return true;
         break;
     }
+
     return false;
 }
 
@@ -176,7 +177,6 @@ void Hero::ResolveCollision(GameObject* other_object)
                     return;
                 }
             }
-
             break;
     }
 }

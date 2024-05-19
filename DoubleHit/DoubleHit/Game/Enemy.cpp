@@ -34,6 +34,28 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position ):
     current_state->Enter(this);
 }
 
+bool GroundEnemy::CanCollideWith(GameObjectTypes other_object)
+{
+    switch (other_object) {
+    case GameObjectTypes::Bullet:
+        return true;
+        break;
+    }
+    return false;
+}
+
+void GroundEnemy::ResolveCollision(GameObject* other_object)
+{
+    Math::rect hero_rect = GetGOComponent<CS230::RectCollision>()->WorldBoundary();
+    Math::rect other_rect = other_object->GetGOComponent<CS230::RectCollision>()->WorldBoundary();
+
+    switch (other_object->Type()) {
+    case GameObjectTypes::Bullet:
+        std::cout << "Asdf\n";
+
+        break;
+    }
+}
 
 void GroundEnemy::State_Idle::Enter(GameObject* object) {
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
@@ -97,6 +119,29 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :
 
     current_state = &state_running;
     current_state->Enter(this);
+}
+
+bool AirEnemy::CanCollideWith(GameObjectTypes other_object)
+{
+    switch (other_object) {
+    case GameObjectTypes::Bullet:
+        return true;
+        break;
+    }
+    return false;
+}
+
+void AirEnemy::ResolveCollision(GameObject* other_object)
+{
+    Math::rect hero_rect = GetGOComponent<CS230::RectCollision>()->WorldBoundary();
+    Math::rect other_rect = other_object->GetGOComponent<CS230::RectCollision>()->WorldBoundary();
+
+    switch (other_object->Type()) {
+    case GameObjectTypes::Bullet:
+        std::cout << "Asdf\n";
+
+        break;
+    }
 }
 
 void AirEnemy::State_Idle::Enter(GameObject* object) {

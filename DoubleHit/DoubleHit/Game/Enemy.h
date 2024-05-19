@@ -8,6 +8,8 @@ class Enemy : public CS230::GameObject {
 public:
     Enemy(Math::vec2 start_position);
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
+    GameObjectTypes Type() override { return GameObjectTypes::Enemy; }
+    std::string TypeName() override { return "Enemy"; }
     Math::vec2 Normalize(const Math::vec2& vec);
 
 private:
@@ -21,6 +23,8 @@ public:
     GroundEnemy(Math::vec2 start_position);
     GameObjectTypes Type() override { return GameObjectTypes::GroundEnemy; }
     std::string TypeName() override { return "GroundEnemy"; }
+    bool CanCollideWith(GameObjectTypes) override;
+    void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
@@ -67,6 +71,8 @@ public:
     AirEnemy(Math::vec2 start_position);
     GameObjectTypes Type() override { return GameObjectTypes::AirEnemy; }
     std::string TypeName() override { return "AirEnemy"; }
+    bool CanCollideWith(GameObjectTypes) override;
+    void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:

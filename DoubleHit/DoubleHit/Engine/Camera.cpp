@@ -9,11 +9,10 @@ Created:    March 22, 2023
 */
 
 #include "Camera.h"
+#include "Engine.h"
 
-CS230::Camera::Camera(Math::rect player_zone) : player_zone(player_zone), position({ 0,0 })
-{
-
-}
+CS230::Camera::Camera() : position({ 0,0 })
+{}
 
 void CS230::Camera::SetPosition(Math::vec2 new_position)
 {
@@ -31,29 +30,12 @@ void CS230::Camera::SetLimit(Math::irect new_limit)
 }
 
 Math::TransformationMatrix CS230::Camera::GetMatrix() {
-    return Math::TranslationMatrix(-position);
+    return  Math::ScaleMatrix(zoom) * Math::TranslationMatrix(-position);
 }
 
 
 void CS230::Camera::Update(const Math::vec2& player_position) {
-    if (player_position.x > player_zone.Right() + position.x) {
-        position.x = player_position.x - player_zone.Right();
-    }
-    if (player_position.x - position.x < player_zone.Left()) {
-        position.x = player_position.x - player_zone.Left();
-    }
 
-    if (position.x < limit.Left()) {
-        position.x = limit.Left();
-    }
-    if (position.x > limit.Right()) {
-        position.x = limit.Right();
-    }
-    if (position.y < limit.Bottom()) {
-        position.y = limit.Bottom();
-    }
-    if (position.y > limit.Top()) {
-        position.y = limit.Top();
-    }
+    position = { -(Engine::GetWindow().GetSize().x / (2 * zoom) - player_position.x), -(120 - player_position.y) };
 }
 
