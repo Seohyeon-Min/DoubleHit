@@ -52,13 +52,13 @@ bool CS230::RectCollision::IsCollidingWith(GameObject* other_object) {
         return false;
     }
 
+    Math::rect rectangle_1 = WorldBoundary();
 
     if (other_collider->Shape() != CollisionShape::Rect) {
-        Engine::GetLogger().LogError("Rect vs unsupported type");
-        return false;
+        Math::vec2 circle_position = dynamic_cast<CircleCollision*>(other_collider)->ChangeCollision();
+        return IsCollidingWith(circle_position);
     }
 
-    Math::rect rectangle_1 = WorldBoundary();
     Math::rect rectangle_2 = dynamic_cast<RectCollision*>(other_collider)->WorldBoundary();
 
     if (rectangle_1.Right() >= rectangle_2.Left() &&
@@ -83,6 +83,13 @@ bool CS230::RectCollision::IsCollidingWith(Math::vec2 point)
     return false;
 }
 
+double CS230::RectCollision::ChangeCollision()
+{
+    Math::rect rectangle_1 = WorldBoundary();
+
+    return (rectangle_1.Right() - rectangle_1.Left()) / 2 ;
+}
+
 CS230::CircleCollision::CircleCollision(double radius, GameObject* object) :
     radius(radius),
     object(object)
@@ -98,6 +105,11 @@ double CS230::CircleCollision::GetRadius()
     double avgScale = (scaleX + scaleY) / 2.0;
 
     return radius * avgScale;
+}
+
+Math::vec2 CS230::CircleCollision::ChangeCollision()
+{
+    return Math::vec2(object->GetPosition());
 }
 
 void CS230::CircleCollision::Draw(Math::TransformationMatrix display_matrix) {
@@ -122,7 +134,9 @@ void CS230::CircleCollision::Draw(Math::TransformationMatrix display_matrix) {
 bool CS230::CircleCollision::IsCollidingWith(GameObject* other_object)
 {
     Collision* other_collider = other_object->GetGOComponent<Collision>();
-
+    double radi;
+    double dx;
+    double dy;
 
     if (other_collider == nullptr) {
         return false;
@@ -130,16 +144,20 @@ bool CS230::CircleCollision::IsCollidingWith(GameObject* other_object)
 
 
     if (other_collider->Shape() != CollisionShape::Circle) {
-        Engine::GetLogger().LogError("Circle vs unsupported type");
-        return false;
+        //Engine::GetLogger().LogError("c");
+        radi = dynamic_cast<RectCollision*>(other_object->GetGOComponent<Collision>())->ChangeCollision();
+        dx = object->GetPosition().x - other_object->GetPosition().x;
+        dy = object->GetPosition().y - (other_object->GetPosition().y + other_object->GetGOComponent<CS230::Sprite>()->GetFrameSize().y / 2);
+    }
+    else {
+        radi = dynamic_cast<CircleCollision*>(other_object->GetGOComponent<Collision>())->GetRadius();
+        dx = object->GetPosition().x - other_object->GetPosition().x;
+        dy = object->GetPosition().y - other_object->GetPosition().y;
     }
 
-    double dx = object->GetPosition().x - other_object->GetPosition().x;
-    double dy = object->GetPosition().y - other_object->GetPosition().y;
     double distance = dx * dx + dy * dy;
 
-    double sum_of_squared_radii = (GetRadius() + dynamic_cast<CircleCollision*>(other_object->GetGOComponent<Collision>())->GetRadius()) *
-        (GetRadius() + dynamic_cast<CircleCollision*>(other_object->GetGOComponent<Collision>())->GetRadius());
+    double sum_of_squared_radii = (GetRadius() + radi) * (GetRadius() + radi);
 
     return distance <= sum_of_squared_radii;
 }

@@ -55,6 +55,14 @@ void CS230::GameObjectManager::CollisionTest() {
 					object_1->ResolveCollision(object_2);
 				}
 			}
+			//if (GameObject* gameObject2 = dynamic_cast<GameObject*>(object_2)) {
+			//	if (gameObject1->IsCollidingWith(gameObject2)) {
+			//		gameObject1->ResolveCollision(gameObject2);
+			//	}
+			//}
+			//else if (Math::vec2* vec2_1 = dynamic_cast<Math::vec2*>(object_1)) {
+			// // vec2_1이 Math::vec2 타입인 경우 처리
+			//}
 		}
 	}
 }

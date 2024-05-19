@@ -41,6 +41,7 @@ namespace CS230 {
         void Draw(Math::TransformationMatrix display_matrix);
         bool IsCollidingWith(GameObject* other_object) override;
         bool IsCollidingWith(Math::vec2 point) override;
+        double ChangeCollision();
         Math::rect WorldBoundary();
     private:
         GameObject* object;
@@ -57,6 +58,7 @@ namespace CS230 {
         bool IsCollidingWith(GameObject* other_object) override;
         bool IsCollidingWith(Math::vec2 point) override;
         double GetRadius();
+        Math::vec2 ChangeCollision();
     private:
         GameObject* object;
         double radius;

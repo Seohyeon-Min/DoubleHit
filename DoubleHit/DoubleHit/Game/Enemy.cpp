@@ -31,69 +31,70 @@ GroundEnemy::GroundEnemy(Math::vec2 start_position ):
     distance = 600;
     CS230::GameObject::AddGOComponent(new CS230::Sprite("Assets/enemy/robot.spt", this));
     SetScale({1,1});
-    current_state = &state_running;
-    current_state->Enter(this);
+}
+
+void GroundEnemy::Update(double dt)
+{
+    GameObject::Update(dt);
+    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
+
+    if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Die)) {
+        if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+            Destroy();
+        }
+    }
+    else {
+        x_distance = hero->GetPosition().x - GetPosition().x;
+        direction = Math::vec2(x_distance, 0.0);    //no direction in y
+        distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);     //calculate distance
+
+        if (distance > min_distance) {  //collision
+            if (!has_run) {
+                GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Running));
+                has_run = true;
+            }
+            SetVelocity({ Normalize(direction).x * speed , Normalize(direction).y * speed });
+            if (GetVelocity().x < 0) {
+                SetScale({ 1,1 });
+            }
+            else if (GetVelocity().x >= 0) {
+                SetScale({ -1,1 });
+            }
+        }
+        else if (distance <= min_distance) {
+            SetVelocity({ 0,0 });
+            if (has_run) {
+                GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
+                has_run = false;
+            }
+        }
+    }
 }
 
 bool GroundEnemy::CanCollideWith(GameObjectTypes other_object)
 {
+    switch (other_object) {
+    case GameObjectTypes::Bullet:
+        return true;
+        break;
+    }
     return false;
 }
 
 void GroundEnemy::ResolveCollision(GameObject* other_object)
 {
-}
-
-void GroundEnemy::State_Idle::Enter(GameObject* object) {
-    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
-    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
-}
-void GroundEnemy::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
-void GroundEnemy::State_Idle::CheckExit(GameObject* object) {
-    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
-    if (robot->distance <= robot->min_distance) {
-        robot->change_state(&robot->state_running);
-    }
-   
-}
-
-void GroundEnemy::State_Running::Enter(GameObject* object) {
-    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
-    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Running));
-}
-void GroundEnemy::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
-    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
-    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
-
-    robot->x_distance = hero->GetPosition().x - robot->GetPosition().x;
-    robot->direction = Math::vec2(robot->x_distance, 0.0);    //no direction in y
-    robot->distance = std::sqrt(robot->direction.x * robot->direction.x + robot->direction.y * robot->direction.y);     //calculate distance
-
-    if (robot->distance > robot->min_distance) {  //collision
-        robot->SetVelocity({ robot->Normalize(robot->direction).x * robot->speed , robot->Normalize(robot->direction).y * robot->speed });
-        if (robot->GetVelocity().x < 0) {
-            robot->SetScale({ 1,1 });
+    switch (other_object->Type()) {
+    case GameObjectTypes::Bullet:
+        health -= Bullet::GetDamage() / 2;
+        if (health < 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
         }
-        else if (robot->GetVelocity().x >= 0) {
-            robot->SetScale({ -1,1 });
-        }
+        break;
     }
-    else if(robot->distance <= robot->min_distance) {
-        robot->SetVelocity({0,0});
-        if ( robot->counter >= 1.0) {   //attack per 1 second
-            //attack hero
-            robot->counter = 0;
-        }
-        robot->counter += dt;
-    }
+}
 
-}
-void GroundEnemy::State_Running::CheckExit(GameObject* object) {
-    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
-    if (robot->distance <= robot->min_distance && robot->GetVelocity().x == 0) {
-        robot->change_state(&robot->state_idle);
-    }
-}
 
 //#####################################################################
 
@@ -104,8 +105,6 @@ AirEnemy::AirEnemy(Math::vec2 start_position) :
     AddGOComponent(new CS230::Sprite("Assets/enemy/flying_robot.spt", this));
     SetScale({ 1,1 });
 }
-
-bool has_run = false;
 
 void AirEnemy::Update(double dt)
 {

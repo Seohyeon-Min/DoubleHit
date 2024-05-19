@@ -6,6 +6,7 @@ Bullet::Bullet(Math::vec2 start_position, Math::vec2 targetPosition) :
     destination(targetPosition)
 {
     AddGOComponent(new CS230::Sprite("Assets/pet/bullet.spt", this));
+    //AddGOComponent(new CS230::Sprite("Assets/pet/bullet_collision.spt", this));
     distance = GetAttackDirection();
 }
 
@@ -37,18 +38,26 @@ Math::vec2 Bullet::GetAttackDirection() {
 bool Bullet::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {
-    case GameObjectTypes::AirEnemy:
-        return true;
-        break;
+        case GameObjectTypes::AirEnemy:
+            return true;
+            break;
+        case GameObjectTypes::GroundEnemy:
+            return true;
+            break;
     }
+
     return false;
 }
 
 void Bullet::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
-    case GameObjectTypes::AirEnemy:
-        Destroy();
-        break;
+        case GameObjectTypes::AirEnemy:
+            Destroy();
+            break;
+        case GameObjectTypes::GroundEnemy:
+            Destroy();
+            break;
     }
+
 }
