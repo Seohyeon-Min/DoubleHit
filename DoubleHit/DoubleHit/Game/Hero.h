@@ -2,6 +2,7 @@
 #include "..\Engine\Camera.h"
 #include "..\Engine\GameObject.h"
 #include "..\Engine\Component.h"
+#include "..\Engine\Timer.h"
 #include "Combination.h"
 #include "GameObjectTypes.h"
 
@@ -26,6 +27,9 @@ private:
     double BarMaxWidth = 200.0;
     double BarCurrentWidth = 200;
     double HealthRatio = BarMaxWidth / HealthMax;
+    bool IsHeavyReady = false; //heavy attack cooldown check
+    double HeavyTimerMax = 4;
+    CS230::Timer* Heavytimer;
 
     class State_Jumping : public State {
     public:

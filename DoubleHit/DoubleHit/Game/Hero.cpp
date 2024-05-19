@@ -11,12 +11,17 @@ Hero::Hero(Math::vec2 start_position, GameObject* standing_on) :
     standing_on(standing_on)
 {
     AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero.spt", this));
+    //heavy attack cooldown check
+    Heavytimer = new CS230::Timer(0.0);
+    AddGOComponent(Heavytimer);
+
     HeroHealth = HealthMax;
     BarCurrentWidth = BarMaxWidth;
     SetScale({ 1,1 });
 
     current_state = &state_idle;
     current_state->Enter(this);
+    IsHeavyReady = true;
 }
 
 void Hero::State_Jumping::Enter(GameObject* object) {
@@ -57,7 +62,7 @@ void Hero::State_Idle::CheckExit(GameObject* object) {
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
         hero->change_state(&hero->state_light);
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true) { //heavy attack
         hero->change_state(&hero->state_heavy);
     }
 }
@@ -100,7 +105,7 @@ void Hero::State_Running::CheckExit(GameObject* object) {
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
         hero->change_state(&hero->state_light);
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K)) { //heavy attack
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true) { //heavy attack
         hero->change_state(&hero->state_heavy);
     }
     if (hero->standing_on != nullptr && hero->standing_on->IsCollidingWith(hero) == false) {
@@ -118,19 +123,23 @@ void Hero::State_Light::Enter(GameObject* object) {
 void Hero::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Light::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded())
+    if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
         hero->change_state(&hero->state_idle);
+    }
 }
 
 void Hero::State_Heavy::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Heavy));
+    hero->IsHeavyReady = false;
+    hero->Heavytimer->Set(hero->HeavyTimerMax);
 }
 void Hero::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Heavy::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded())
+    if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
         hero->change_state(&hero->state_idle);
+    }
 }
 
 void Hero::Update(double dt) {
@@ -146,6 +155,16 @@ void Hero::Update(double dt) {
         if (collider->WorldBoundary().Right() > Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x) {
             UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x - collider->WorldBoundary().Right(),0 });
             SetVelocity({ 0, GetVelocity().y });
+        }
+    }
+
+    //heavy cooldown
+    if (IsHeavyReady == false) {
+        if (Heavytimer->Remaining() > 0) {
+            Engine::GetLogger().LogDebug("Remaining Heavy Attack CoolDown   :" + std::to_string(Heavytimer->Remaining()));
+        }
+        else if (Heavytimer->Remaining() == 0.0) {
+            IsHeavyReady = true;
         }
     }
 }
