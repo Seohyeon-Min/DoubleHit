@@ -36,7 +36,7 @@ void Mode1::Load() {
     AddGSComponent(new Combination());
     AddGSComponent(new Gravity(Mode1::gravity));
     GetGSComponent<Combination>()->InitIcons();
-    GetGSComponent<Background>()->Add("Assets/background.png", 1);
+    GetGSComponent<Background>()->Add("Assets/small_background.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, {  GetGSComponent<Background>()->GetSize() - Engine::GetWindow().GetSize() } });
 
