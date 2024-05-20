@@ -21,5 +21,6 @@ enum class GameObjectTypes {
 	Skill,
 	Light,
 	Heavy,
-	Count
+	Count,
+	Upgrade
 };

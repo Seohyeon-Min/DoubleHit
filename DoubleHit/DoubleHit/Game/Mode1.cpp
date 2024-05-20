@@ -16,6 +16,7 @@ Created:    March 8, 2023
 #include "Gravity.h"
 #include "Pet.h"
 #include "Floor.h"
+#include "Upgrade.h"
 
 //random
 #include<cstdlib>
@@ -69,8 +70,6 @@ void Mode1::Load() {
     }
     enemies.clear();
 
-    
-        
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -95,6 +94,12 @@ void Mode1::Draw() {
     if (GetGSComponent<Combination>()->GetCombFlag() == true) {
         GetGSComponent<Combination>()->DrawIcons();
     }
+
+    /*if (Get GSCompoenet<Upgrade>()->WindowActive == true) {
+        Get GSComponent<Upgrade>->Draw();
+    }
+    */
+    
 }
 
 //####################################################################################
