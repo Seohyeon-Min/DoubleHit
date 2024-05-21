@@ -75,7 +75,7 @@ void GroundEnemy::Update(double dt)
             if (attack_timer->Remaining() == 0.0) {
                 attack_timer->Set(attack_time);
                 GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
-                //Attack();
+                Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new GEnemyAttack(this));
             }
             else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
                 if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
@@ -89,15 +89,15 @@ void GroundEnemy::Update(double dt)
 bool GroundEnemy::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {
-        case GameObjectTypes::Bullet:
-            return true;
-            break;
-        case GameObjectTypes::Light:
-            return true;
-            break;
-        case GameObjectTypes::Heavy:
-            return true;
-            break;
+    case GameObjectTypes::Bullet:
+        return true;
+        break;
+    case GameObjectTypes::HeroLight:
+        return true;
+        break;
+    case GameObjectTypes::HeroHeavy:
+        return true;
+        break;
     }
     return false;
 }
@@ -113,16 +113,17 @@ void GroundEnemy::ResolveCollision(GameObject* other_object)
             SetVelocity({ 0,0 });
         }
         break;
-    case GameObjectTypes::Light:
-        health -= Light::GetDamage() ; //should be run only once
+
+    case GameObjectTypes::HeroLight:
+        health -= Hero_Light::GetDamage(); //should be run only once
         if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
             SetVelocity({ 0,0 });
         }
         break;
-    case GameObjectTypes::Heavy:
-        health -= Heavy::GetDamage(); //should be run only once
+    case GameObjectTypes::HeroHeavy:
+        health -= Hero_Heavy::GetDamage(); //should be run only once
         if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
@@ -150,11 +151,16 @@ void AirEnemy::Update(double dt)
     GameObject::Update(dt);
     Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
 
+    if (attack) {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new AEnemyBullet(GetPosition(), { hero->GetPosition() }));
+        attack = false;
+        attackExecuted = true;
+    }
     if (!has_run) {
         GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
         has_run = true;
     }
-    else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Die)){
+    else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Die)) {
         if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
             Destroy();
         }
@@ -165,12 +171,16 @@ void AirEnemy::Update(double dt)
     else {
         direction = const_cast<Math::vec2&>(hero->GetPosition()) - GetPosition();
         distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
-
+        
         if (distance <= min_distance || GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
             SetVelocity({ 0,0 });
+            if (GetGOComponent<CS230::Sprite>()->GetCurrentFrame() == 11 && !attackExecuted) {
+                attack = true;
+            }
         }
         else if (distance > min_distance) {  //collision
             SetVelocity({ Normalize(direction).x * speed , Normalize(direction).y * speed });
+            
             if (GetVelocity().x < 0) {
                 SetScale({ 1,1 });
             }
@@ -182,7 +192,7 @@ void AirEnemy::Update(double dt)
             if (attack_timer->Remaining() == 0.0) {
                 attack_timer->Set(attack_time);
                 GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
-                //Attack();
+                attackExecuted = false;
             }
             else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
                 if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
@@ -193,17 +203,13 @@ void AirEnemy::Update(double dt)
     }
 }
 
-void AirEnemy::Attack() {
-
-}
-
 bool AirEnemy::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {
     case GameObjectTypes::Bullet:
         return true;
         break;
-    case GameObjectTypes::Light:
+    case GameObjectTypes::HeroLight:
         return true;
         break;
     }
@@ -221,16 +227,16 @@ void AirEnemy::ResolveCollision(GameObject* other_object)
             SetVelocity({ 0,0 });
         }
         break;
-    case GameObjectTypes::Light:
-        health -= Light::GetDamage(); //should be run only once
+    case GameObjectTypes::HeroLight:
+        health -= Hero_Light::GetDamage(); //should be run only once
         if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
             SetVelocity({ 0,0 });
         }
         break;
-    case GameObjectTypes::Heavy:
-        health -= Heavy::GetDamage(); //should be run only once
+    case GameObjectTypes::HeroHeavy:
+        health -= Hero_Heavy::GetDamage(); //should be run only once
         if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));

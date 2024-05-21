@@ -114,9 +114,6 @@
     <ClInclude Include="Game\Skill.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Upgrade.h">
-      <Filter>Game</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
@@ -202,9 +199,6 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\Skill.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Upgrade.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>

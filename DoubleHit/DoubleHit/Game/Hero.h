@@ -22,11 +22,11 @@ private:
     GameObject* standing_on;
     void update_x_velocity(double dt);
     static inline const  Math::vec2 velocity = { 200, 500 };
-    double HeroHealth = 100.0;
-    double HealthMax = 100.0;
+    double health = 100.0;
+    double health_max = 100.0;
     double BarMaxWidth = 200.0;
     double BarCurrentWidth = 200;
-    double HealthRatio = BarMaxWidth / HealthMax;
+    double HealthRatio = BarMaxWidth / health_max;
     bool IsHeavyReady = false; //heavy attack cooldown check
     double HeavyTimerMax = 4;
     CS230::Timer* Heavytimer;

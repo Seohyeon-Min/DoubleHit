@@ -33,6 +33,7 @@ namespace CS230 {
         void Draw(Math::TransformationMatrix display_matrix);
         Math::ivec2 GetHotSpot(int index);
         Math::ivec2 GetFrameSize() { return frame_size; };
+        int GetCurrentFrame() { return animations[current_animation]->CurrentFrame(); }
         const int CurrentAnimation() { return current_animation; }
         void PlayAnimation(int animation);
         bool AnimationEnded();

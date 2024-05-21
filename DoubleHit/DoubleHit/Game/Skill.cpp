@@ -1,26 +1,39 @@
 #include "Skill.h"
 #include "Hero.h"
+#include "Enemy.h"
 
-
-Skill::Skill(Math::vec2 start_position):
-	GameObject(start_position)
+Skill::Skill(GameObject* object):
+	GameObject(object->GetPosition())
 {
 }
 
-Light::Light(Math::vec2 start_position):
-	Skill(start_position)
+bool Skill::CanCollideWith(GameObjectTypes other_object)
+{
+    switch (other_object) {
+    case GameObjectTypes::AirEnemy:
+        return true;
+        break;
+    case GameObjectTypes::GroundEnemy:
+        return true;
+        break;
+    }
+    return false;
+}
+
+
+Hero_Light::Hero_Light(GameObject* object):
+	Skill(object)
 {
 	AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero_light.spt", this));
     skill_timer = new CS230::Timer(skill_time);
     AddGOComponent(skill_timer);
-    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
-    direction = hero->GetScale().x;
+    direction = object->GetScale().x;
     if (direction == -1) {
         SetScale({ -1, 1 });
     }
 }
 
-void Light::Update(double dt)
+void Hero_Light::Update(double dt)
 {
     GameObject::Update(dt);
     if (skill_timer->Remaining() == 0.0) {
@@ -28,20 +41,7 @@ void Light::Update(double dt)
     }
 }
 
-bool Light::CanCollideWith(GameObjectTypes other_object)
-{
-    switch (other_object) {
-    case GameObjectTypes::AirEnemy:
-        return true;
-        break;
-    case GameObjectTypes::GroundEnemy:
-        return true;
-        break;
-    }
-    return false;
-}
-
-void Light::ResolveCollision(GameObject* other_object)
+void Hero_Light::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
     case GameObjectTypes::AirEnemy:
@@ -53,23 +53,19 @@ void Light::ResolveCollision(GameObject* other_object)
     }
 }
 
-
-
-
-Heavy::Heavy(Math::vec2 start_position) :
-    Skill(start_position)
+Hero_Heavy::Hero_Heavy(GameObject* object) :
+    Skill(object)
 {
     AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero_heavy.spt", this));
     skill_timer = new CS230::Timer(skill_time);
     AddGOComponent(skill_timer);
-    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
-    direction = hero->GetScale().x;
+    direction = object->GetScale().x;
     if (direction == -1) {
         SetScale({ -1, 1 });
     }
 }
 
-void Heavy::Update(double dt)
+void Hero_Heavy::Update(double dt)
 {
     GameObject::Update(dt);
     if (skill_timer->Remaining() == 0.0) {
@@ -77,26 +73,54 @@ void Heavy::Update(double dt)
     }
 }
 
-bool Heavy::CanCollideWith(GameObjectTypes other_object)
-{
-    switch (other_object) {
-    case GameObjectTypes::AirEnemy:
-        return true;
-        break;
-    case GameObjectTypes::GroundEnemy:
-        return true;
-        break;
-    }
-    return false;
-}
-
-void Heavy::ResolveCollision(GameObject* other_object)
+void Hero_Heavy::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
     case GameObjectTypes::AirEnemy:
         Destroy();
         break;
     case GameObjectTypes::GroundEnemy:
+        Destroy();
+        break;
+    }
+}
+
+
+
+GEnemyAttack::GEnemyAttack(GameObject* object) :
+    Skill(object)
+{
+    AddGOComponent(new CS230::Sprite("Assets/enemy/robot_attack.spt", this));
+    skill_timer = new CS230::Timer(skill_time);
+    AddGOComponent(skill_timer);
+    direction = object->GetScale().x;
+    if (direction == -1) {
+        SetScale({ -1, 1 });
+    }
+}
+
+void GEnemyAttack::Update(double dt)
+{
+    GameObject::Update(dt);
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+    }
+}
+
+bool GEnemyAttack::CanCollideWith(GameObjectTypes other_object)
+{
+    switch (other_object) {
+    case GameObjectTypes::Hero:
+        return true;
+        break;
+    }
+    return false;
+}
+
+void GEnemyAttack::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::Hero:
         Destroy();
         break;
     }

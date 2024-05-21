@@ -1,0 +1,6 @@
+Assets/enemy/robot_bullet.png
+FrameSize 133 28
+HotSpot 5 5
+CircleCollision 5
+NumFrames 7
+Anim Assets/robot_bullet.anm

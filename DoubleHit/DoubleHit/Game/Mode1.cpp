@@ -16,7 +16,6 @@ Created:    March 8, 2023
 #include "Gravity.h"
 #include "Pet.h"
 #include "Floor.h"
-#include "Upgrade.h"
 
 //random
 #include<cstdlib>

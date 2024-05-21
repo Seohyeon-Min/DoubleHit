@@ -1,0 +1,6 @@
+Assets/None.png
+FrameSize 70 70
+HotSpot 35 0
+RectCollision -14 0 -50 50
+Frame 0 0
+Anim Assets/None.anm

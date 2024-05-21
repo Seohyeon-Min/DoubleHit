@@ -18,9 +18,11 @@ enum class GameObjectTypes {
 	GroundEnemy,
 	AirEnemy,
 	Floor,
+	AEnemyBullet,
+	GEnemyAttack,
 	Skill,
-	Light,
-	Heavy,
+	HeroLight,
+	HeroHeavy,
 	Count,
 	Upgrade
 };

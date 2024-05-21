@@ -57,7 +57,6 @@ public:
     GameObjectTypes Type() override { return GameObjectTypes::AirEnemy; }
     std::string TypeName() override { return "AirEnemy"; }
     void Update(double dt) override;
-    void Attack();
     bool CanCollideWith(GameObjectTypes) override;
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
@@ -65,6 +64,8 @@ public:
 private:
     Math::vec2 direction;
     bool has_run = false;
+    bool attack;
+    bool attackExecuted = false;
     double speed = 70;
     double min_distance = 230;
     double health = 10;

@@ -4,6 +4,8 @@
 #include "Mode1.h"
 #include "Gravity.h"
 #include "Skill.h"
+#include "Bullet.h"
+#include "../Engine/Collision.h"
 #include "../Engine/Engine.h"
  
 #include <iostream> //delete later
@@ -17,7 +19,7 @@ Hero::Hero(Math::vec2 start_position, GameObject* standing_on) :
     Heavytimer = new CS230::Timer(0.0);
     AddGOComponent(Heavytimer);
 
-    HeroHealth = HealthMax;
+    health = health_max;
     BarCurrentWidth = BarMaxWidth;
     SetScale({ 1,1 });
 
@@ -121,7 +123,7 @@ void Hero::State_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light));
     hero->SetVelocity({ 0, hero->GetVelocity().y });
-    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Light(hero->GetPosition()));
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light(hero));
     //Math::irect light_rect{ {-14, 0},{14, 10} };
     //hero->AddGOComponent(new CS230::RectCollision(light_rect, hero));
 }
@@ -139,7 +141,7 @@ void Hero::State_Heavy::Enter(GameObject* object) {
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Heavy));
     hero->IsHeavyReady = false;
     hero->Heavytimer->Set(hero->HeavyTimerMax);
-    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Heavy(hero->GetPosition()));
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy(hero));
 }
 void Hero::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Heavy::CheckExit(GameObject* object) {
@@ -180,6 +182,8 @@ bool Hero::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {
     case GameObjectTypes::Floor:
+    case GameObjectTypes::AEnemyBullet:
+    case GameObjectTypes::GEnemyAttack:
         return true;
         break;
     }
@@ -189,20 +193,25 @@ bool Hero::CanCollideWith(GameObjectTypes other_object)
 
 void Hero::ResolveCollision(GameObject* other_object)
 {
-    Math::rect hero_rect = GetGOComponent<CS230::RectCollision>()->WorldBoundary();
-    Math::rect other_rect = other_object->GetGOComponent<CS230::RectCollision>()->WorldBoundary();
+    if (other_object->Type() == GameObjectTypes::Floor) {
+        Math::rect hero_rect = GetGOComponent<CS230::RectCollision>()->WorldBoundary();
+        Math::rect other_rect = other_object->GetGOComponent<CS230::RectCollision>()->WorldBoundary();
+        if (current_state == &state_falling) {
+            if (hero_rect.Top() > other_rect.Top() && hero_rect.Bottom() > other_rect.Bottom()) {
+                SetPosition({ GetPosition().x, other_rect.Top() });
+                standing_on = other_object;
+                current_state->CheckExit(this);
+                return;
+            }
+        }
+    }
 
     switch (other_object->Type()) {
-        case GameObjectTypes::Floor:
-
-            if (current_state == &state_falling) {
-                if (hero_rect.Top() > other_rect.Top()) {
-                    SetPosition({ GetPosition().x, other_rect.Top() });
-                    standing_on = other_object;
-                    current_state->CheckExit(this);
-                    return;
-                }
-            }
+        case GameObjectTypes::AEnemyBullet:
+            TakeDamage(AEnemyBullet::GetDamage());
+            break;
+        case GameObjectTypes::GEnemyAttack:
+            TakeDamage(AEnemyBullet::GetDamage());
             break;
     }
 }
@@ -227,19 +236,19 @@ void Hero::update_x_velocity(double dt) {
 }
 
 double Hero::GetHealth() {
-    return HeroHealth;
+    return health;
 }
 
 void Hero::TakeDamage(double damage) {
-    HeroHealth -= damage;
+    health -= damage;
 
-    if (HeroHealth <= 0) {
-        HeroHealth = 0;
+    if (health <= 0) {
+        health = 0;
         BarCurrentWidth = 0;
         std::cout << "Game Over." << std::endl;
     }
     else {
-        std::cout << "Hero got " << damage << " damage. Health: " << HeroHealth << std::endl;
-        BarCurrentWidth = HeroHealth * HealthRatio;
+        std::cout << "Hero got " << damage << " damage. Health: " << health << std::endl;
+        BarCurrentWidth = health * HealthRatio;
     }  
 }

@@ -1,7 +1,7 @@
 Assets/hero/png/hero.png
 FrameSize 70 70
 HotSpot 35 0
-RectCollision -14 0 14 10
+RectCollision -14 0 14 60
 Frame 0 0
 Frame 70 0
 Frame 0 70
