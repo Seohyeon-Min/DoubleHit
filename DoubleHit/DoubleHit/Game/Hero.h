@@ -17,6 +17,9 @@ public:
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     double GetHealth();
     void TakeDamage(double damage);
+    int ReturnHeavyTimer();
+    bool ReturnHeavyReady();
+    int ReturnHeavyMax();
  
 private:
     GameObject* standing_on;

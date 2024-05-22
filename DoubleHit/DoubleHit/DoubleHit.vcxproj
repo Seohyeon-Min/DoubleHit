@@ -54,6 +54,7 @@
     <ClInclude Include="Game\Skill.h" />
     <ClInclude Include="Game\Splash.h" />
     <ClInclude Include="Game\States.h" />
+    <ClInclude Include="Game\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Animation.cpp" />
@@ -84,6 +85,7 @@
     <ClCompile Include="Game\Pet.cpp" />
     <ClCompile Include="Game\Skill.cpp" />
     <ClCompile Include="Game\Splash.cpp" />
+    <ClCompile Include="Game\UI.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

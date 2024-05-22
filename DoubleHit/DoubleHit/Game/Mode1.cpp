@@ -16,6 +16,7 @@ Created:    March 8, 2023
 #include "Gravity.h"
 #include "Pet.h"
 #include "Floor.h"
+#include "UI.h"
 
 //random
 #include<cstdlib>
@@ -63,6 +64,15 @@ void Mode1::Load() {
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
 
+    ////UI
+    AddGSComponent(new UI(hero_ptr));
+    GetGSComponent<UI>()->Add("Assets/pet/pet_UI/draw_pet.png", {1100,80}, 0.75);
+    GetGSComponent<UI>()->Add("Assets/hero/png/draw_hero.png", { 50,80 }, 0.75);
+    GetGSComponent<UI>()->Add("Assets/hero/png/Belt.png", {540, -20}, 1.5);
+    GetGSComponent<UI>()->Add("Assets/hero/png/HeroSkill_Basic.png", { 150, 80 }, 1.5);
+    GetGSComponent<UI>()->Add("Assets/hero/png/HeroSkill_Strong.png", { 200, 80 }, 1.5);
+    GetGSComponent<UI>()->Add("Assets/pet/pet_UI/PetSkill_Basic.png", { 1000, 80 }, 1.5);
+    GetGSComponent<UI>()->Add("Assets/pet/pet_UI/PetSkill_Strong.png", { 1050, 80 }, 1.5);
 
     for (auto& enemyPtr : enemies) {  //reset enemies
         delete enemyPtr;
@@ -84,6 +94,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::Escape)) {
         Engine::GetGameStateManager().ClearNextGameState();
     }
+    GetGSComponent<UI>()->Update(dt);
 }
 
 void Mode1::Draw() {
@@ -93,12 +104,8 @@ void Mode1::Draw() {
     if (GetGSComponent<Combination>()->GetCombFlag() == true) {
         GetGSComponent<Combination>()->DrawIcons();
     }
-
-    /*if (Get GSCompoenet<Upgrade>()->WindowActive == true) {
-        Get GSComponent<Upgrade>->Draw();
-    }
-    */
-    
+    GetGSComponent<UI>()->Draw();
+    DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
 }
 
 //####################################################################################
