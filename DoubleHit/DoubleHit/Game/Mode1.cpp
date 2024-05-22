@@ -59,7 +59,7 @@ void Mode1::Load() {
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 608 }, { 2176, 640 } }));//10
 
 
-    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * zoom), floor }, starting_floor_ptr);
+    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
 
@@ -88,7 +88,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
 
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-    GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), zoom);
+    GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), CS230::Camera::zoom);
     GetGSComponent<CS230::GameObjectManager>()->DrawAll(GetGSComponent<CS230::Camera>()->GetMatrix());
     if (GetGSComponent<Combination>()->GetCombFlag() == true) {
         GetGSComponent<Combination>()->DrawIcons();

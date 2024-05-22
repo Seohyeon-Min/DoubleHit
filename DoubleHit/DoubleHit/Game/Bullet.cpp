@@ -25,8 +25,8 @@ void Bullet::Update(double dt) {
 
 Math::vec2 Bullet::GetAttackDirection() {
     //distance = { destination.x - (GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x), destination.y - GetPosition().y };
-    distance = { destination.x - (GetPosition().x * 1.0 - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x),
-                 destination.y - (GetPosition().y * 1.0 - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().y) }; //zoom
+    distance = { destination.x - (GetPosition().x  - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x ) * CS230::Camera::zoom,
+                 destination.y - (GetPosition().y  - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().y) * CS230::Camera::zoom }; //zoom
     double angle = atan2(distance.y, distance.x);
     distance.x = cos(angle);
     distance.y = sin(angle);
@@ -86,8 +86,8 @@ void AEnemyBullet::Update(double dt) {
 
 Math::vec2 AEnemyBullet::GetAttackDirection() {
     //distance = { destination.x - (GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x), destination.y - GetPosition().y };
-    distance = { destination.x - (GetPosition().x * 1.0),
-                 destination.y - (GetPosition().y * 1.0) + Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>()->GetGOComponent<CS230::Sprite>()->GetFrameSize().y / 2 }; //zoom
+    distance = { destination.x - (GetPosition().x),
+                 destination.y - (GetPosition().y ) + Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>()->GetGOComponent<CS230::Sprite>()->GetFrameSize().y / 2 }; //zoom
     double angle = atan2(distance.y, distance.x);
     distance.x = cos(angle);
     distance.y = sin(angle);

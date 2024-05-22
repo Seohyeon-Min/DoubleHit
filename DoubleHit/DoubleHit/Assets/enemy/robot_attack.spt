@@ -1,5 +1,5 @@
-Assets/None.png
-FrameSize 70 70
+Assets/enemy/robot_attack_fire.png
+FrameSize 41 45
 HotSpot 35 0
 RectCollision -14 0 -50 50
 Frame 0 0

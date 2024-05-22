@@ -74,11 +74,13 @@ void GroundEnemy::Update(double dt)
         if (distance <= shooting_range) {
             if (attack_timer->Remaining() == 0.0) {
                 attack_timer->Set(attack_time);
-                GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
-                Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new GEnemyAttack(this));
+                GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack)); 
             }
             else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
-                if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+                if (GetGOComponent<CS230::Sprite>()->GetCurrentFrame() == 13 ) {
+                    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new GEnemyAttack(this));
+                }
+                else if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
                     has_run = false;
                 }
             }
