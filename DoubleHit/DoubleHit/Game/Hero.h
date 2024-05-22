@@ -17,6 +17,9 @@ public:
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     double GetHealth();
     void TakeDamage(double damage);
+    int ReturnHeavyTimer();
+    bool ReturnHeavyReady();
+    int ReturnHeavyMax();
  
 private:
     GameObject* standing_on;
@@ -27,7 +30,7 @@ private:
     double BarMaxWidth = 200.0;
     double BarCurrentWidth = 200;
     double HealthRatio = BarMaxWidth / HealthMax;
-    bool IsHeavyReady = false; //heavy attack cooldown check
+    bool IsHeavyReady = true; //heavy attack cooldown check
     double HeavyTimerMax = 4;
     CS230::Timer* Heavytimer;
 

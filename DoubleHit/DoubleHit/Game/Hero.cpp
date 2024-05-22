@@ -236,3 +236,14 @@ void Hero::TakeDamage(double damage) {
         BarCurrentWidth = HeroHealth * HealthRatio;
     }  
 }
+int Hero::ReturnHeavyMax() {
+    return HeavyTimerMax;
+}
+int Hero::ReturnHeavyTimer() {
+    return Heavytimer->RemainingInt();
+}
+
+bool Hero::ReturnHeavyReady() {
+    return IsHeavyReady;
+}
+

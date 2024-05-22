@@ -17,8 +17,6 @@ private:
     const float radius = 40.0f;
     bool increasing = true;
     float angle = PI;
-    static constexpr int mouse_radius = 15; //temporary mouse asset
-    Color mouse_color = { 230 , 116 , 92, 125 }; //temporary mouse asset
 
     class State_Idle : public State {
     public:

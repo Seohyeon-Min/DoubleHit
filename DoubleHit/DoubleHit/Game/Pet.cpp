@@ -85,7 +85,6 @@ void Pet::Update(double dt) {
  
 void Pet::Draw(Math::TransformationMatrix camera_matrix) {
     GameObject::Draw(camera_matrix);
-    DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
 }
 
 void Pet::MakeAttack()
