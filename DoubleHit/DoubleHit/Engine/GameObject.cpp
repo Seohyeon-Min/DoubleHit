@@ -35,6 +35,8 @@ void CS230::GameObject::Update(double dt) {
 }
 
 void CS230::GameObject::change_state(State* new_state) {
+    //Engine::GetLogger().LogDebug(" Leaving State: " + current_state->GetName());
+    //Engine::GetLogger().LogDebug(" Entering State: " + new_state->GetName());
     current_state = new_state;
     current_state->Enter(this);
 }

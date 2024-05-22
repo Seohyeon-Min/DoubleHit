@@ -44,6 +44,9 @@ void Hero::State_Jumping::CheckExit(GameObject* object) {
     if (hero->GetVelocity().y <= 0) {
         hero->change_state(&hero->state_falling);
     }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+        hero->change_state(&hero->state_light);
+    }
 }
 
 void Hero::State_Idle::Enter(GameObject* object) {
@@ -124,23 +127,45 @@ void Hero::State_Light::Enter(GameObject* object) {
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light));
     hero->SetVelocity({ 0, hero->GetVelocity().y });
     Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light(hero));
-    //Math::irect light_rect{ {-14, 0},{14, 10} };
-    //hero->AddGOComponent(new CS230::RectCollision(light_rect, hero));
 }
-void Hero::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
+void Hero::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { 
+    Hero* hero = static_cast<Hero*>(object);
+    if (hero->GetGOComponent<CS230::Sprite>()->GetCurrentFrame() <= 12 && Engine::GetInput().KeyDown(CS230::Input::Keys::J)) {
+        hero->light_combo = true;
+    }
+    if (hero->standing_on == nullptr) {
+        hero->UpdateVelocity({ 0,  -Engine::GetGameStateManager().GetGSComponent<Gravity>()->GetValue() * dt });
+    }
+
+}
 void Hero::State_Light::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    //hero->RemoveGOComponent<CS230::Collision>();
     if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
-        hero->change_state(&hero->state_idle);
+        if (hero->light_combo && hero->GetGOComponent<CS230::Sprite>()->AnimationEnded() && hero->standing_on != nullptr) {
+            hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light2));
+            Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light(hero));
+            hero->light_combo = false;
+            if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded())
+            {
+                hero->change_state(&hero->state_idle);
+            }
+        }
+        else if (hero->GetVelocity().y <= 0) {
+            hero->change_state(&hero->state_falling);
+        }
+        else if (hero->standing_on != nullptr){
+            hero->change_state(&hero->state_idle);
+        }
     }
 }
+
 
 void Hero::State_Heavy::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Heavy));
     hero->IsHeavyReady = false;
     hero->Heavytimer->Set(hero->HeavyTimerMax);
+    hero->SetVelocity({ 0, hero->GetVelocity().y });
     Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy(hero));
 }
 void Hero::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }

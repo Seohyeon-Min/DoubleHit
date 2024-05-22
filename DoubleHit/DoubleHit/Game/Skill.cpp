@@ -35,6 +35,7 @@ Hero_Light::Hero_Light(GameObject* object):
 
 void Hero_Light::Update(double dt)
 {
+    SetPosition(Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>()->GetPosition());
     GameObject::Update(dt);
     if (skill_timer->Remaining() == 0.0) {
         Destroy();
