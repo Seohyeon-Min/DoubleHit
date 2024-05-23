@@ -5,10 +5,11 @@
 #include "..\Engine\Timer.h"
 #include "Combination.h"
 #include "GameObjectTypes.h"
+#include "Upgrade.h"
 
-class Hero : public CS230::GameObject{
+class Hero : public CS230::GameObject {
 public:
-    Hero(Math::vec2 start_position, GameObject* standing_on);
+    Hero(Math::vec2 start_position, GameObject* standing_on, Upgrade* upgrade);
     GameObjectTypes Type() override { return GameObjectTypes::Hero; }
     std::string TypeName() override { return "Hero"; }
     void Update(double dt) override;
@@ -17,11 +18,33 @@ public:
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     double GetHealth();
     void TakeDamage(double damage);
+<<<<<<< Updated upstream
     int ReturnHeavyTimer();
     bool ReturnHeavyReady();
     int ReturnHeavyMax();
+=======
+
+
+    int HeroLevel = 0;
+
+    void AddExp(int exp) {
+        HeroExp += exp;
+        HeroLevelCheck();
+    }
+
+    double GetExp() const {
+        return HeroExp;
+    }
+
+    
+>>>>>>> Stashed changes
  
 private:
+    void HeroLevelCheck();
+    double HeroExp = 0;
+    Upgrade* upgrade;
+    int previousLevel;
+
     GameObject* standing_on;
     void update_x_velocity(double dt);
     static inline const  Math::vec2 velocity = { 200, 500 };

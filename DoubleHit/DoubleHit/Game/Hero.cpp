@@ -10,12 +10,13 @@
  
 #include <iostream> //delete later
 
-Hero::Hero(Math::vec2 start_position, GameObject* standing_on) :
+Hero::Hero(Math::vec2 start_position, GameObject* standing_on, Upgrade* upgrade) :
     GameObject(start_position),
-    standing_on(standing_on)
+    standing_on(standing_on),
+    upgrade(upgrade)
 {
     AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero.spt", this));
-    //heavy attack cooldown check
+    // heavy attack cooldown check
     Heavytimer = new CS230::Timer(0.0);
     AddGOComponent(Heavytimer);
 
@@ -26,7 +27,9 @@ Hero::Hero(Math::vec2 start_position, GameObject* standing_on) :
     current_state = &state_idle;
     current_state->Enter(this);
     IsHeavyReady = true;
+    previousLevel = 0;
 }
+
 
 void Hero::State_Jumping::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
@@ -179,6 +182,11 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
 void Hero::Update(double dt) {
     GameObject::Update(dt);
 
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::I)) {
+        std::cout << HeroExp << " ";
+        std::cout << HeroLevel;
+    }
+
     // Boundary Check
     CS230::RectCollision* collider = GetGOComponent<CS230::RectCollision>();
     if (collider != nullptr) {
@@ -277,6 +285,7 @@ void Hero::TakeDamage(double damage) {
         BarCurrentWidth = health * HealthRatio;
     }  
 }
+<<<<<<< Updated upstream
 int Hero::ReturnHeavyMax() {
     return HeavyTimerMax;
 }
@@ -288,3 +297,17 @@ bool Hero::ReturnHeavyReady() {
     return IsHeavyReady;
 }
 
+=======
+
+
+void Hero::HeroLevelCheck() {
+    previousLevel = static_cast<int>(HeroExp) / 250;
+
+    if (previousLevel > HeroLevel) {
+        Engine::GetLogger().LogEvent("Hero Level Up: " + std::to_string(previousLevel));
+        HeroLevel = previousLevel;
+        upgrade->ActivateUpgrade(HeroExp);
+        HeroLevelCheck();
+    }
+}
+>>>>>>> Stashed changes

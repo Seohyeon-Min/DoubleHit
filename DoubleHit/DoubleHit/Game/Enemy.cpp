@@ -6,6 +6,7 @@
 #include "Skill.h"
 #include <cmath>
 
+
 Enemy::Enemy(Math::vec2 start_position) :
     GameObject(start_position)
 {
@@ -44,6 +45,10 @@ void GroundEnemy::Update(double dt)
     if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Die)) {
         if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
             Destroy();
+            if (hero != nullptr) {
+                hero->AddExp(150);
+                Engine::GetLogger().LogEvent("Add Exp 150 ");
+            }
         }
     }
     else {
@@ -169,6 +174,10 @@ void AirEnemy::Update(double dt)
     else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Die)) {
         if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
             Destroy();
+            if (hero != nullptr) {
+                hero->AddExp(150);
+                Engine::GetLogger().LogEvent("Add Exp 150");
+            }
         }
         //else if (GetGOComponent<CS230::Collision>() == nullptr) {
         //    Destroy();

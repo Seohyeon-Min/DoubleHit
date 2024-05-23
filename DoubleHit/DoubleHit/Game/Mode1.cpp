@@ -36,11 +36,12 @@ void Mode1::Load() {
     AddGSComponent(new Background());
     AddGSComponent(new Combination());
     AddGSComponent(new Gravity(Mode1::gravity));
+    AddGSComponent(new Upgrade());
     GetGSComponent<Combination>()->InitIcons();
     GetGSComponent<Background>()->Add("Assets/small_background.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, {  GetGSComponent<Background>()->GetSize() - Engine::GetWindow().GetSize() } });
-
+    Upgrade* upgradeInstance = new Upgrade();
 
     Floor* starting_floor_ptr = new Floor(Math::irect{ { 0, 0 }, { 2560, static_cast<int>(floor) } });
     GetGSComponent<CS230::GameObjectManager>()->Add(starting_floor_ptr);
@@ -60,9 +61,14 @@ void Mode1::Load() {
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 608 }, { 2176, 640 } }));//10
 
 
+<<<<<<< Updated upstream
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr);
+=======
+    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * zoom), floor }, starting_floor_ptr, upgradeInstance);
+>>>>>>> Stashed changes
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
+    //GetGSComponent<CS230::GameObjectManager>()
 
     ////UI
     AddGSComponent(new UI(hero_ptr));
@@ -105,8 +111,16 @@ void Mode1::Draw() {
     if (GetGSComponent<Combination>()->GetCombFlag() == true) {
         GetGSComponent<Combination>()->DrawIcons();
     }
+<<<<<<< Updated upstream
     GetGSComponent<UI>()->Draw();
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
+=======
+
+    if (GetGSComponent<Upgrade>()->GetUpgradeActive() == true) {
+        GetGSComponent<Upgrade>()->DrawUpgrade();
+    }
+    
+>>>>>>> Stashed changes
 }
 
 //####################################################################################
