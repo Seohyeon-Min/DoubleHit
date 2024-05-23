@@ -92,11 +92,8 @@ bool GroundEnemy::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {
     case GameObjectTypes::Bullet:
-        return true;
-        break;
+    case GameObjectTypes::BulletHeavy:
     case GameObjectTypes::HeroLight:
-        return true;
-        break;
     case GameObjectTypes::HeroHeavy:
         return true;
         break;
@@ -115,7 +112,14 @@ void GroundEnemy::ResolveCollision(GameObject* other_object)
             SetVelocity({ 0,0 });
         }
         break;
-
+    case GameObjectTypes::BulletHeavy:
+        health -= BulletHeavy::GetDamage();
+        if (health < 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
     case GameObjectTypes::HeroLight:
         health -= Hero_Light::GetDamage(); //should be run only once
         if (health <= 0) {
@@ -209,8 +213,7 @@ bool AirEnemy::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {
     case GameObjectTypes::Bullet:
-        return true;
-        break;
+    case GameObjectTypes::BulletHeavy:
     case GameObjectTypes::HeroLight:
         return true;
         break;
@@ -223,6 +226,14 @@ void AirEnemy::ResolveCollision(GameObject* other_object)
     switch (other_object->Type()) {
     case GameObjectTypes::Bullet:
         health -= Bullet::GetDamage();
+        if (health < 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
+    case GameObjectTypes::BulletHeavy:
+        health -= BulletHeavy::GetDamage();
         if (health < 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));

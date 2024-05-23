@@ -10,7 +10,7 @@ public:
     std::string TypeName() override { return "Pet"; }
     void Update(double dt) override;
     void Draw(Math::TransformationMatrix camera_matrix) override;
-    void MakeAttack();
+    void MakeAttack(bool is_light);
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:

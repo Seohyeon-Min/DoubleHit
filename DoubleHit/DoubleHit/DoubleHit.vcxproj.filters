@@ -112,7 +112,7 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\Skill.h">
-          <Filter>Game</Filter>
+      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\UI.h">
       <Filter>Game</Filter>
@@ -202,7 +202,7 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\Skill.cpp">
-    <Filter>Game</Filter>
+      <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\UI.cpp">
       <Filter>Game</Filter>

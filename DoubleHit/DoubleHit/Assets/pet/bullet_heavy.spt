@@ -1,0 +1,6 @@
+Assets/pet/bullet_heavy.png
+FrameSize 67 67
+HotSpot 33 33
+CircleCollision 20
+NumFrames 15
+Anim Assets/pet/bullet_heavy.anm

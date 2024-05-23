@@ -73,6 +73,7 @@ void Mode1::Load() {
     GetGSComponent<UI>()->Add("Assets/hero/png/HeroSkill_Strong.png", { 200, 80 }, 1.5);
     GetGSComponent<UI>()->Add("Assets/pet/pet_UI/PetSkill_Basic.png", { 1000, 80 }, 1.5);
     GetGSComponent<UI>()->Add("Assets/pet/pet_UI/PetSkill_Strong.png", { 1050, 80 }, 1.5);
+    //GetGSComponent<UI>()->Add("Assets/vignetting.png", { 0, 0 }, 1);
 
     for (auto& enemyPtr : enemies) {  //reset enemies
         delete enemyPtr;

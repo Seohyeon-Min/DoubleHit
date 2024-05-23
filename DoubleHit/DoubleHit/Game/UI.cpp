@@ -21,7 +21,7 @@ void UI::Draw() {
 	}
 
 	if (hero->ReturnHeavyReady() == false) {
-		DrawRectangle(200, 590, 50,((IconHeight / hero->ReturnHeavyMax() * hero->ReturnHeavyTimer())), attackDisable);
+		DrawRectangle(200, 590, 50, ((IconHeight / hero->ReturnHeavyMax() * (hero->ReturnHeavyTimer()+1))), attackDisable);
 	}
 }
 
