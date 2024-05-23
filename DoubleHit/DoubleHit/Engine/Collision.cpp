@@ -11,6 +11,7 @@ Created:    March 8, 2023
 #include "Collision.h"
 #include "GameObject.h"
 
+
 CS230::RectCollision::RectCollision(Math::irect boundary, GameObject* object) :
     boundary(boundary),
     object(object)
@@ -85,14 +86,13 @@ bool CS230::RectCollision::IsCollidingWith(Math::vec2 point)
 }
 
 
-
-
 double CS230::RectCollision::ChangeCollision()
 {
     Math::rect rectangle_1 = WorldBoundary();
 
     return (rectangle_1.Right() - rectangle_1.Left()) / 2 ;
 }
+
 
 CS230::CircleCollision::CircleCollision(double radius, GameObject* object) :
     radius(radius),
@@ -145,13 +145,27 @@ bool CS230::CircleCollision::IsCollidingWith(GameObject* other_object)
     if (other_collider == nullptr) {
         return false;
     }
-
-    //circle collides with rect
     if (other_collider->Shape() != CollisionShape::Circle) {
+
         //Engine::GetLogger().LogError("c");
-        radi = dynamic_cast<RectCollision*>(other_object->GetGOComponent<Collision>())->ChangeCollision();
+        //radi = dynamic_cast<RectCollision*>(other_object->GetGOComponent<Collision>())->ChangeCollision();
         dx = object->GetPosition().x - other_object->GetPosition().x;
         dy = object->GetPosition().y - (other_object->GetPosition().y + other_object->GetGOComponent<CS230::Sprite>()->GetFrameSize().y / 2);
+
+        //circle collides with rect
+        if (other_collider->Shape() == CollisionShape::Rect) {
+            Math::rect rectangle_1 = dynamic_cast<RectCollision*>(other_collider)->WorldBoundary();
+
+            //distance between boundary and circle position
+            dx = std::max(rectangle_1.Left(), std::min(rectangle_1.Right(), object->GetPosition().x));
+            dy = std::max(rectangle_1.Bottom(), std::min(rectangle_1.Top(), object->GetPosition().y));
+
+            double distance = dx * dx + dy * dy;
+
+            double sum_of_squared_radii = (GetRadius()) * (GetRadius());
+
+            return distance <= sum_of_squared_radii;
+        }
     }
     else {
         radi = dynamic_cast<CircleCollision*>(other_object->GetGOComponent<Collision>())->GetRadius();
