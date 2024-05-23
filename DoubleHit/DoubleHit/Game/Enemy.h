@@ -33,10 +33,10 @@ private:
     Math::vec2 direction;
     bool has_run = false;
     double speed = 80;
-    double min_distance = 50;
+    double min_distance = 30;
     double x_distance;
     double distance;
-    double health = 10;
+    double health = 5;
     double damage = 10;     //unused... yet
     static constexpr double shooting_range = 50;
     CS230::Timer* attack_timer;
@@ -67,8 +67,8 @@ private:
     bool attack;
     bool attackExecuted = false;
     double speed = 70;
-    double min_distance = 230;
-    double health = 10;
+    double min_distance = 100;
+    double health = 5;
     double distance;
     static constexpr double shooting_range = 380;
     static constexpr double damage = 10;     //unused... yet

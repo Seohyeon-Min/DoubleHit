@@ -54,7 +54,8 @@ bool CS230::RectCollision::IsCollidingWith(GameObject* other_object) {
 
     Math::rect rectangle_1 = WorldBoundary();
 
-    if (other_collider->Shape() != CollisionShape::Rect) {
+    //rect collides with circle
+    if (other_collider->Shape() == CollisionShape::Circle) {
         Math::vec2 circle_position = dynamic_cast<CircleCollision*>(other_collider)->ChangeCollision();
         return IsCollidingWith(circle_position);
     }
@@ -82,6 +83,9 @@ bool CS230::RectCollision::IsCollidingWith(Math::vec2 point)
     }
     return false;
 }
+
+
+
 
 double CS230::RectCollision::ChangeCollision()
 {
@@ -142,7 +146,7 @@ bool CS230::CircleCollision::IsCollidingWith(GameObject* other_object)
         return false;
     }
 
-
+    //circle collides with rect
     if (other_collider->Shape() != CollisionShape::Circle) {
         //Engine::GetLogger().LogError("c");
         radi = dynamic_cast<RectCollision*>(other_object->GetGOComponent<Collision>())->ChangeCollision();
