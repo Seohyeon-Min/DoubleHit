@@ -61,11 +61,10 @@ void Mode1::Load() {
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 608 }, { 2176, 640 } }));//10
 
 
-<<<<<<< Updated upstream
-    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr);
-=======
+
+    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr, upgradeInstance);
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * zoom), floor }, starting_floor_ptr, upgradeInstance);
->>>>>>> Stashed changes
+
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
     //GetGSComponent<CS230::GameObjectManager>()
@@ -111,16 +110,15 @@ void Mode1::Draw() {
     if (GetGSComponent<Combination>()->GetCombFlag() == true) {
         GetGSComponent<Combination>()->DrawIcons();
     }
-<<<<<<< Updated upstream
+
     GetGSComponent<UI>()->Draw();
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
-=======
+
 
     if (GetGSComponent<Upgrade>()->GetUpgradeActive() == true) {
         GetGSComponent<Upgrade>()->DrawUpgrade();
     }
     
->>>>>>> Stashed changes
 }
 
 //####################################################################################

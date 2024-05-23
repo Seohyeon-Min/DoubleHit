@@ -18,11 +18,9 @@ public:
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     double GetHealth();
     void TakeDamage(double damage);
-<<<<<<< Updated upstream
     int ReturnHeavyTimer();
     bool ReturnHeavyReady();
     int ReturnHeavyMax();
-=======
 
 
     int HeroLevel = 0;
@@ -36,11 +34,9 @@ public:
         return HeroExp;
     }
 
-    
->>>>>>> Stashed changes
+    void HeroLevelCheck();
  
 private:
-    void HeroLevelCheck();
     double HeroExp = 0;
     Upgrade* upgrade;
     int previousLevel;

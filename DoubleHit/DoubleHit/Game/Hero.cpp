@@ -285,7 +285,7 @@ void Hero::TakeDamage(double damage) {
         BarCurrentWidth = health * HealthRatio;
     }  
 }
-<<<<<<< Updated upstream
+
 int Hero::ReturnHeavyMax() {
     return HeavyTimerMax;
 }
@@ -297,8 +297,6 @@ bool Hero::ReturnHeavyReady() {
     return IsHeavyReady;
 }
 
-=======
-
 
 void Hero::HeroLevelCheck() {
     previousLevel = static_cast<int>(HeroExp) / 250;
@@ -307,7 +305,5 @@ void Hero::HeroLevelCheck() {
         Engine::GetLogger().LogEvent("Hero Level Up: " + std::to_string(previousLevel));
         HeroLevel = previousLevel;
         upgrade->ActivateUpgrade(HeroExp);
-        HeroLevelCheck();
     }
 }
->>>>>>> Stashed changes

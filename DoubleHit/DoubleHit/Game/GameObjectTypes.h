@@ -22,14 +22,10 @@ enum class GameObjectTypes {
 	AEnemyBullet,
 	GEnemyAttack,
 	Skill,
-<<<<<<< Updated upstream
 	HeroLight,
 	HeroHeavy,
 	Count,
-	Upgrade
-=======
+	Upgrade,
 	Light,
-	Heavy,
-	Count
->>>>>>> Stashed changes
+	Heavy
 };
