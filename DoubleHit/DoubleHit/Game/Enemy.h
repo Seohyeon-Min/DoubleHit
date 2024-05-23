@@ -81,29 +81,65 @@ private:
         Die
     };
 };
-/*
+
 class EliteEnemy : public Enemy {
 public:
-
     EliteEnemy(Math::vec2 start_position);
-    void Update(double dt, Math::vec2 hero_position) override;
-    void Draw(const CS230::Camera& camera, const double zoom) override;
-    void Move(double dt, Math::vec2 hero_position, double speed) override;
-    const Math::vec2& GetPosition() override { return position; }
+    GameObjectTypes Type() override { return GameObjectTypes::GroundEnemy; }
+    std::string TypeName() override { return "GroundEnemy"; }
+    void Update(double dt) override;
+    bool CanCollideWith(GameObjectTypes) override;
+    void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
+    const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
-    Math::vec2 start_position;
-    Math::vec2 position;
-    CS230::Sprite sprite;
-    double speed = 2;
-    double min_distance = 60;
-    double damage = 30;     //unused... yet
+    Math::vec2 direction;
+    bool has_run = false;
+    double speed = 80;
+    double min_distance = 50;
+    double x_distance;
     double distance;
-    double counter = 0;    //attack time count
+    double health = 10;
+    double damage = 10;     //unused... yet
+    static constexpr double shooting_range = 50;
+    CS230::Timer* attack_timer;
+    static constexpr double attack_time = 2.8;
+
+    class State_Idle : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Idle"; }
+    };
+
+    class State_Running : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Running"; }
+    };
+
+    class State_Attacking : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Attacking"; }
+    };
+
+    State_Idle state_idle;
+    State_Running state_running;
+    State_Attacking state_attacking;
+
+    enum class Animations {
+        Idle,
+        Running,
+        Attack,
+        Die
+    };
 };
-*/
-
-
 
 //State!
 /*
