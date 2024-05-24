@@ -5,7 +5,7 @@
 #include "..\Engine\Timer.h"
 #include "Combination.h"
 #include "GameObjectTypes.h"
-#include "Upgrade.h"
+#include "Upgrade2.h"
 
 class Hero : public CS230::GameObject {
 public:
