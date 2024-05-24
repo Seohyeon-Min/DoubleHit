@@ -160,7 +160,10 @@ bool CS230::CircleCollision::IsCollidingWith(GameObject* other_object)
             dx = std::max(rectangle_1.Left(), std::min(rectangle_1.Right(), object->GetPosition().x));
             dy = std::max(rectangle_1.Bottom(), std::min(rectangle_1.Top(), object->GetPosition().y));
 
-            double distance = dx * dx + dy * dy;
+            float distanceX = object->GetPosition().x - dx;
+            float distanceY = object->GetPosition().y - dy;
+
+            double distance = distanceX * distanceX + distanceY * distanceY;
 
             double sum_of_squared_radii = (GetRadius()) * (GetRadius());
 
