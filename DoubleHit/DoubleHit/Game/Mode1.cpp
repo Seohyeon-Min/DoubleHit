@@ -88,6 +88,11 @@ void Mode1::Update([[maybe_unused]] double dt) {
     GetGSComponent<CS230::Camera>()->Update(hero_ptr->GetPosition());
     GetGSComponent<CS230::GameObjectManager>()->UpdateAll(dt);
 
+    spawn_time += dt;
+    if (spawn_time > enemy_spawn_time) { // spawn logic
+        MakeEnemy();
+        spawn_time = 0;
+    }
     
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::Escape)) {
         Engine::GetGameStateManager().ClearNextGameState();

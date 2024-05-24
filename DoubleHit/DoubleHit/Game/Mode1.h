@@ -38,7 +38,7 @@ public:
 private:
     Hero* hero_ptr;
     std::vector<Enemy*> enemies; //enemy vectors
-    double spawn_time = 0;
+    double spawn_time = 1;
     const double enemy_spawn_time = 1; // every x second
     static constexpr int mouse_radius = 15; //temporary mouse asset
     Color mouse_color = { 230 , 116 , 92, 125 }; //temporary mouse asset
