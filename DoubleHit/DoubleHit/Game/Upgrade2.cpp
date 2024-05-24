@@ -1,4 +1,4 @@
-#include "Upgrade.h"
+#include "Upgrade2.h"
 #include "Mode1.h"
 #include "Hero.h"
 
