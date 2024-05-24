@@ -145,9 +145,26 @@ bool CS230::CircleCollision::IsCollidingWith(GameObject* other_object)
 
     if (other_collider->Shape() != CollisionShape::Circle) {
         //Engine::GetLogger().LogError("c");
-        radi = dynamic_cast<RectCollision*>(other_object->GetGOComponent<Collision>())->ChangeCollision();
         dx = object->GetPosition().x - other_object->GetPosition().x;
         dy = object->GetPosition().y - (other_object->GetPosition().y + other_object->GetGOComponent<CS230::Sprite>()->GetFrameSize().y / 2);
+
+        //circle collides with rect
+        if (other_collider->Shape() == CollisionShape::Rect) {
+            Math::rect rectangle_1 = dynamic_cast<RectCollision*>(other_collider)->WorldBoundary();
+
+            //distance between boundary and circle position
+            dx = std::max(rectangle_1.Left(), std::min(rectangle_1.Right(), object->GetPosition().x));
+            dy = std::max(rectangle_1.Bottom(), std::min(rectangle_1.Top(), object->GetPosition().y));
+
+            float distanceX = object->GetPosition().x - dx;
+            float distanceY = object->GetPosition().y - dy;
+
+            double distance = distanceX * distanceX + distanceY * distanceY;
+
+            double sum_of_squared_radii = (GetRadius()) * (GetRadius());
+
+            return distance <= sum_of_squared_radii;
+        }
     }
     else {
         radi = dynamic_cast<CircleCollision*>(other_object->GetGOComponent<Collision>())->GetRadius();
