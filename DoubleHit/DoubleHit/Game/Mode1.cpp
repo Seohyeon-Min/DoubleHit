@@ -59,21 +59,28 @@ void Mode1::Load() {
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1888, 480 }, { 2048, 512 } }));
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 608 }, { 2176, 640 } }));//10
 
-
+    //if (Engine::GetInput().KeyDown(CS230::Input::Keys::T)) {
+        GetGSComponent<CS230::GameObjectManager>()->Add(new EliteEnemy({ 1200,640 }));
+    //}
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
 
-    ////UI
+    //UI
     AddGSComponent(new UI(hero_ptr));
-    GetGSComponent<UI>()->Add("Assets/pet/pet_UI/draw_pet.png", {1100,80}, 0.75);
-    GetGSComponent<UI>()->Add("Assets/hero/png/draw_hero.png", { 50,80 }, 0.75);
-    GetGSComponent<UI>()->Add("Assets/hero/png/Belt.png", {540, -20}, 1.5);
-    GetGSComponent<UI>()->Add("Assets/hero/png/HeroSkill_Basic.png", { 150, 80 }, 1.5);
-    GetGSComponent<UI>()->Add("Assets/hero/png/HeroSkill_Strong.png", { 200, 80 }, 1.5);
-    GetGSComponent<UI>()->Add("Assets/pet/pet_UI/PetSkill_Basic.png", { 1000, 80 }, 1.5);
-    GetGSComponent<UI>()->Add("Assets/pet/pet_UI/PetSkill_Strong.png", { 1050, 80 }, 1.5);
-    //GetGSComponent<UI>()->Add("Assets/vignetting.png", { 0, 0 }, 1);
+    GetGSComponent<UI>()->Add("Assets/UI/Belt.png", { (double)Engine::GetWindow().GetSize().x / 2, 50 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Belt.png", { (double)Engine::GetWindow().GetSize().x / 2, 96 }, -2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/BeltCore.png", {540, -25}, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Hero_back.png", { 50, 40 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Pet_back.png", { 950 , 40 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/draw_pet.png", { 1150, 40 }, 0.70);
+    GetGSComponent<UI>()->Add("Assets/UI/draw_hero.png", { 40, 40 }, 0.70);
+    GetGSComponent<UI>()->Add("Assets/UI/HeroSkill_Basic.png", { 140, 65 }, 1.0);
+    GetGSComponent<UI>()->Add("Assets/UI/HeroSkill_Strong.png", { 175, 65 }, 1.0);
+    GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Basic.png", { 1070, 65 }, 1.0);
+    GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Strong.png", { 1105, 65 }, 1.0);
+    GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/health_bar.png", { 215, 63 }, 2.0);
 
     for (auto& enemyPtr : enemies) {  //reset enemies
         delete enemyPtr;

@@ -263,4 +263,66 @@ void AirEnemy::ResolveCollision(GameObject* other_object)
 
 //###############################################################################################################################################################################################################
 
+EliteEnemy::EliteEnemy(Math::vec2 start_position):
+    Enemy(start_position)
+{
+    AddGOComponent(new CS230::Sprite("Assets/enemy/elite_enemy.spt", this));
+}
 
+void EliteEnemy::Update(double dt)
+{
+    GameObject::Update(dt);
+}
+
+void EliteEnemy::State_Idle::Enter(GameObject* object)
+{
+    EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+    //enemy->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
+    //enemy->SetVelocity({ hero->GetVelocity().x, Hero::velocity.y });
+}
+
+void EliteEnemy::State_Idle::Update(GameObject* object, double dt)
+{
+}
+
+void EliteEnemy::State_Idle::CheckExit(GameObject* object)
+{
+    EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+}
+
+
+void EliteEnemy::State_Running::Enter(GameObject* object)
+{
+    EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+}
+
+void EliteEnemy::State_Running::Update(GameObject* object, double dt)
+{
+}
+
+void EliteEnemy::State_Running::CheckExit(GameObject* object)
+{
+    EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+}
+
+
+void EliteEnemy::State_Attacking::Enter(GameObject* object)
+{
+}
+
+void EliteEnemy::State_Attacking::Update(GameObject* object, double dt)
+{
+}
+
+void EliteEnemy::State_Attacking::CheckExit(GameObject* object)
+{
+}
+
+bool EliteEnemy::CanCollideWith(GameObjectTypes)
+{
+    return false;
+}
+
+void EliteEnemy::ResolveCollision(GameObject* other_object)
+{
+}

@@ -1,0 +1,6 @@
+Assets/enemy/elite_enemy.png
+FrameSize 162 180
+HotSpot 81 0
+RectCollision -60 0 60 140
+NumFrames 1
+Anim Assets/None.anm

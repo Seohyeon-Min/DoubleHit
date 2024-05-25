@@ -94,16 +94,15 @@ public:
 
 private:
     Math::vec2 direction;
-    bool has_run = false;
-    double speed = 80;
-    double min_distance = 50;
     double x_distance;
     double distance;
-    double health = 10;
-    double damage = 10;     //unused... yet
+    double health = 100;
+    double damage = 10;
+    static constexpr double speed = 20;
+    static constexpr double min_distance = 50;
     static constexpr double shooting_range = 50;
-    CS230::Timer* attack_timer;
     static constexpr double attack_time = 2.8;
+    CS230::Timer* attack_timer;
 
     class State_Idle : public State {
     public:
