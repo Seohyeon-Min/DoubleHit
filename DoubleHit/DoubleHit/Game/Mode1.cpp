@@ -66,8 +66,7 @@ void Mode1::Load() {
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * zoom), floor }, starting_floor_ptr, upgradeInstance);
 
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
-    //GetGSComponent<CS230::GameObjectManager>()
+    //GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
 
     ////UI
     AddGSComponent(new UI(hero_ptr));
@@ -85,6 +84,8 @@ void Mode1::Load() {
     }
     enemies.clear();
 
+    MakeGroundEnemy();
+    MakeAirEnemy();
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -97,6 +98,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
         MakeEnemy();
         spawn_time = 0;
     }
+    
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::Escape)) {
         Engine::GetGameStateManager().ClearNextGameState();
     }
@@ -126,10 +128,10 @@ void Mode1::Draw() {
 
 void Mode1::MakeGroundEnemy(){
 
-    double randomX = GetRandomValue(0, 100);
-    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
+    //double randomX = GetRandomValue(0, 100);
+    //Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
 
-    GroundEnemy* g_enemy = new GroundEnemy( ground_position);
+    GroundEnemy* g_enemy = new GroundEnemy({100, floor});
 
     enemies.push_back(g_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy);
@@ -137,11 +139,11 @@ void Mode1::MakeGroundEnemy(){
 
 void Mode1::MakeAirEnemy() {
 
-    double randomX = GetRandomValue(0, GetScreenWidth());
-    double randomY = GetRandomValue(500, GetScreenHeight() - 100);
-    Math::vec2 air_position = { randomX, randomY };    //random position
+    //double randomX = GetRandomValue(0, GetScreenWidth());
+    //double randomY = GetRandomValue(500, GetScreenHeight() - 100);
+    //Math::vec2 air_position = { randomX, randomY };    //random position
 
-    AirEnemy* a_enemy = new AirEnemy( air_position );
+    AirEnemy* a_enemy = new AirEnemy({200,200});
 
     enemies.push_back(a_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(a_enemy);

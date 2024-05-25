@@ -190,7 +190,7 @@ void AirEnemy::Update(double dt)
         if (distance <= min_distance || GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
             SetVelocity({ 0,0 });
             if (GetGOComponent<CS230::Sprite>()->GetCurrentFrame() == 11 && !attackExecuted) {
-                attack = true;
+                //attack = true;
             }
         }
         else if (distance > min_distance) {  //collision

@@ -11,6 +11,7 @@ Created:    March 8, 2023
 #include "Collision.h"
 #include "GameObject.h"
 
+
 CS230::RectCollision::RectCollision(Math::irect boundary, GameObject* object) :
     boundary(boundary),
     object(object)
@@ -54,7 +55,8 @@ bool CS230::RectCollision::IsCollidingWith(GameObject* other_object) {
 
     Math::rect rectangle_1 = WorldBoundary();
 
-    if (other_collider->Shape() != CollisionShape::Rect) {
+    //rect collides with circle
+    if (other_collider->Shape() == CollisionShape::Circle) {
         Math::vec2 circle_position = dynamic_cast<CircleCollision*>(other_collider)->ChangeCollision();
         return IsCollidingWith(circle_position);
     }
@@ -83,12 +85,14 @@ bool CS230::RectCollision::IsCollidingWith(Math::vec2 point)
     return false;
 }
 
+
 double CS230::RectCollision::ChangeCollision()
 {
     Math::rect rectangle_1 = WorldBoundary();
 
     return (rectangle_1.Right() - rectangle_1.Left()) / 2 ;
 }
+
 
 CS230::CircleCollision::CircleCollision(double radius, GameObject* object) :
     radius(radius),
@@ -141,10 +145,10 @@ bool CS230::CircleCollision::IsCollidingWith(GameObject* other_object)
     if (other_collider == nullptr) {
         return false;
     }
-
-
     if (other_collider->Shape() != CollisionShape::Circle) {
+
         //Engine::GetLogger().LogError("c");
+        //radi = dynamic_cast<RectCollision*>(other_object->GetGOComponent<Collision>())->ChangeCollision();
         dx = object->GetPosition().x - other_object->GetPosition().x;
         dy = object->GetPosition().y - (other_object->GetPosition().y + other_object->GetGOComponent<CS230::Sprite>()->GetFrameSize().y / 2);
 
