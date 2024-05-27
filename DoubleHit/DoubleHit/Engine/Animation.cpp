@@ -64,7 +64,7 @@ void CS230::Animation::Reset() {
     current_command = 0;
     ended = false;
     current_frame = static_cast<PlayFrame*>(commands[current_command]);
-    current_frame->ResetTime();;
+    current_frame->ResetTime();
 }
 
 bool CS230::Animation::Ended() {
@@ -95,7 +95,8 @@ void CS230::Animation::Update(double dt) {
             }
         }
         else if (commands[current_command]->Type() == CommandType::End) {
-            ended = true;
+            ended = true;   
+
         }
     }
 }

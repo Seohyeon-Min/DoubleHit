@@ -42,6 +42,7 @@ namespace CS230 {
         bool IsCollidingWith(GameObject* other_object) override;
         bool IsCollidingWith(Math::vec2 point) override;
         double ChangeCollision();
+
         Math::rect WorldBoundary();
     private:
         GameObject* object;

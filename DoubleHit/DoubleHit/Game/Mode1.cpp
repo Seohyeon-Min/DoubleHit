@@ -67,17 +67,22 @@ void Mode1::Load() {
 
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
-    //GetGSComponent<CS230::GameObjectManager>()
 
     ////UI
     AddGSComponent(new UI(hero_ptr));
-    GetGSComponent<UI>()->Add("Assets/pet/pet_UI/draw_pet.png", {1100,80}, 0.75);
-    GetGSComponent<UI>()->Add("Assets/hero/png/draw_hero.png", { 50,80 }, 0.75);
-    GetGSComponent<UI>()->Add("Assets/hero/png/Belt.png", {540, -20}, 1.5);
-    GetGSComponent<UI>()->Add("Assets/hero/png/HeroSkill_Basic.png", { 150, 80 }, 1.5);
-    GetGSComponent<UI>()->Add("Assets/hero/png/HeroSkill_Strong.png", { 200, 80 }, 1.5);
-    GetGSComponent<UI>()->Add("Assets/pet/pet_UI/PetSkill_Basic.png", { 1000, 80 }, 1.5);
-    GetGSComponent<UI>()->Add("Assets/pet/pet_UI/PetSkill_Strong.png", { 1050, 80 }, 1.5);
+    GetGSComponent<UI>()->Add("Assets/UI/Belt.png", { (double)Engine::GetWindow().GetSize().x / 2, 50 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Belt.png", { (double)Engine::GetWindow().GetSize().x / 2, 96 }, -2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/BeltCore.png", { 540, -25 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Hero_back.png", { 50, 40 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Pet_back.png", { 950 , 40 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/draw_pet.png", { 1150, 40 }, 0.70);
+    GetGSComponent<UI>()->Add("Assets/UI/draw_hero.png", { 40, 40 }, 0.70);
+    GetGSComponent<UI>()->Add("Assets/UI/HeroSkill_Basic.png", { 140, 65 }, 1.0);
+    GetGSComponent<UI>()->Add("Assets/UI/HeroSkill_Strong.png", { 175, 65 }, 1.0);
+    GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Basic.png", { 1070, 65 }, 1.0);
+    GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Strong.png", { 1105, 65 }, 1.0);
+    GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/health_bar.png", { 215, 63 }, 2.0);
     //GetGSComponent<UI>()->Add("Assets/vignetting.png", { 0, 0 }, 1);
 
     for (auto& enemyPtr : enemies) {  //reset enemies
@@ -85,6 +90,8 @@ void Mode1::Load() {
     }
     enemies.clear();
 
+    MakeGroundEnemy();
+    MakeAirEnemy();
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -97,6 +104,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
         MakeEnemy();
         spawn_time = 0;
     }
+    
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::Escape)) {
         Engine::GetGameStateManager().ClearNextGameState();
     }
@@ -126,10 +134,10 @@ void Mode1::Draw() {
 
 void Mode1::MakeGroundEnemy(){
 
-    double randomX = GetRandomValue(0, 100);
-    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
+    //double randomX = GetRandomValue(0, 100);
+    //Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
 
-    GroundEnemy* g_enemy = new GroundEnemy( ground_position);
+    GroundEnemy* g_enemy = new GroundEnemy({100, floor});
 
     enemies.push_back(g_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy);
@@ -137,11 +145,11 @@ void Mode1::MakeGroundEnemy(){
 
 void Mode1::MakeAirEnemy() {
 
-    double randomX = GetRandomValue(0, GetScreenWidth());
-    double randomY = GetRandomValue(500, GetScreenHeight() - 100);
-    Math::vec2 air_position = { randomX, randomY };    //random position
+    //double randomX = GetRandomValue(0, GetScreenWidth());
+    //double randomY = GetRandomValue(500, GetScreenHeight() - 100);
+    //Math::vec2 air_position = { randomX, randomY };    //random position
 
-    AirEnemy* a_enemy = new AirEnemy( air_position );
+    AirEnemy* a_enemy = new AirEnemy({200,200});
 
     enemies.push_back(a_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(a_enemy);
