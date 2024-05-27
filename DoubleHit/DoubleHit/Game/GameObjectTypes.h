@@ -21,6 +21,7 @@ enum class GameObjectTypes {
 	Floor,
 	AEnemyBullet,
 	GEnemyAttack,
+	EliteFloor,
 	Skill,
 	HeroLight,
 	HeroHeavy,

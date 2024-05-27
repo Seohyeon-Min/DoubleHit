@@ -5,6 +5,7 @@
 #include "Gravity.h"
 #include "Skill.h"
 #include "Bullet.h"
+#include "Floor.h"
 #include "../Engine/Collision.h"
 #include "../Engine/Engine.h"
  
@@ -219,11 +220,15 @@ bool Hero::CanCollideWith(GameObjectTypes other_object)
 void Hero::ResolveCollision(GameObject* other_object)
 {
     if (other_object->Type() == GameObjectTypes::Floor) {
+        EliteFloor* elite_floor = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>();
         Math::rect hero_rect = GetGOComponent<CS230::RectCollision>()->WorldBoundary();
         Math::rect other_rect = other_object->GetGOComponent<CS230::RectCollision>()->WorldBoundary();
         if (current_state == &state_falling) {
             if (hero_rect.Top() > other_rect.Top() && hero_rect.Bottom() > other_rect.Bottom()) {
                 SetPosition({ GetPosition().x, other_rect.Top() });
+                if (elite_floor == other_object) {
+                    on_elite_ground = true;
+                }
                 standing_on = other_object;
                 current_state->CheckExit(this);
                 return;

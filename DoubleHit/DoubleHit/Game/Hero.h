@@ -13,6 +13,7 @@ public:
     std::string TypeName() override { return "Hero"; }
     void Update(double dt) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
+    const bool GetOnEliteGround() const { return on_elite_ground; }
     bool CanCollideWith(GameObjectTypes) override;
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     double GetHealth();
@@ -32,6 +33,7 @@ private:
     double HealthRatio = BarMaxWidth / health_max;
     bool IsHeavyReady = false; //heavy attack cooldown check
     bool light_combo = false;
+    bool on_elite_ground = false;
     double HeavyTimerMax = 4;
     CS230::Timer* Heavytimer;
 

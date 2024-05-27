@@ -51,10 +51,11 @@ void Mode1::Load() {
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1280, 352 }, { 1440, 384 } }));//5
 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1472, 416 }, { 1792, 448 } }));//6
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1472, 486 }, { 1792, 518 } }));//6-1, temp platform
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1824, 320 }, { 1920, 352 } }));
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1952, 224 }, { 2112, 256 } }));
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 96, 576 }, { 576, 608 } }));
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 928, 608 }, { 1568, 640 } }));//10
+    GetGSComponent<CS230::GameObjectManager>()->Add(new EliteFloor(Math::irect{ { 928, 608 }, { 1568, 640 } }));//10
 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1888, 480 }, { 2048, 512 } }));
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 608 }, { 2176, 640 } }));//10

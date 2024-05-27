@@ -93,11 +93,10 @@ public:
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
-    Math::vec2 direction;
-    double x_distance;
-    double distance;
     double health = 100;
     double damage = 10;
+    double x_distance;
+    double distance;
     static constexpr double speed = 20;
     static constexpr double min_distance = 50;
     static constexpr double shooting_range = 50;
