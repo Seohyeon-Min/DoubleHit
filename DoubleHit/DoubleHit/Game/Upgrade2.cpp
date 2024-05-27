@@ -38,7 +38,7 @@ void Upgrade::CheckClick(Vector2 mousePoint) {
 void Upgrade::Update(double dt)
 {
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::P)) {
-        Engine::GetLogger().LogEvent("now UpgradeLevel: " + std::to_string(CurrentLevel));
+            Engine::GetLogger().LogEvent("now UpgradeLevel: " + std::to_string(CurrentLevel));
     }
 
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::U)) {
@@ -49,7 +49,7 @@ void Upgrade::Update(double dt)
         DrawUpgrade();
     }
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)||UpgradeActiveFlag == true) {
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         Vector2 mousePoint = GetMousePosition();
         CheckClick(mousePoint);
     }

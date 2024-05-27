@@ -18,6 +18,8 @@ public:
 
     int CurrentLevel;
 
+
+
 private:
     Rectangle rect;
     Rectangle smallRects[2];
