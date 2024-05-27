@@ -1,23 +1,22 @@
 #pragma once
 
-
 #include "../Engine/Engine.h"
 #include "../Engine/Vec2.h"
 
 class Upgrade : public CS230::Component {
 public:
-    Upgrade();
+    Upgrade() : CurrentLevel(0), UpgradeLevel(0) {}
     void DrawUpgrade();
     void CheckClick(Vector2 mousePoint);
     void Update(double dt);
 
-    bool& GetUpgradeActive() { return UpgradeActiveFlag; }
+    bool GetUpgradeActive() const { return UpgradeActiveFlag; }
 
     Color upgradeOptionsColor[4] = { BLUE, RED, GREEN, YELLOW };
 
-    void ActivateUpgrade(int level);
+    void ActivateUpgrade(int heroLevel);
 
-    int CurrentLevel = 0;
+    int CurrentLevel;
 
 private:
     Rectangle rect;
@@ -25,5 +24,5 @@ private:
     float radius;
     bool UpgradeActiveFlag = false;
     bool ChooseUpgrade = false;
-    int UpgradeLevel = 0;
+    int UpgradeLevel;
 };

@@ -2,24 +2,11 @@
 #include "Mode1.h"
 #include "Hero.h"
 
-Upgrade::Upgrade()
-    : rect({ 0, 0, 0, 0 }),
-    radius(0.0f),
-    UpgradeActiveFlag(false),
-    ChooseUpgrade(false),
-    UpgradeLevel(0),
-    CurrentLevel(0) {
-    smallRects[0] = { 0, 0, 0, 0 };
-    smallRects[1] = { 0, 0, 0, 0 };
-}
-
-void Upgrade::ActivateUpgrade(int level) {
-    this->UpgradeLevel = level;
-
+void Upgrade::ActivateUpgrade(int heroLevel) {
+    CurrentLevel = heroLevel;
+    Engine::GetLogger().LogEvent("ActivateUpgrade called with level: " + std::to_string(CurrentLevel));
     UpgradeActiveFlag = true;
-    Engine::GetLogger().LogEvent("Upgrade Activity");
 }
-
 
 void Upgrade::DrawUpgrade() {
     Color color = upgradeOptionsColor[CurrentLevel];
@@ -50,23 +37,19 @@ void Upgrade::CheckClick(Vector2 mousePoint) {
 
 void Upgrade::Update(double dt)
 {
-
-    CurrentLevel = UpgradeLevel;
-
-
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::P)) {
-        Engine::GetLogger().LogEvent("now UpgradeLevel: " + std::to_string(UpgradeLevel));
+        Engine::GetLogger().LogEvent("now UpgradeLevel: " + std::to_string(CurrentLevel));
     }
 
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::U)) {
         UpgradeActiveFlag = true;
     }
 
-    if (UpgradeActiveFlag) {
+    if (UpgradeActiveFlag == true) {
         DrawUpgrade();
     }
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)||UpgradeActiveFlag == true) {
         Vector2 mousePoint = GetMousePosition();
         CheckClick(mousePoint);
     }

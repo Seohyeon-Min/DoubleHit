@@ -297,13 +297,12 @@ bool Hero::ReturnHeavyReady() {
     return IsHeavyReady;
 }
 
-
 void Hero::HeroLevelCheck() {
     previousLevel = static_cast<int>(HeroExp) / 250;
 
     if (previousLevel > HeroLevel) {
         Engine::GetLogger().LogEvent("Hero Level Up: " + std::to_string(previousLevel));
         HeroLevel = previousLevel;
-        upgrade->ActivateUpgrade(HeroExp);
+        upgrade->ActivateUpgrade(HeroLevel);
     }
 }
