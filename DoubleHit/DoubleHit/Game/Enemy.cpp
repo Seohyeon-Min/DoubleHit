@@ -304,6 +304,7 @@ void EliteEnemy::State_Running::Enter(GameObject* object)
 
 void EliteEnemy::State_Running::Update(GameObject* object, double dt)
 {
+    EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
     direction = const_cast<Math::vec2&>(hero->GetPosition()) - GetPosition();
     distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
 
