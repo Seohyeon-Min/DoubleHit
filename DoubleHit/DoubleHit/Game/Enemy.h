@@ -13,10 +13,12 @@ public:
     std::string TypeName() override { return "Enemy"; }
     Math::vec2 Normalize(const Math::vec2& vec);
 
-private:
+protected:
     Math::vec2 direction;
+private:
     Math::vec2 normalized_vec;
     double length;
+
 };
 
 class GroundEnemy : public Enemy{
@@ -30,14 +32,14 @@ public:
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
-    Math::vec2 direction;
+
     bool has_run = false;
     double speed = 80;
     double min_distance = 50;
     double x_distance;
     double distance;
     double health = 10;
-    double damage = 10;     //unused... yet
+    double damage = 10;
     static constexpr double shooting_range = 50;
     CS230::Timer* attack_timer;
     static constexpr double attack_time = 2.8;
@@ -62,7 +64,7 @@ public:
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
-    Math::vec2 direction;
+
     bool has_run = false;
     bool attack;
     bool attackExecuted = false;
@@ -94,14 +96,20 @@ public:
 
 private:
     double health = 100;
-    double damage = 10;
-    double x_distance;
     double distance;
     static constexpr double speed = 20;
     static constexpr double min_distance = 50;
     static constexpr double shooting_range = 50;
-    static constexpr double attack_time = 2.8;
+    static constexpr double attack_time = 1.0;
     CS230::Timer* attack_timer;
+
+    class State_Wating : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Idle"; }
+    };
 
     class State_Idle : public State {
     public:
@@ -127,6 +135,7 @@ private:
         std::string GetName() override { return "Attacking"; }
     };
 
+    State_Wating state_waiting;
     State_Idle state_idle;
     State_Running state_running;
     State_Attacking state_attacking;
@@ -138,50 +147,3 @@ private:
         Die
     };
 };
-
-//State!
-/*
-    enum class Animations {
-        Idle,
-        Running,
-        Attacking,
-        Attacked
-    };
-
-    class State_Idle : public State {
-    public:
-        virtual void Enter(GameObject* object) override;
-        virtual void Update(GameObject* object, double dt) override;
-        virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Idle"; }
-    };
-
-    class State_Running : public State {
-    public:
-        virtual void Enter(GameObject* object) override;
-        virtual void Update(GameObject* object, double dt) override;
-        virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Running"; }
-    };
-
-    class State_Attacking : public State {
-    public:
-        virtual void Enter(GameObject* object) override;
-        virtual void Update(GameObject* object, double dt) override;
-        virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Attacking"; }
-    };
-
-    class State_Attacked : public State {
-    public:
-        virtual void Enter(GameObject* object) override;
-        virtual void Update(GameObject* object, double dt) override;
-        virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Attacked"; }
-    };
-
-    State_Idle state_idle;
-    State_Running state_running;
-    State_Attacking state_attacking;
-    State_Attacked state_attacked;
-    */

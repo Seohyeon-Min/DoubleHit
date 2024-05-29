@@ -267,7 +267,9 @@ EliteEnemy::EliteEnemy(Math::vec2 start_position):
     Enemy(start_position)
 {
     AddGOComponent(new CS230::Sprite("Assets/enemy/elite_enemy.spt", this));
-    current_state = &state_idle;
+    attack_timer = new CS230::Timer(attack_time);
+    AddGOComponent(attack_timer);
+    current_state = &state_waiting;
     current_state->Enter(this);
 }
 
@@ -276,9 +278,32 @@ void EliteEnemy::Update(double dt)
     GameObject::Update(dt);
 }
 
+
+void EliteEnemy::State_Wating::Enter(GameObject* object)
+{
+    EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+    //enemy->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
+    //enemy->SetVelocity({ hero->GetVelocity().x, Hero::velocity.y });
+}
+
+void EliteEnemy::State_Wating::Update(GameObject* object, double dt)
+{
+}
+
+void EliteEnemy::State_Wating::CheckExit(GameObject* object)
+{
+    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
+    EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+    if (hero->GetOnEliteGround()) {
+        enemy->change_state(&enemy->state_idle);
+    }
+}
+
+
 void EliteEnemy::State_Idle::Enter(GameObject* object)
 {
     EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+    enemy->attack_timer->Set(attack_time);
     //enemy->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
     //enemy->SetVelocity({ hero->GetVelocity().x, Hero::velocity.y });
 }
@@ -289,11 +314,11 @@ void EliteEnemy::State_Idle::Update(GameObject* object, double dt)
 
 void EliteEnemy::State_Idle::CheckExit(GameObject* object)
 {
-    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
     EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
-    if (hero->GetOnEliteGround()) {
+    if (enemy->attack_timer->Remaining() == 0.0) {
         enemy->change_state(&enemy->state_running);
     }
+    
 }
 
 
@@ -304,36 +329,36 @@ void EliteEnemy::State_Running::Enter(GameObject* object)
 
 void EliteEnemy::State_Running::Update(GameObject* object, double dt)
 {
+    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
     EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
-    direction = const_cast<Math::vec2&>(hero->GetPosition()) - GetPosition();
-    distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
+    enemy->distance = (hero->GetPosition().x) - enemy->GetPosition().x;
 
-    if (distance <= min_distance || GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
-        SetVelocity({ 0,0 });
-        if (GetGOComponent<CS230::Sprite>()->GetCurrentFrame() == 11 && !attackExecuted) {
-            attack = true;
-        }
+    if (enemy->distance > 0) { 
+        enemy->SetScale({ 1,1 });
+        enemy->SetVelocity({ speed ,enemy->GetVelocity().y });
     }
-    else if (distance > min_distance) {  //collision
-        SetVelocity({ Normalize(direction).x * speed , Normalize(direction).y * speed });
-
-        if (GetVelocity().x < 0) {
-            SetScale({ 1,1 });
-        }
-        else if (GetVelocity().x >= 0) {
-            SetScale({ -1,1 });
-        }
+    else if (enemy->distance == 0) {
+        enemy->SetVelocity({ 0, 0});
+    }
+    else {
+        enemy->SetScale({ -1,1 });
+        enemy->SetVelocity({ -speed ,enemy->GetVelocity().y });
     }
 }
 
 void EliteEnemy::State_Running::CheckExit(GameObject* object)
 {
     EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+    if (abs(enemy->distance) <= min_distance) {
+            enemy->change_state(&enemy->state_attacking);
+    }
 }
 
 
 void EliteEnemy::State_Attacking::Enter(GameObject* object)
 {
+    EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+    enemy->SetVelocity({ 0,0 });
 }
 
 void EliteEnemy::State_Attacking::Update(GameObject* object, double dt)
