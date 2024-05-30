@@ -1,0 +1,6 @@
+Assets/enemy/elite_monster_skill.png
+FrameSize 127 141
+HotSpot 63 15
+RectCollision -40 0 40 120
+NumFrames 8
+Anim Assets/enemy/elite_enemy_attack_skill.anm

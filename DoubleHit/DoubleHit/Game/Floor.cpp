@@ -14,6 +14,8 @@ Floor::Floor(Math::irect boundary) : GameObject(static_cast<Math::vec2>(boundary
     AddGOComponent(new CS230::RectCollision({ Math::ivec2{ 0, 0 }, boundary.Size() }, this));
 }
 
-EliteFloor::EliteFloor(Math::irect boundary):
-    Floor(boundary)
-{}
+EliteFloor::EliteFloor(Math::irect _boundary):
+    Floor(_boundary)
+{
+    boundary = _boundary;
+}

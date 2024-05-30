@@ -34,6 +34,7 @@ private:
     bool IsHeavyReady = false; //heavy attack cooldown check
     bool light_combo = false;
     bool on_elite_ground = false;
+    bool has_run = false;
     double HeavyTimerMax = 4;
     CS230::Timer* Heavytimer;
 

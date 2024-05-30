@@ -1,6 +1,70 @@
 Assets/enemy/elite_enemy.png
-FrameSize 162 180
-HotSpot 81 0
+FrameSize 400 400
+HotSpot 200 100
 RectCollision -60 0 60 140
-NumFrames 1
-Anim Assets/None.anm
+Frame 0 0
+Frame 400 0
+Frame 800 0
+Frame 1200 0
+Frame 1600 0
+Frame 2000 0
+Frame 2400 0
+Frame 2800 0
+Frame 3200 0
+Frame 3600 0
+Frame 4000 0
+Frame 4400 0
+
+Frame 0 400
+Frame 400 400
+Frame 800 400
+Frame 1200 400
+Frame 1600 400
+Frame 2000 400
+Frame 2400 400
+Frame 2800 400
+Frame 3200 400
+Frame 3600 400
+Frame 4000 400
+Frame 4400 400
+
+Frame 0 800
+Frame 400 800
+Frame 800 800
+Frame 1200 800
+Frame 1600 800
+Frame 2000 800
+Frame 2400 800
+Frame 2800 800
+Frame 3200 800
+Frame 3600 800
+Frame 4000 800
+Frame 4400 800
+
+Frame 0 1200
+Frame 400 1200
+Frame 800 1200
+Frame 1200 1200
+Frame 1600 1200
+Frame 2000 1200
+Frame 2400 1200
+Frame 2800 1200
+Frame 3200 1200
+Frame 3600 1200
+Frame 4000 1200
+Frame 4400 1200
+
+Frame 0 1600
+Frame 400 1600
+Frame 800 1600
+Frame 1200 1600
+Frame 1600 1600
+Frame 2000 1600
+Frame 2400 1600
+
+Anim Assets/enemy/elite_enemy_idle.anm
+Anim Assets/enemy/elite_enemy_punch.anm
+Anim Assets/enemy/elite_enemy_attack.anm
+Anim Assets/enemy/elite_enemy_storm.anm
+Anim Assets/enemy/elite_enemy_teleport.anm
+Anim Assets/enemy/elite_enemy_teleport2.anm

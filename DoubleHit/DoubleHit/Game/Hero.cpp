@@ -176,22 +176,45 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
         hero->change_state(&hero->state_idle);
     }
 }
+    EliteFloor* elite_floor = nullptr;
 
 void Hero::Update(double dt) {
     GameObject::Update(dt);
 
     // Boundary Check
     CS230::RectCollision* collider = GetGOComponent<CS230::RectCollision>();
-    if (collider != nullptr) {
-        if (collider->WorldBoundary().Left() < Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x) {
-            UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x - collider->WorldBoundary().Left(),0 });
-            SetVelocity({ 0, GetVelocity().y });
-        }
-        if (collider->WorldBoundary().Right() > Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x) {
-            UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x - collider->WorldBoundary().Right(),0 });
-            SetVelocity({ 0, GetVelocity().y });
+    if (!on_elite_ground) {
+        has_run = false;
+        if (collider != nullptr) {
+            if (collider->WorldBoundary().Left() < Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x) {
+                UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x - collider->WorldBoundary().Left(),0 });
+                SetVelocity({ 0, GetVelocity().y });
+            }
+            if (collider->WorldBoundary().Right() > Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x) {
+                UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x - collider->WorldBoundary().Right(),0 });
+                SetVelocity({ 0, GetVelocity().y });
+            }
         }
     }
+    else {
+        if (Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>() == standing_on && !has_run) {
+            elite_floor = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>();
+            has_run = true;
+
+        }
+        if (elite_floor != nullptr) {
+            if (collider->WorldBoundary().Left() < elite_floor->GetBoundary().Left()) {
+                UpdatePosition({ elite_floor->GetBoundary().Left() - collider->WorldBoundary().Left(),0 });
+                SetVelocity({ 0, GetVelocity().y });
+            }
+            if (collider->WorldBoundary().Right() > elite_floor->GetBoundary().Right()) {
+                UpdatePosition({ elite_floor->GetBoundary().Right() - collider->WorldBoundary().Right(),0 });
+                SetVelocity({ 0, GetVelocity().y });
+            }
+        }
+
+    }
+
 
     //heavy cooldown
     if (IsHeavyReady == false) {

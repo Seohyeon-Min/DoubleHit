@@ -82,28 +82,22 @@ void Mode1::Load() {
     GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Strong.png", { 1105, 65 }, 1.0);
     GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
     GetGSComponent<UI>()->Add("Assets/UI/health_bar.png", { 215, 63 }, 2.0);
-
-    for (auto& enemyPtr : enemies) {  //reset enemies
-        delete enemyPtr;
-    }
-    enemies.clear();
-
+    GetGSComponent<UI>()->Add("Assets/UI/elite_healt.png", { 220, (double)Engine::GetWindow().GetSize().y - 88}, 2.0);
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
     UpdateGSComponents(dt);
     GetGSComponent<CS230::Camera>()->Update(hero_ptr->GetPosition());
     GetGSComponent<CS230::GameObjectManager>()->UpdateAll(dt);
-
+    GetGSComponent<UI>()->Update(dt);
     spawn_time += dt;
-    if (spawn_time > enemy_spawn_time) { // spawn logic
+    if (spawn_time > enemy_spawn_time && !hero_ptr->GetOnEliteGround()) { // spawn logic
         MakeEnemy();
         spawn_time = 0;
     }
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::Escape)) {
         Engine::GetGameStateManager().ClearNextGameState();
     }
-    GetGSComponent<UI>()->Update(dt);
 }
 
 void Mode1::Draw() {

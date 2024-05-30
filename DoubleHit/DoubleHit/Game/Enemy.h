@@ -97,10 +97,14 @@ public:
 private:
     double health = 100;
     double distance;
+    bool has_run = false;
+    bool attack = false;
     static constexpr double speed = 20;
-    static constexpr double min_distance = 50;
-    static constexpr double shooting_range = 50;
-    static constexpr double attack_time = 1.0;
+    static constexpr double min_distance = 90;
+    static constexpr double shooting_range = 100;
+    static constexpr double idle_time = 2.0;
+    //static constexpr double attack_time = 9.5;
+    CS230::Timer* idle_timer;
     CS230::Timer* attack_timer;
 
     class State_Wating : public State {
@@ -127,7 +131,23 @@ private:
         std::string GetName() override { return "Running"; }
     };
 
+    class State_Punching : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Attacking"; }
+    };
+
     class State_Attacking : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Attacking"; }
+    };
+
+    class State_Storming : public State {
     public:
         virtual void Enter(GameObject* object) override;
         virtual void Update(GameObject* object, double dt) override;
@@ -138,12 +158,16 @@ private:
     State_Wating state_waiting;
     State_Idle state_idle;
     State_Running state_running;
+    State_Punching state_punching;
     State_Attacking state_attacking;
+    State_Storming state_storming;
 
     enum class Animations {
         Idle,
-        Running,
+        Punch,
         Attack,
-        Die
+        Storm,
+        Teleport,
+        Teleport2
     };
 };

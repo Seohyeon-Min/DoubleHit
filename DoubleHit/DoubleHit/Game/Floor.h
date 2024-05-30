@@ -21,6 +21,9 @@ public:
     }
     std::string TypeName() override { return "Floor"; }
     virtual GameObjectTypes Type() override { return GameObjectTypes::Floor; }
+    const Math::irect GetBoundary() { return boundary; }
+private:
+    Math::irect boundary;
 };
 
 class EliteFloor : public Floor {
@@ -31,5 +34,8 @@ public:
     }
     std::string TypeName() override { return "Floor"; }
     virtual GameObjectTypes Type() override { return GameObjectTypes::Floor; }
+    const Math::irect GetBoundary() { return boundary; }
+private:
+    Math::irect boundary;
 };
 

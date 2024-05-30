@@ -11,6 +11,7 @@ void UI::Update(double dt) {
 	if (hero->ReturnHeavyReady() == false) {
 
 	}
+
 }
 
 void UI::Draw() {
