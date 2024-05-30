@@ -4,6 +4,10 @@ HotSpot 35 0
 RectCollision -14 0 14 60
 Frame 0 0
 Frame 70 0
+Frame 140 0
+Frame 210 0
+Frame 280 0
+Frame 350 0
 Frame 0 70
 Frame 70 70
 Frame 140 70
@@ -31,6 +35,13 @@ Frame 70 280
 Frame 140 280
 Frame 210 280
 Frame 280 280
+Frame 350 280
+Frame 420 280
+Frame 490 280
+Frame 560 280
+Frame 630 280
+Frame 700 280
+Frame 770 280
 Anim Assets/hero/anm/hero_idle.anm
 Anim Assets/hero/anm/hero_walk.anm
 Anim Assets/hero/anm/hero_light.anm
