@@ -27,5 +27,9 @@ enum class GameObjectTypes {
 	Count,
 	Upgrade,
 	Light,
-	Heavy
+	Heavy,
+	UpgradeLL,
+	UpgradeLH,
+	UpgradeHL,
+	UpgradeHH
 };

@@ -3,6 +3,8 @@
 #include "../Engine/Engine.h"
 #include "../Engine/Vec2.h"
 
+class Hero_Upgrade;
+
 class Upgrade : public CS230::Component {
 public:
     Upgrade() : CurrentLevel(0), UpgradeLevel(0) {}
@@ -21,6 +23,7 @@ public:
 
 
 private:
+    Hero_Upgrade* hero_upgrade;
     Rectangle rect;
     Rectangle smallRects[2];
     float radius;

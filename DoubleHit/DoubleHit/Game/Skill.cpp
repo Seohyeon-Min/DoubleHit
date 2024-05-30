@@ -126,3 +126,25 @@ void GEnemyAttack::ResolveCollision(GameObject* other_object)
         break;
     }
 }
+
+//void Hero_Upgrade::GetUpgradeChoose(int num) {
+//    if (num == 0 || num == 1) {
+//        Upgrade1Enable = true;
+//        LL_Choose = num;
+//    }
+//}
+//
+//Hero_Upgrade_LL::Hero_Upgrade_LL(GameObject* object) : Hero_Upgrade(object) 
+//{
+//    if (Upgrade1Enable == true) {
+//
+//    }
+//}
+
+////AddGOComponent(new CS230::Sprite("Assets/hero/spt"));
+//skill_timer = new CS230::Timer(skill_time);
+//AddGOComponent(skill_timer);
+//direction = object->GetScale().x;
+//if (direction == -1) {
+//    SetScale({ -1, 1 });
+//}
