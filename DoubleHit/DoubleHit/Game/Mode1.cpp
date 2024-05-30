@@ -60,6 +60,7 @@ void Mode1::Load() {
 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1280, 352 }, { 1440, 384 } }));   //cross light
 
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1568, 256 }, { 1696, 288 } }));    //hospital door 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1472, 416 }, { 1792, 448 } }));    //hospital middle 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1408, 544 }, { 1856, 576 } }));    //hospital top
 
@@ -77,7 +78,7 @@ void Mode1::Load() {
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 224, 800 }, { 320, 832 } }));   //amore mini_2
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 320 , 896 }, { 416, 928  } }));   //amore mini_3
 
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 544, 992 }, { 544, 1024 } }));     //window building top
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 544, 992 }, { 864, 1024 } }));     //window building top
 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 928, 640 }, { 1568, 672 } }));  //twin middle
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 928, 1024 }, { 1568, 1056 } }));  //twin top 
