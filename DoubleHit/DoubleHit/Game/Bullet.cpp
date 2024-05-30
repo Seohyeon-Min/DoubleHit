@@ -35,7 +35,6 @@ Math::vec2 Bullet::GetAttackDirection() {
 }
 
 
-
 bool Bullet::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {

@@ -18,6 +18,8 @@ Created:    March 8, 2023
 #include "raylib.h"
 
 class Hero;
+class Pet;
+class Combination;
 
 class Mode1 : public CS230::GameState {
 public:
@@ -37,9 +39,19 @@ public:
     }
 private:
     Hero* hero_ptr;
+    Pet* pet_ptr;
+    Combination* combination_ptr;
     std::vector<Enemy*> enemies; //enemy vectors
     double spawn_time = 0;
     const double enemy_spawn_time = 3; // every x second
     static constexpr int mouse_radius = 15; //temporary mouse asset
     Color mouse_color = { 230 , 116 , 92, 125 }; //temporary mouse asset
+
+    Math::vec2 BBPosition = { 624,85 };
+    Math::vec2 BSPosition = { 660,85 };
+    Math::vec2 SBPosition = { 624,50 };
+    Math::vec2 SSPosition = { 660,50 };
+
+    double BasicScale = 1.0;
+    double StrongScale = 0.33;
 };

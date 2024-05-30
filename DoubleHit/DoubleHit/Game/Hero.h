@@ -51,6 +51,7 @@ private:
     double HealthRatio = BarMaxWidth / health_max;
     bool IsHeavyReady = false; //heavy attack cooldown check
     bool light_combo = false;
+
     double HeavyTimerMax = 4;
     CS230::Timer* Heavytimer;
 

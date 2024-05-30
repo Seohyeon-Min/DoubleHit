@@ -14,6 +14,10 @@ Pet::Pet(Math::vec2 start_position) :
     SetScale({ 1,1 });
     current_state = &state_idle;
     current_state->Enter(this);
+
+    Heavytimer = new CS230::Timer(0.0);
+    AddGOComponent(Heavytimer);
+    IsHeavyReady = true;
 }
 
 void Pet::State_Idle::Enter(GameObject* object) {
@@ -23,10 +27,12 @@ void Pet::State_Idle::Enter(GameObject* object) {
 void Pet::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { 
     Pet* pet = static_cast<Pet*>(object);
     if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) { //light attack
-        pet->MakeAttack(1); //is_light true
+        pet->MakeLightAttack(); //is_light true
     }
-    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) { //heavy attack
-        pet->MakeAttack(0);
+    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON) && pet->IsHeavyReady == true) { //heavy attack
+        pet->IsHeavyReady = false;
+        pet->Heavytimer->Set(pet->HeavyTimerMax);
+        pet->MakeHeavyAttack();
     }
 }
 void Pet::State_Idle::CheckExit(GameObject* object) {
@@ -42,10 +48,12 @@ void Pet::State_Running::Enter(GameObject* object) {
 void Pet::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
     Pet* pet = static_cast<Pet*>(object);
     if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) { //light attack
-        pet->MakeAttack(1); //is_light true
+        pet->MakeLightAttack(); //is_light true
     }
-    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) { //heavy attack
-        pet->MakeAttack(0);
+    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON) && pet->IsHeavyReady == true) { //heavy attack
+        pet->IsHeavyReady = false;
+        pet->Heavytimer->Set(pet->HeavyTimerMax);
+        pet->MakeHeavyAttack();
     }
 }
 
@@ -59,6 +67,13 @@ void Pet::State_Running::CheckExit(GameObject* object)
 
 void Pet::Update(double dt) {
     GameObject::Update(dt);
+
+    //Heavy cooldown
+    if (IsHeavyReady == false) {
+        if (Heavytimer->Remaining() == 0.0) {
+            IsHeavyReady = true;
+        }
+    }
 
     //update angle
     if (increasing) { //go right
@@ -93,15 +108,34 @@ void Pet::Draw(Math::TransformationMatrix camera_matrix) {
     GameObject::Draw(camera_matrix);
 }
 
-void Pet::MakeAttack(bool is_light)
+void Pet::MakeLightAttack()
 {
     Math::vec2 mouse_position;
     mouse_position = { (double)GetMouseX(), (double)GetMouseY() };
     mouse_position.y *= -1;
     mouse_position.y += Engine::GetWindow().GetSize().y;
 
-    if(is_light)
-        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Bullet(GetPosition(), { mouse_position.x, mouse_position.y }));
-    else
-        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new BulletHeavy(GetPosition(), { mouse_position.x, mouse_position.y }));
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Bullet(GetPosition(), { mouse_position.x, mouse_position.y }));
+}
+
+void Pet::MakeHeavyAttack()
+{
+    Math::vec2 mouse_position;
+    mouse_position = { (double)GetMouseX(), (double)GetMouseY() };
+    mouse_position.y *= -1;
+    mouse_position.y += Engine::GetWindow().GetSize().y;
+
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new BulletHeavy(GetPosition(), { mouse_position.x, mouse_position.y }));
+    
+}
+
+int Pet::ReturnHeavyMax() {
+    return HeavyTimerMax;
+}
+int Pet::ReturnHeavyTimer() {
+    return Heavytimer->RemainingInt();
+}
+
+bool Pet::ReturnHeavyReady() {
+    return IsHeavyReady;
 }

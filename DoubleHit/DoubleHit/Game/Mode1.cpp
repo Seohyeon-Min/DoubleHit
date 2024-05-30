@@ -34,7 +34,9 @@ void Mode1::Load() {
     AddGSComponent(new CS230::GameObjectManager());
     AddGSComponent(new CS230::Camera());
     AddGSComponent(new Background());
-    AddGSComponent(new Combination());
+
+    combination_ptr = new Combination();
+    AddGSComponent(combination_ptr);
     AddGSComponent(new Gravity(Mode1::gravity));
 
     Upgrade* upgradeInstance = new Upgrade();
@@ -69,10 +71,12 @@ void Mode1::Load() {
     //hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * zoom), floor }, starting_floor_ptr, upgradeInstance);
 
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
+
+    pet_ptr = new Pet(hero_ptr->GetPosition());
+    GetGSComponent<CS230::GameObjectManager>()->Add(pet_ptr);
 
     ////UI
-    AddGSComponent(new UI(hero_ptr));
+    AddGSComponent(new UI(hero_ptr, pet_ptr));
     GetGSComponent<UI>()->Add("Assets/UI/Belt.png", { (double)Engine::GetWindow().GetSize().x / 2, 50 }, 2.0);
     GetGSComponent<UI>()->Add("Assets/UI/Belt.png", { (double)Engine::GetWindow().GetSize().x / 2, 96 }, -2.0);
     GetGSComponent<UI>()->Add("Assets/UI/BeltCore.png", { 540, -25 }, 2.0);
@@ -87,6 +91,16 @@ void Mode1::Load() {
     GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
     GetGSComponent<UI>()->Add("Assets/UI/health_bar.png", { 215, 63 }, 2.0);
     //GetGSComponent<UI>()->Add("Assets/vignetting.png", { 0, 0 }, 1);
+
+    //CombinationUI
+    AddGSComponent(new CombinationUI(combination_ptr));
+
+    //Have to change after upgrade logic is completed
+    //Choose which Icon to add according which skill is selected at Upgrade.cpp
+    GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_BB.png", BBPosition, BasicScale);
+    GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_BS.png", BSPosition, BasicScale);
+    GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_SB.png", SBPosition, StrongScale);
+    GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_SS.png", SSPosition, StrongScale);
 
     for (auto& enemyPtr : enemies) {  //reset enemies
         delete enemyPtr;
@@ -112,6 +126,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
         Engine::GetGameStateManager().ClearNextGameState();
     }
     GetGSComponent<UI>()->Update(dt);
+    GetGSComponent<CombinationUI>()->Update(dt);
 }
 
 void Mode1::Draw() {
@@ -123,6 +138,7 @@ void Mode1::Draw() {
     }
 
     GetGSComponent<UI>()->Draw();
+    GetGSComponent<CombinationUI>()->Draw();
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
 
 

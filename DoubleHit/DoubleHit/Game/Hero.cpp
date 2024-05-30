@@ -202,10 +202,7 @@ void Hero::Update(double dt) {
 
     //heavy cooldown
     if (IsHeavyReady == false) {
-        if (Heavytimer->Remaining() > 0) {
-            Engine::GetLogger().LogDebug("Remaining Heavy Attack CoolDown   :" + std::to_string(Heavytimer->Remaining()));
-        }
-        else if (Heavytimer->Remaining() == 0.0) {
+        if (Heavytimer->Remaining() == 0.0) {
             IsHeavyReady = true;
         }
     }
