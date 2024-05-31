@@ -46,9 +46,9 @@ void CS230::Texture::Draw(Math::TransformationMatrix display_matrix, unsigned in
     Draw(display_matrix, { 0, 0 }, { texture.width, texture.height }, color);
 }
 
-//void CS230::Texture::Draw(Math::TransformationMatrix display_matrix, unsigned int color, int cut) {
-//    Draw(display_matrix, { 0, 0 }, { texture.width - cut, texture.height }, color);
-//}
+void CS230::Texture::Draw(Math::TransformationMatrix display_matrix, int cut, unsigned int color) {
+    Draw(display_matrix, { 0, 0 }, { texture.width - cut, texture.height }, color);
+}
 
 void CS230::Texture::Draw(Math::TransformationMatrix display_matrix, Math::ivec2 texel_position, Math::ivec2 frame_size, unsigned int color) {
     const double render_height = rlGetFramebufferHeight();

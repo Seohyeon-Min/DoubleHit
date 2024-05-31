@@ -289,6 +289,11 @@ void EliteEnemy::Update(double dt)
     if (GetPosition().x > floor->GetBoundary().Right() || GetPosition().x < floor->GetBoundary().Left()) {
         SetVelocity({ -GetVelocity().x, GetVelocity().y });
     }
+
+    if (health < 0) {
+        RemoveGOComponent<CS230::Collision>();
+        SetVelocity({ 0,0 });
+    }
 }
 
 
@@ -476,11 +481,33 @@ void EliteEnemy::State_Storming::CheckExit(GameObject* object)
 
 }
 
-bool EliteEnemy::CanCollideWith(GameObjectTypes)
+bool EliteEnemy::CanCollideWith(GameObjectTypes other_object)
 {
+    switch (other_object) {
+    case GameObjectTypes::Bullet:
+    case GameObjectTypes::BulletHeavy:
+    case GameObjectTypes::HeroLight:
+    case GameObjectTypes::HeroHeavy:
+        return true;
+        break;
+    }
     return false;
 }
 
 void EliteEnemy::ResolveCollision(GameObject* other_object)
 {
+    switch (other_object->Type()) {
+    case GameObjectTypes::Bullet:
+        health -= Bullet::GetDamage()/ demerit;
+        break;
+    case GameObjectTypes::BulletHeavy:
+        health -= BulletHeavy::GetDamage()/ demerit;
+        break;
+    case GameObjectTypes::HeroLight:
+        health -= Hero_Light::GetDamage(); 
+        break;
+    case GameObjectTypes::HeroHeavy:
+        health -= Hero_Heavy::GetDamage(); 
+        break;
+    }
 }

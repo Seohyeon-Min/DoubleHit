@@ -41,8 +41,8 @@ private:
     double health = 10;
     double damage = 10;
     static constexpr double shooting_range = 50;
-    CS230::Timer* attack_timer;
     static constexpr double attack_time = 2.8;
+    CS230::Timer* attack_timer;
 
     enum class Animations {
         Idle,
@@ -74,8 +74,8 @@ private:
     double distance;
     static constexpr double shooting_range = 380;
     static constexpr double damage = 10;     //unused... yet
-    CS230::Timer* attack_timer;
     static constexpr double attack_time = 2.8;
+    CS230::Timer* attack_timer;
 
     enum class Animations {
         Idle,
@@ -95,10 +95,11 @@ public:
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
-    double health = 100;
+    double health = 150;
     double distance;
     bool has_run = false;
     bool attack = false;
+    static constexpr double demerit = 3;
     static constexpr double speed = 20;
     static constexpr double min_distance = 90;
     static constexpr double shooting_range = 100;

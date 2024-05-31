@@ -23,7 +23,7 @@ namespace CS230 {
         friend class Font;
 
         void Draw(Math::TransformationMatrix display_matrix, unsigned int color = 0xFFFFFFFF);
-        //void Draw(Math::TransformationMatrix display_matrix, unsigned int color = 0xFFFFFFFF, int cut);
+        void Draw(Math::TransformationMatrix display_matrix, int cut, unsigned int color = 0xFFFFFFFF );
         void Draw(
             Math::TransformationMatrix display_matrix,
             Math::ivec2 texel_position,
