@@ -61,14 +61,18 @@ Math::irect& CS230::Font::GetCharRect(char c) {
     }
 }
 
-Math::ivec2 CS230::Font::MeasureText(std::string text)
-{
-    Math::ivec2 result;
-    for (const char c : text) {
-        result += GetCharRect(c).Size();
-    }
+Math::ivec2 CS230::Font::MeasureText(std::string text) {
+    Math::ivec2 size = { 0, 0 };
+    for (int i = 0; text[i] != '\0'; i++)
+    {
+        size.x += char_rects[i].point_2.x;
+        if (size.y < (char_rects[i].point_1.y - char_rects[i].point_2.y))
+        {
+            size.y = char_rects[i].point_1.y - char_rects[i].point_2.y;
+        }
 
-    return Math::ivec2(result);
+    }
+    return size;
 }
 
 void CS230::Font::DrawChar(Math::TransformationMatrix& matrix, char c, unsigned int color) {

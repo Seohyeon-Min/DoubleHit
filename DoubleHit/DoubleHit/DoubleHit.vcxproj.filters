@@ -120,7 +120,7 @@
     <ClInclude Include="Game\Upgrade2.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Font.h">
+    <ClInclude Include="Game\Fonts.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
