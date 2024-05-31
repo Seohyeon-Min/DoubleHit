@@ -17,6 +17,7 @@ Created:    March 8, 2023
 #include "Pet.h"
 #include "Floor.h"
 #include "UI.h"
+#include "Font.h"
 
 //random
 #include<cstdlib>
@@ -44,7 +45,8 @@ void Mode1::Load() {
     GetGSComponent<Background>()->Add("Assets/small_background.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, {  GetGSComponent<Background>()->GetSize() - Engine::GetWindow().GetSize() } });
-    
+    test_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("ABCDEFG", 0xFFFFFFFF);
+
 
     Floor* starting_floor_ptr = new Floor(Math::irect{ { 0, 0 }, { 2560, static_cast<int>(floor) } });
     GetGSComponent<CS230::GameObjectManager>()->Add(starting_floor_ptr);
@@ -154,7 +156,9 @@ void Mode1::Draw() {
     if (GetGSComponent<Upgrade>()->GetUpgradeActive() == true) {
         GetGSComponent<Upgrade>()->DrawUpgrade();
     }
-    
+
+    test_texture->Draw(Math::TranslationMatrix(Math::ivec2{ 100,180 }));
+
 }
 
 //####################################################################################

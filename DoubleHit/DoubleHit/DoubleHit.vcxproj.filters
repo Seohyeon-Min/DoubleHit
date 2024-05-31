@@ -120,6 +120,9 @@
     <ClInclude Include="Game\Upgrade2.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Font.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
