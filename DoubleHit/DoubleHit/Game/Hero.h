@@ -16,7 +16,6 @@ public:
     const bool GetOnEliteGround() const { return on_elite_ground; }
     bool CanCollideWith(GameObjectTypes) override;
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
-    double GetHealth();
     void TakeDamage(double damage);
     int ReturnHeavyTimer();
     bool ReturnHeavyReady();
@@ -26,11 +25,7 @@ private:
     GameObject* standing_on;
     void update_x_velocity(double dt);
     static inline const  Math::vec2 velocity = { 200, 1000 };//500
-    double health = 100.0;
-    double health_max = 100.0;
-    double BarMaxWidth = 200.0;
-    double BarCurrentWidth = 200;
-    double HealthRatio = BarMaxWidth / health_max;
+    static inline const double health_max = 100.0;
     bool IsHeavyReady = false; //heavy attack cooldown check
     bool light_combo = false;
     bool on_elite_ground = false;

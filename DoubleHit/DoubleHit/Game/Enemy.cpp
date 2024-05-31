@@ -280,6 +280,7 @@ EliteEnemy::EliteEnemy(Math::vec2 start_position):
     AddGOComponent(attack_timer);
     current_state = &state_waiting;
     current_state->Enter(this);
+    SetHealth(max_health);
 }
 
 void EliteEnemy::Update(double dt)
@@ -290,10 +291,7 @@ void EliteEnemy::Update(double dt)
         SetVelocity({ -GetVelocity().x, GetVelocity().y });
     }
 
-    if (health < 0) {
-        RemoveGOComponent<CS230::Collision>();
-        SetVelocity({ 0,0 });
-    }
+
 }
 
 
@@ -496,18 +494,22 @@ bool EliteEnemy::CanCollideWith(GameObjectTypes other_object)
 
 void EliteEnemy::ResolveCollision(GameObject* other_object)
 {
+    if (GetHealth() <= 0) {
+        RemoveGOComponent<CS230::Collision>();
+        SetVelocity({ 0,0 });
+    }
     switch (other_object->Type()) {
     case GameObjectTypes::Bullet:
-        health -= Bullet::GetDamage()/ demerit;
+        SetHealth(GetHealth() - Bullet::GetDamage() / demerit);
         break;
     case GameObjectTypes::BulletHeavy:
-        health -= BulletHeavy::GetDamage()/ demerit;
+        SetHealth(GetHealth() - BulletHeavy::GetDamage() / demerit);
         break;
     case GameObjectTypes::HeroLight:
-        health -= Hero_Light::GetDamage(); 
+        SetHealth(GetHealth() - Hero_Light::GetDamage() / demerit);
         break;
     case GameObjectTypes::HeroHeavy:
-        health -= Hero_Heavy::GetDamage(); 
+        SetHealth(GetHealth() - Hero_Heavy::GetDamage() / demerit);
         break;
     }
 }

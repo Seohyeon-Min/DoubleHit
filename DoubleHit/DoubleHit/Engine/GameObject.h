@@ -44,6 +44,7 @@ namespace CS230 {
         const Math::vec2& GetPosition() const;
         const Math::vec2& GetVelocity() const;
         const Math::vec2& GetScale() const;
+        const double GetHealth() const;
         double GetRotation() const;
 
         class State {
@@ -72,6 +73,7 @@ namespace CS230 {
         void UpdateScale(Math::vec2 delta);
         void SetRotation(double new_rotation);
         void UpdateRotation(double delta);
+        void SetHealth(double health);
 
         void AddGOComponent(Component* component) {
             componentmanager.AddComponent(component);
@@ -92,6 +94,7 @@ namespace CS230 {
         Math::TransformationMatrix object_matrix;
 
         double rotation;
+        double health;
         bool matrix_outdated = true;
         bool destroy;
         Math::vec2 scale;

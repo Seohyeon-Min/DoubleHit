@@ -87,19 +87,19 @@ private:
 class EliteEnemy : public Enemy {
 public:
     EliteEnemy(Math::vec2 start_position);
-    GameObjectTypes Type() override { return GameObjectTypes::GroundEnemy; }
-    std::string TypeName() override { return "GroundEnemy"; }
+    GameObjectTypes Type() override { return GameObjectTypes::EliteEnemy; }
+    std::string TypeName() override { return "EliteEnemy"; }
     void Update(double dt) override;
     bool CanCollideWith(GameObjectTypes) override;
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
-    double health = 150;
     double distance;
     bool has_run = false;
     bool attack = false;
-    static constexpr double demerit = 3;
+    static constexpr double max_health = 200;
+    static constexpr double demerit = 4;
     static constexpr double speed = 20;
     static constexpr double min_distance = 90;
     static constexpr double shooting_range = 100;

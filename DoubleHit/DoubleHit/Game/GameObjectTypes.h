@@ -18,6 +18,7 @@ enum class GameObjectTypes {
 	Enemy,
 	GroundEnemy,
 	AirEnemy,
+	EliteEnemy,
 	Floor,
 	AEnemyBullet,
 	GEnemyAttack,

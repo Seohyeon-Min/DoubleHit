@@ -19,9 +19,7 @@ Hero::Hero(Math::vec2 start_position, GameObject* standing_on) :
     //heavy attack cooldown check
     Heavytimer = new CS230::Timer(0.0);
     AddGOComponent(Heavytimer);
-
-    health = health_max;
-    BarCurrentWidth = BarMaxWidth;
+    SetHealth(health_max);
     SetScale({ 1,1 });
 
     current_state = &state_idle;
@@ -288,23 +286,18 @@ void Hero::update_x_velocity(double dt) {
     }
 }
 
-double Hero::GetHealth() {
-    return health;
-}
-
 void Hero::TakeDamage(double damage) {
-    health -= damage;
+    SetHealth(GetHealth() - damage);
 
-    if (health <= 0) {
-        health = 0;
-        BarCurrentWidth = 0;
+    if (GetHealth() <= 0) {
+
         std::cout << "Game Over." << std::endl;
     }
     else {
-        std::cout << "Hero got " << damage << " damage. Health: " << health << std::endl;
-        BarCurrentWidth = health * HealthRatio;
+        std::cout << "Hero got " << damage << " damage. Health: " << GetHealth() << std::endl;
     }  
 }
+
 int Hero::ReturnHeavyMax() {
     return HeavyTimerMax;
 }
