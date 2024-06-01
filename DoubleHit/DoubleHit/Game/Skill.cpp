@@ -127,24 +127,91 @@ void GEnemyAttack::ResolveCollision(GameObject* other_object)
     }
 }
 
-//void Hero_Upgrade::GetUpgradeChoose(int num) {
-//    if (num == 0 || num == 1) {
-//        Upgrade1Enable = true;
-//        LL_Choose = num;
-//    }
-//}
-//
-//Hero_Upgrade_LL::Hero_Upgrade_LL(GameObject* object) : Hero_Upgrade(object) 
-//{
-//    if (Upgrade1Enable == true) {
-//
-//    }
-//}
+void Hero_Upgrade::Update(double dt) {
+    GameObject::Update(dt);
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+    }
+}
 
-////AddGOComponent(new CS230::Sprite("Assets/hero/spt"));
-//skill_timer = new CS230::Timer(skill_time);
-//AddGOComponent(skill_timer);
-//direction = object->GetScale().x;
-//if (direction == -1) {
-//    SetScale({ -1, 1 });
-//}
+void Hero_Upgrade::GetUpgradeChoose(int num) {
+    ChooseOption = num;
+
+    switch (num) {
+    case1:
+        Upgrade1Enable = true;
+        break;
+
+    case2:
+        Upgrade1Enable = true;
+        break;
+
+    case3:
+        Upgrade2Enable = true;
+        break;
+
+    case4:
+        Upgrade2Enable = true;
+        break;
+
+    case5:
+        Upgrade3Enable = true;
+        break;
+
+    case6:
+        Upgrade3Enable = true;
+        break;
+
+    case7:
+        Upgrade4Enable = true;
+        break;
+
+    case8:
+        Upgrade4Enable = true;
+        break;
+
+    }
+}
+
+Hero_Upgrade_LL::Hero_Upgrade_LL(GameObject* object) : Hero_Upgrade(object){
+    if (ChooseOption == 1) {
+        AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero_p1_gg.spt", this));
+        skill_timer = new CS230::Timer(skill_time);
+        AddGOComponent(skill_timer);
+        direction = object->GetScale().x;
+        if (direction == -1) {
+            SetScale({ -1, 1 });
+        }
+    }
+
+    else if (ChooseOption == 2) {
+        AddGOComponent(new CS230::Sprite("Assets/hero/spt/hero_p1_gs.spt", this));
+        skill_timer = new CS230::Timer(skill_time);
+        AddGOComponent(skill_timer);
+        direction = object->GetScale().x;
+        if (direction == -1) {
+            SetScale({ -1, 1 });
+        }
+    }
+}
+
+void Hero_Upgrade_LL::Update(double dt) {
+    SetPosition(Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>()->GetPosition());
+    GameObject::Update(dt);
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+    }
+}
+
+void Hero_Upgrade_LL::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::AirEnemy:
+        Destroy();
+        break;
+    case GameObjectTypes::GroundEnemy:
+        Destroy();
+        break;
+    }
+}
+

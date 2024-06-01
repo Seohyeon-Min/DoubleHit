@@ -66,6 +66,7 @@ class Hero_Upgrade : public Skill {
 public:
     Hero_Upgrade(GameObject* object);
     Upgrade* upgrade;
+    void Update(double dt) override;
     void GetUpgradeChoose(int num);
 
     bool Upgrade1Enable = false;
@@ -73,9 +74,12 @@ public:
     bool Upgrade3Enable = false;
     bool Upgrade4Enable = false;
 
+    CS230::Timer* skill_timer;
+    int ChooseOption;
+    static constexpr double skill_time = 5;
 private:
+    
 
-    int LL_Choose;
 };
 
 class Hero_Upgrade_LL : public Hero_Upgrade {
@@ -88,10 +92,9 @@ public:
     static constexpr double GetDamage() { return damage; }
 
 private:
-    CS230::Timer* skill_timer;
+    
     int direction;
     static constexpr double damage = 30;
-    static constexpr double skill_time = 5;
     
 };
 
