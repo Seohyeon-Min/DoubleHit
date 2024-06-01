@@ -13,3 +13,9 @@ Created:    March 8, 2023
 Floor::Floor(Math::irect boundary) : GameObject(static_cast<Math::vec2>(boundary.point_1)) {
     AddGOComponent(new CS230::RectCollision({ Math::ivec2{ 0, 0 }, boundary.Size() }, this));
 }
+
+EliteFloor::EliteFloor(Math::irect _boundary):
+    Floor(_boundary)
+{
+    boundary = _boundary;
+}

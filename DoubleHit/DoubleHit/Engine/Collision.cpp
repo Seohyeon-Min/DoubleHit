@@ -90,7 +90,7 @@ double CS230::RectCollision::ChangeCollision()
 {
     Math::rect rectangle_1 = WorldBoundary();
 
-    return (rectangle_1.Right() - rectangle_1.Left()) / 2 ;
+    return (rectangle_1.Right() - rectangle_1.Left()) / 2;
 }
 
 

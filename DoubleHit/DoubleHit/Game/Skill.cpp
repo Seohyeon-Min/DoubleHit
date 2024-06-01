@@ -7,13 +7,17 @@ Skill::Skill(GameObject* object):
 {
 }
 
+Skill::Skill(Math::vec2 position) :
+    GameObject(position)
+{
+}
+
 bool Skill::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {
     case GameObjectTypes::AirEnemy:
-        return true;
-        break;
     case GameObjectTypes::GroundEnemy:
+    case GameObjectTypes::EliteEnemy:
         return true;
         break;
     }
@@ -46,9 +50,8 @@ void Hero_Light::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
     case GameObjectTypes::AirEnemy:
-        Destroy();
-        break;
     case GameObjectTypes::GroundEnemy:
+    case GameObjectTypes::EliteEnemy:
         Destroy();
         break;
     }
@@ -78,9 +81,8 @@ void Hero_Heavy::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
     case GameObjectTypes::AirEnemy:
-        Destroy();
-        break;
     case GameObjectTypes::GroundEnemy:
+    case GameObjectTypes::EliteEnemy:
         Destroy();
         break;
     }
@@ -148,3 +150,105 @@ void GEnemyAttack::ResolveCollision(GameObject* other_object)
 //if (direction == -1) {
 //    SetScale({ -1, 1 });
 //}
+
+
+
+EEnemyAttack::EEnemyAttack(Math::vec2 position) :
+    Skill(position)
+{
+    AddGOComponent(new CS230::Sprite("Assets/enemy/elite_enemy_attack.spt", this));
+    skill_timer = new CS230::Timer(skill_time);
+    AddGOComponent(skill_timer);
+    GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+}
+
+void EEnemyAttack::Update(double dt)
+{
+    GameObject::Update(dt);
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+    }
+}
+
+bool EEnemyAttack::CanCollideWith(GameObjectTypes other_object)
+{
+    switch (other_object) {
+    case GameObjectTypes::Hero:
+        return true;
+        break;
+    }
+    return false;
+}
+
+void EEnemyAttack::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::Hero:
+        RemoveGOComponent<CS230::Collision>();
+        break;
+    }
+}
+
+
+
+EEnemyAttackAlert::EEnemyAttackAlert(Math::vec2 position) :
+    Skill(position)
+{
+    AddGOComponent(new CS230::Sprite("Assets/enemy/elite_enemy_attack_alert.spt", this));
+    skill_timer = new CS230::Timer(skill_time);
+    AddGOComponent(skill_timer);
+    GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+}
+
+void EEnemyAttackAlert::Update(double dt)
+{
+    GameObject::Update(dt);
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+    }
+}
+
+bool EEnemyAttackAlert::CanCollideWith(GameObjectTypes other_object)
+{
+    return false;
+}
+
+
+EEnemyLight::EEnemyLight(GameObject* object) :
+    Skill(object)
+{
+    AddGOComponent(new CS230::Sprite("Assets/enemy/elite_enemy_light.spt", this));
+    skill_timer = new CS230::Timer(skill_time);
+    AddGOComponent(skill_timer);
+    direction = object->GetScale().x;
+    if (direction == -1) {
+        SetScale({ -1, 1 });
+    }
+}
+
+void EEnemyLight::Update(double dt)
+{
+    GameObject::Update(dt);
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+    }
+}
+
+bool EEnemyLight::CanCollideWith(GameObjectTypes other_object)
+{
+    switch (other_object) {
+    case GameObjectTypes::Hero:
+        return true;
+        break;
+    }
+    return false;
+}
+
+void EEnemyLight::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::Hero:
+        RemoveGOComponent<CS230::Collision>();
+        break;
+    }
+}

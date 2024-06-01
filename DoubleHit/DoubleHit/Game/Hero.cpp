@@ -5,6 +5,7 @@
 #include "Gravity.h"
 #include "Skill.h"
 #include "Bullet.h"
+#include "Floor.h"
 #include "../Engine/Collision.h"
 #include "../Engine/Engine.h"
  
@@ -19,9 +20,7 @@ Hero::Hero(Math::vec2 start_position, GameObject* standing_on, Upgrade* upgrade)
     // heavy attack cooldown check
     Heavytimer = new CS230::Timer(0.0);
     AddGOComponent(Heavytimer);
-
-    health = health_max;
-    BarCurrentWidth = BarMaxWidth;
+    SetHealth(max_health);
     SetScale({ 1,1 });
 
     current_state = &state_idle;
@@ -178,6 +177,7 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
         hero->change_state(&hero->state_idle);
     }
 }
+    EliteFloor* elite_floor = nullptr;
 
 void Hero::Update(double dt) {
     GameObject::Update(dt);
@@ -189,16 +189,38 @@ void Hero::Update(double dt) {
 
     // Boundary Check
     CS230::RectCollision* collider = GetGOComponent<CS230::RectCollision>();
-    if (collider != nullptr) {
-        if (collider->WorldBoundary().Left() < Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x) {
-            UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x - collider->WorldBoundary().Left(),0 });
-            SetVelocity({ 0, GetVelocity().y });
-        }
-        if (collider->WorldBoundary().Right() > Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x) {
-            UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x - collider->WorldBoundary().Right(),0 });
-            SetVelocity({ 0, GetVelocity().y });
+    if (!on_elite_ground) {
+        has_run = false;
+        if (collider != nullptr) {
+            if (collider->WorldBoundary().Left() < Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x) {
+                UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x - collider->WorldBoundary().Left(),0 });
+                SetVelocity({ 0, GetVelocity().y });
+            }
+            if (collider->WorldBoundary().Right() > Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x) {
+                UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x - collider->WorldBoundary().Right(),0 });
+                SetVelocity({ 0, GetVelocity().y });
+            }
         }
     }
+    else if(Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteEnemy>() != nullptr){
+        if (Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>() == standing_on && !has_run) {
+            elite_floor = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>();
+            has_run = true;
+
+        }
+        if (elite_floor != nullptr) {
+            if (collider->WorldBoundary().Left() < elite_floor->GetBoundary().Left()) {
+                UpdatePosition({ elite_floor->GetBoundary().Left() - collider->WorldBoundary().Left(),0 });
+                SetVelocity({ 0, GetVelocity().y });
+            }
+            if (collider->WorldBoundary().Right() > elite_floor->GetBoundary().Right()) {
+                UpdatePosition({ elite_floor->GetBoundary().Right() - collider->WorldBoundary().Right(),0 });
+                SetVelocity({ 0, GetVelocity().y });
+            }
+        }
+
+    }
+
 
     //heavy cooldown
     if (IsHeavyReady == false) {
@@ -217,6 +239,7 @@ bool Hero::CanCollideWith(GameObjectTypes other_object)
     case GameObjectTypes::Floor:
     case GameObjectTypes::AEnemyBullet:
     case GameObjectTypes::GEnemyAttack:
+    case GameObjectTypes::EEnemyAttack:
         return true;
         break;
     }
@@ -227,11 +250,18 @@ bool Hero::CanCollideWith(GameObjectTypes other_object)
 void Hero::ResolveCollision(GameObject* other_object)
 {
     if (other_object->Type() == GameObjectTypes::Floor) {
+        EliteFloor* elite_floor = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>();
         Math::rect hero_rect = GetGOComponent<CS230::RectCollision>()->WorldBoundary();
         Math::rect other_rect = other_object->GetGOComponent<CS230::RectCollision>()->WorldBoundary();
         if (current_state == &state_falling) {
             if (hero_rect.Top() > other_rect.Top() && hero_rect.Bottom() > other_rect.Bottom()) {
                 SetPosition({ GetPosition().x, other_rect.Top() });
+                if (elite_floor == other_object && Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>() != nullptr) {
+                    on_elite_ground = true;
+                }
+                else if (elite_floor != other_object) {
+                    on_elite_ground = false;
+                }
                 standing_on = other_object;
                 current_state->CheckExit(this);
                 return;
@@ -244,7 +274,10 @@ void Hero::ResolveCollision(GameObject* other_object)
             TakeDamage(AEnemyBullet::GetDamage());
             break;
         case GameObjectTypes::GEnemyAttack:
-            TakeDamage(AEnemyBullet::GetDamage());
+            TakeDamage(GEnemyAttack::GetDamage());
+            break;
+        case GameObjectTypes::EEnemyAttack:
+            TakeDamage(EEnemyAttack::GetDamage());
             break;
     }
 }
@@ -268,21 +301,15 @@ void Hero::update_x_velocity(double dt) {
     }
 }
 
-double Hero::GetHealth() {
-    return health;
-}
-
 void Hero::TakeDamage(double damage) {
-    health -= damage;
+    SetHealth(GetHealth() - damage);
 
-    if (health <= 0) {
-        health = 0;
-        BarCurrentWidth = 0;
+    if (GetHealth() <= 0) {
+
         std::cout << "Game Over." << std::endl;
     }
     else {
-        std::cout << "Hero got " << damage << " damage. Health: " << health << std::endl;
-        BarCurrentWidth = health * HealthRatio;
+        std::cout << "Hero got " << damage << " damage. Health: " << GetHealth() << std::endl;
     }  
 }
 

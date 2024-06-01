@@ -92,6 +92,11 @@ const Math::vec2& CS230::GameObject::GetScale() const
     return scale;
 }
 
+const double CS230::GameObject::GetHealth() const
+{
+    return health;
+}
+
 double CS230::GameObject::GetRotation() const
 {
     return rotation;
@@ -141,4 +146,9 @@ void CS230::GameObject::UpdateRotation(double delta)
 {
     matrix_outdated = true;
     rotation += delta;
+}
+
+void CS230::GameObject::SetHealth(double new_health)
+{
+    health = new_health;
 }

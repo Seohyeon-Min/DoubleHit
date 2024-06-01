@@ -16,6 +16,26 @@ Created:    March 8, 2023
 class Floor : public CS230::GameObject {
 public:
     Floor(Math::irect boundary);
+    bool isElite() {
+        return false;
+    }
     std::string TypeName() override { return "Floor"; }
     virtual GameObjectTypes Type() override { return GameObjectTypes::Floor; }
+    const Math::irect GetBoundary() { return boundary; }
+private:
+    Math::irect boundary;
 };
+
+class EliteFloor : public Floor {
+public:
+    EliteFloor(Math::irect boundary);
+    bool isElite() {
+        return true;
+    }
+    std::string TypeName() override { return "Floor"; }
+    virtual GameObjectTypes Type() override { return GameObjectTypes::Floor; }
+    const Math::irect GetBoundary() { return boundary; }
+private:
+    Math::irect boundary;
+};
+

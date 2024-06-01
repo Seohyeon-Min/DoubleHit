@@ -41,6 +41,7 @@ bool Bullet::CanCollideWith(GameObjectTypes other_object)
     switch (other_object) {
         case GameObjectTypes::AirEnemy:
         case GameObjectTypes::GroundEnemy:
+        case GameObjectTypes::EliteEnemy:
             return true;
             break;
     }
@@ -53,6 +54,7 @@ void Bullet::ResolveCollision(GameObject* other_object)
     switch (other_object->Type()) {
         case GameObjectTypes::AirEnemy:
         case GameObjectTypes::GroundEnemy:
+        case GameObjectTypes::EliteEnemy:
             Destroy();
             break;
     }

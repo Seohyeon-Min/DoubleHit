@@ -13,10 +13,12 @@ public:
     std::string TypeName() override { return "Enemy"; }
     Math::vec2 Normalize(const Math::vec2& vec);
 
-private:
+protected:
     Math::vec2 direction;
+private:
     Math::vec2 normalized_vec;
     double length;
+
 };
 
 class GroundEnemy : public Enemy{
@@ -30,17 +32,17 @@ public:
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
-    Math::vec2 direction;
+
     bool has_run = false;
     double speed = 80;
     double min_distance = 30;
     double x_distance;
     double distance;
-    double health = 5;
-    double damage = 10;     //unused... yet
+    double health = 10;
+    double damage = 10;
     static constexpr double shooting_range = 50;
-    CS230::Timer* attack_timer;
     static constexpr double attack_time = 2.8;
+    CS230::Timer* attack_timer;
 
     enum class Animations {
         Idle,
@@ -62,7 +64,7 @@ public:
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
-    Math::vec2 direction;
+
     bool has_run = false;
     bool attack;
     bool attackExecuted = false;
@@ -72,8 +74,8 @@ private:
     double distance;
     static constexpr double shooting_range = 380;
     static constexpr double damage = 10;     //unused... yet
-    CS230::Timer* attack_timer;
     static constexpr double attack_time = 2.8;
+    CS230::Timer* attack_timer;
 
     enum class Animations {
         Idle,
@@ -81,37 +83,42 @@ private:
         Die
     };
 };
-/*
+
 class EliteEnemy : public Enemy {
 public:
-
     EliteEnemy(Math::vec2 start_position);
-    void Update(double dt, Math::vec2 hero_position) override;
-    void Draw(const CS230::Camera& camera, const double zoom) override;
-    void Move(double dt, Math::vec2 hero_position, double speed) override;
-    const Math::vec2& GetPosition() override { return position; }
+    GameObjectTypes Type() override { return GameObjectTypes::EliteEnemy; }
+    std::string TypeName() override { return "EliteEnemy"; }
+    void Update(double dt) override;
+    bool CanCollideWith(GameObjectTypes) override;
+    void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
+    const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
+    static constexpr double max_health = 300;
 
 private:
-    Math::vec2 start_position;
-    Math::vec2 position;
-    CS230::Sprite sprite;
-    double speed = 2;
-    double min_distance = 60;
-    double damage = 30;     //unused... yet
     double distance;
-    double counter = 0;    //attack time count
-};
-*/
+    bool has_run = false;
+    bool attack = false;
+    static constexpr double demerit = 4;
+    static constexpr double speed = 20;
+    static constexpr double min_distance = 90;
+    static constexpr double shooting_range = 100;
+    static constexpr double idle_time = 2.0;
+    //static constexpr double attack_time = 9.5;
+    CS230::Timer* idle_timer;
+    CS230::Timer* attack_timer;
+    Math::vec2 pos;
+    Math::vec2 pos2;
+    Math::vec2 pos3;
+    Math::vec2 pos4;
+    Math::vec2 pos5;
 
-
-
-//State!
-/*
-    enum class Animations {
-        Idle,
-        Running,
-        Attacking,
-        Attacked
+    class State_Wating : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Idle"; }
     };
 
     class State_Idle : public State {
@@ -130,6 +137,14 @@ private:
         std::string GetName() override { return "Running"; }
     };
 
+    class State_Punching : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Attacking"; }
+    };
+
     class State_Attacking : public State {
     public:
         virtual void Enter(GameObject* object) override;
@@ -138,16 +153,27 @@ private:
         std::string GetName() override { return "Attacking"; }
     };
 
-    class State_Attacked : public State {
+    class State_Storming : public State {
     public:
         virtual void Enter(GameObject* object) override;
         virtual void Update(GameObject* object, double dt) override;
         virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Attacked"; }
+        std::string GetName() override { return "Attacking"; }
     };
 
+    State_Wating state_waiting;
     State_Idle state_idle;
     State_Running state_running;
+    State_Punching state_punching;
     State_Attacking state_attacking;
-    State_Attacked state_attacked;
-    */
+    State_Storming state_storming;
+
+    enum class Animations {
+        Idle,
+        Punch,
+        Attack,
+        Storm,
+        Teleport,
+        Teleport2
+    };
+};
