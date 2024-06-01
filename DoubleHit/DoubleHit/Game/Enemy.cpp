@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "Skill.h"
 #include "Floor.h"
+#include "HealthBar.h"
 #include <cmath>
 #define E_attack_time rand()%6 + 9
 
@@ -274,13 +275,14 @@ EliteEnemy::EliteEnemy(Math::vec2 start_position):
     Enemy(start_position)
 {
     AddGOComponent(new CS230::Sprite("Assets/enemy/elite_enemy.spt", this));
+
+    SetHealth(max_health);
     idle_timer = new CS230::Timer(idle_time);
     attack_timer = new CS230::Timer(E_attack_time);
     AddGOComponent(idle_timer);
     AddGOComponent(attack_timer);
     current_state = &state_waiting;
     current_state->Enter(this);
-    SetHealth(max_health);
 }
 
 void EliteEnemy::Update(double dt)
@@ -311,6 +313,9 @@ void EliteEnemy::State_Wating::CheckExit(GameObject* object)
     Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
     EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
     if (hero->GetOnEliteGround()) {
+        Engine::GetGameStateManager().GetGSComponent<EliteHealthBar>()->Add("Assets/UI/elite_health_back.png", { 220, (double)Engine::GetWindow().GetSize().y - 88 }, 2.0);
+        Engine::GetGameStateManager().GetGSComponent<EliteHealthBar>()->Add("Assets/UI/elite_health_middle.png", { 288, (double)Engine::GetWindow().GetSize().y - 88 }, 2.0, enemy, max_health);
+        Engine::GetGameStateManager().GetGSComponent<EliteHealthBar>()->Add("Assets/UI/elite_health_top.png", { 220, (double)Engine::GetWindow().GetSize().y - 88 }, 2.0);
         enemy->attack_timer->Set(E_attack_time);
         enemy->change_state(&enemy->state_idle);
     }
@@ -399,12 +404,19 @@ void EliteEnemy::State_Punching::Enter(GameObject* object)
 
 void EliteEnemy::State_Punching::Update(GameObject* object, double dt)
 {
+    EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
+    CS230::Sprite* sprite = enemy->GetGOComponent<CS230::Sprite>();
+    if (sprite->GetCurrentFrame() == 29 && !enemy->attack) {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyLight(enemy));
+        enemy->attack = true;
+    }
 }
 
 void EliteEnemy::State_Punching::CheckExit(GameObject* object)
 {
     EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
     if (enemy->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+        enemy->attack = false;
         enemy->change_state(&enemy->state_idle);
     }
 }
@@ -435,17 +447,28 @@ void EliteEnemy::State_Attacking::Update(GameObject* object, double dt)
     EliteEnemy* enemy = static_cast<EliteEnemy*>(object);
     EliteFloor* floor = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>();
     CS230::Sprite* sprite = enemy->GetGOComponent<CS230::Sprite>();
-    
+
+
     if (sprite->AnimationEnded()) {
         sprite->PlayAnimation(static_cast<int>(Animations::Attack));
+        enemy->pos = { (double)floor->GetBoundary().Left() + rand() % 100 + 50, (double)floor->GetBoundary().Top() };
+        enemy->pos2 = { (double)floor->GetBoundary().Left() + rand() % 100 + 150, (double)floor->GetBoundary().Top() };
+        enemy->pos3 = { (double)floor->GetBoundary().Left() + rand() % 100 + 250, (double)floor->GetBoundary().Top() };
+        enemy->pos4 = { (double)floor->GetBoundary().Left() + rand() % 100 + 350, (double)floor->GetBoundary().Top() };
+        enemy->pos5 = { (double)floor->GetBoundary().Left() + rand() % 100 + 550, (double)floor->GetBoundary().Top() };
+         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttackAlert(enemy->pos));
+         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttackAlert(enemy->pos2));
+         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttackAlert(enemy->pos3));
+         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttackAlert(enemy->pos4));
+         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttackAlert(enemy->pos5));
     }
     if (sprite->GetCurrentFrame()== 20 && !enemy->attack) {
-        Math::vec2 pos = { (double)floor->GetBoundary().Left() + rand() % 200 + 100, (double)floor->GetBoundary().Top() };
-        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttack(pos));
-        pos = { (double)floor->GetBoundary().Left() + rand() % 200 + 250, (double)floor->GetBoundary().Top() };
-        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttack(pos));
-        pos = { (double)floor->GetBoundary().Left() + rand() % 200 + 400, (double)floor->GetBoundary().Top() };
-        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttack(pos));
+
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttack(enemy->pos));
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttack(enemy->pos2));
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttack(enemy->pos3));
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttack(enemy->pos4));
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EEnemyAttack(enemy->pos5));
         enemy->attack = true;
     }
 }
@@ -482,7 +505,6 @@ void EliteEnemy::State_Storming::CheckExit(GameObject* object)
 bool EliteEnemy::CanCollideWith(GameObjectTypes other_object)
 {
     switch (other_object) {
-    case GameObjectTypes::Bullet:
     case GameObjectTypes::BulletHeavy:
     case GameObjectTypes::HeroLight:
     case GameObjectTypes::HeroHeavy:
@@ -497,11 +519,13 @@ void EliteEnemy::ResolveCollision(GameObject* other_object)
     if (GetHealth() <= 0) {
         RemoveGOComponent<CS230::Collision>();
         SetVelocity({ 0,0 });
+        Engine::GetGameStateManager().GetGSComponent<EliteHealthBar>()->Unload();
+        Destroy();
     }
     switch (other_object->Type()) {
-    case GameObjectTypes::Bullet:
-        SetHealth(GetHealth() - Bullet::GetDamage() / demerit);
-        break;
+    //case GameObjectTypes::Bullet:
+    //    SetHealth(GetHealth() - Bullet::GetDamage() / demerit);
+    //    break;
     case GameObjectTypes::BulletHeavy:
         SetHealth(GetHealth() - BulletHeavy::GetDamage() / demerit);
         break;
@@ -509,7 +533,7 @@ void EliteEnemy::ResolveCollision(GameObject* other_object)
         SetHealth(GetHealth() - Hero_Light::GetDamage() / demerit);
         break;
     case GameObjectTypes::HeroHeavy:
-        SetHealth(GetHealth() - Hero_Heavy::GetDamage() / demerit);
+        SetHealth(GetHealth() - Hero_Heavy::GetDamage());
         break;
     }
 }

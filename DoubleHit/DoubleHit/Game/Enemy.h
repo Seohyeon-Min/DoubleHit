@@ -93,12 +93,12 @@ public:
     bool CanCollideWith(GameObjectTypes) override;
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
+    static constexpr double max_health = 300;
 
 private:
     double distance;
     bool has_run = false;
     bool attack = false;
-    static constexpr double max_health = 200;
     static constexpr double demerit = 4;
     static constexpr double speed = 20;
     static constexpr double min_distance = 90;
@@ -107,6 +107,11 @@ private:
     //static constexpr double attack_time = 9.5;
     CS230::Timer* idle_timer;
     CS230::Timer* attack_timer;
+    Math::vec2 pos;
+    Math::vec2 pos2;
+    Math::vec2 pos3;
+    Math::vec2 pos4;
+    Math::vec2 pos5;
 
     class State_Wating : public State {
     public:

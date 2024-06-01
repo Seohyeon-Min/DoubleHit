@@ -19,7 +19,7 @@ Hero::Hero(Math::vec2 start_position, GameObject* standing_on) :
     //heavy attack cooldown check
     Heavytimer = new CS230::Timer(0.0);
     AddGOComponent(Heavytimer);
-    SetHealth(health_max);
+    SetHealth(max_health);
     SetScale({ 1,1 });
 
     current_state = &state_idle;
@@ -194,7 +194,7 @@ void Hero::Update(double dt) {
             }
         }
     }
-    else {
+    else if(Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteEnemy>() != nullptr){
         if (Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>() == standing_on && !has_run) {
             elite_floor = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>();
             has_run = true;
@@ -231,6 +231,7 @@ bool Hero::CanCollideWith(GameObjectTypes other_object)
     case GameObjectTypes::Floor:
     case GameObjectTypes::AEnemyBullet:
     case GameObjectTypes::GEnemyAttack:
+    case GameObjectTypes::EEnemyAttack:
         return true;
         break;
     }
@@ -247,8 +248,11 @@ void Hero::ResolveCollision(GameObject* other_object)
         if (current_state == &state_falling) {
             if (hero_rect.Top() > other_rect.Top() && hero_rect.Bottom() > other_rect.Bottom()) {
                 SetPosition({ GetPosition().x, other_rect.Top() });
-                if (elite_floor == other_object) {
+                if (elite_floor == other_object && Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>() != nullptr) {
                     on_elite_ground = true;
+                }
+                else if (elite_floor != other_object) {
+                    on_elite_ground = false;
                 }
                 standing_on = other_object;
                 current_state->CheckExit(this);
@@ -262,7 +266,10 @@ void Hero::ResolveCollision(GameObject* other_object)
             TakeDamage(AEnemyBullet::GetDamage());
             break;
         case GameObjectTypes::GEnemyAttack:
-            TakeDamage(AEnemyBullet::GetDamage());
+            TakeDamage(GEnemyAttack::GetDamage());
+            break;
+        case GameObjectTypes::EEnemyAttack:
+            TakeDamage(EEnemyAttack::GetDamage());
             break;
     }
 }

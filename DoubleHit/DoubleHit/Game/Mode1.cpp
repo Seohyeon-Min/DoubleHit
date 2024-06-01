@@ -17,6 +17,7 @@ Created:    March 8, 2023
 #include "Pet.h"
 #include "Floor.h"
 #include "UI.h"
+#include "HealthBar.h"
 
 //random
 #include<cstdlib>
@@ -60,9 +61,6 @@ void Mode1::Load() {
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1888, 480 }, { 2048, 512 } }));
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 608 }, { 2176, 640 } }));//10
 
-    //if (Engine::GetInput().KeyDown(CS230::Input::Keys::T)) {
-        GetGSComponent<CS230::GameObjectManager>()->Add(new EliteEnemy({ 1200,640 }));
-    //}
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
     GetGSComponent<CS230::GameObjectManager>()->Add(new Pet(hero_ptr->GetPosition()));
@@ -81,8 +79,15 @@ void Mode1::Load() {
     GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Basic.png", { 1070, 65 }, 1.0);
     GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Strong.png", { 1105, 65 }, 1.0);
     GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
-    GetGSComponent<UI>()->Add("Assets/UI/health_bar.png", { 215, 63 }, 2.0);
-    GetGSComponent<UI>()->Add("Assets/UI/elite_healt.png", { 220, (double)Engine::GetWindow().GetSize().y - 88}, 2.0);
+    
+
+    
+    AddGSComponent(new HealthBar());
+    AddGSComponent(new EliteHealthBar());
+    GetGSComponent<HealthBar>()->Add("Assets/UI/health_bar.png", { 215, 63 }, 2.0, hero_ptr, hero_ptr->max_health);
+
+    elite_spawn_timer = new CS230::Timer(elite_spawn_time);
+    AddGSComponent(elite_spawn_timer);
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -91,6 +96,12 @@ void Mode1::Update([[maybe_unused]] double dt) {
     GetGSComponent<CS230::GameObjectManager>()->UpdateAll(dt);
     GetGSComponent<UI>()->Update(dt);
     spawn_time += dt;
+
+    if (elite_spawn_timer->Remaining() == 0.0) {
+        GetGSComponent<CS230::GameObjectManager>()->Add(new EliteEnemy({ 1200,640 }));
+        elite_spawn_timer->Set(500);
+    }
+
     if (spawn_time > enemy_spawn_time && !hero_ptr->GetOnEliteGround()) { // spawn logic
         MakeEnemy();
         spawn_time = 0;
@@ -108,6 +119,8 @@ void Mode1::Draw() {
         GetGSComponent<Combination>()->DrawIcons();
     }
     GetGSComponent<UI>()->Draw();
+    GetGSComponent<HealthBar>()->Draw();
+    GetGSComponent<EliteHealthBar>()->Draw();
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
 }
 

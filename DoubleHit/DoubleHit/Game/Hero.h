@@ -20,12 +20,12 @@ public:
     int ReturnHeavyTimer();
     bool ReturnHeavyReady();
     int ReturnHeavyMax();
+    static inline const double max_health = 100.0;
  
 private:
     GameObject* standing_on;
     void update_x_velocity(double dt);
     static inline const  Math::vec2 velocity = { 200, 1000 };//500
-    static inline const double health_max = 100.0;
     bool IsHeavyReady = false; //heavy attack cooldown check
     bool light_combo = false;
     bool on_elite_ground = false;
