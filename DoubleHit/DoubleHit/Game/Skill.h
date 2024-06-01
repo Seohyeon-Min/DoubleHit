@@ -63,22 +63,6 @@ private:
     static constexpr double damage = 5;
 };
 
-class EEnemyAttack : public Skill {
-public:
-    EEnemyAttack(Math::vec2 position);
-    GameObjectTypes Type() override { return GameObjectTypes::EEnemyAttack; }
-    std::string TypeName() override { return "EEnemyAttack"; }
-    void Update(double dt) override;
-    bool CanCollideWith(GameObjectTypes other_object);
-    void ResolveCollision(GameObject* other_object);
-    static constexpr double GetDamage() { return damage; }
-private:
-    CS230::Timer* skill_timer;
-    int direction;
-    static constexpr double skill_time = 1.58;
-    static constexpr double damage = 10;
-};
-
 class Hero_Upgrade : public Skill {
 public:
     Hero_Upgrade(GameObject* object);
@@ -159,6 +143,26 @@ private:
     static constexpr double damage = 50;
     static constexpr double skill_time = 10;
 
+
+    enum class Animations {
+        Attack
+    };
+};
+
+class EEnemyAttack : public Skill {
+public:
+    EEnemyAttack(Math::vec2 position);
+    GameObjectTypes Type() override { return GameObjectTypes::EEnemyAttack; }
+    std::string TypeName() override { return "EEnemyAttack"; }
+    void Update(double dt) override;
+    bool CanCollideWith(GameObjectTypes other_object);
+    void ResolveCollision(GameObject* other_object);
+    static constexpr double GetDamage() { return damage; }
+private:
+    CS230::Timer* skill_timer;
+    int direction;
+    static constexpr double skill_time = 1.58;
+    static constexpr double damage = 10;
 
     enum class Animations {
         Attack

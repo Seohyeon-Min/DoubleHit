@@ -81,7 +81,7 @@ void Mode1::Load() {
 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 544, 992 }, { 864, 1024 } }));     //window building top
 
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 928, 640 }, { 1568, 672 } }));  //twin middle
+    GetGSComponent<CS230::GameObjectManager>()->Add(new EliteFloor(Math::irect{ { 928, 640 }, { 1568, 672 } }));  //twin middle
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 928, 1024 }, { 1568, 1056 } }));  //twin top 
 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1601, 768 }, { 1857, 800 } }));  //brick top
@@ -130,7 +130,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
     spawn_time += dt;
 
     if (elite_spawn_timer->Remaining() == 0.0) {
-        GetGSComponent<CS230::GameObjectManager>()->Add(new EliteEnemy({ 1200,640 }));
+        GetGSComponent<CS230::GameObjectManager>()->Add(new EliteEnemy({ 1200,672 }));
         elite_spawn_timer->Set(500);
     }
 

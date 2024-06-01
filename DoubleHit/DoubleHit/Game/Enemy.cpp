@@ -297,10 +297,6 @@ EliteEnemy::EliteEnemy(Math::vec2 start_position):
 void EliteEnemy::Update(double dt)
 {
     GameObject::Update(dt);
-    EliteFloor* floor = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>();
-    if (GetPosition().x > floor->GetBoundary().Right() || GetPosition().x < floor->GetBoundary().Left()) {
-        SetVelocity({ -GetVelocity().x, GetVelocity().y });
-    }
 
 
 }

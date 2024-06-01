@@ -44,7 +44,7 @@ private:
 
     GameObject* standing_on;
     void update_x_velocity(double dt);
-    static inline const  Math::vec2 velocity = { 200, 1000 };//500
+    static inline const  Math::vec2 velocity = { 200, 500 };//500
     bool IsHeavyReady = false; //heavy attack cooldown check
     bool light_combo = false;
     bool on_elite_ground = false;
