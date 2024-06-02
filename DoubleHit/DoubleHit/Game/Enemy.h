@@ -34,12 +34,13 @@ public:
 private:
 
     bool has_run = false;
+    bool attackExecuted = false;
+    bool attack = false;
     double speed = 80;
     double min_distance = 30;
     double x_distance;
     double distance;
     double health = 10;
-    double damage = 10;
     static constexpr double shooting_range = 50;
     static constexpr double attack_time = 2.8;
     CS230::Timer* attack_timer;

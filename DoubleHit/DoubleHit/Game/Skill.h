@@ -60,7 +60,7 @@ private:
     CS230::Timer* skill_timer;
     int direction;
     static constexpr double skill_time = 0.55;
-    static constexpr double damage = 5;
+    static constexpr double damage = 4;
 };
 
 class Hero_Upgrade : public Skill {

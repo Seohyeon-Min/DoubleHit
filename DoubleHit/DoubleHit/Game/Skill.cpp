@@ -124,7 +124,7 @@ void GEnemyAttack::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
     case GameObjectTypes::Hero:
-        Destroy();
+        RemoveGOComponent<CS230::Collision>();
         break;
     }
 }
