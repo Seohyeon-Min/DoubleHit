@@ -3,10 +3,12 @@
 #include "Hero.h"
 #include "Skill.h"
 
+bool Upgrade::UpgradeActiveFlag = false;  // 전역 변수 초기화
+
 void Upgrade::ActivateUpgrade(int heroLevel) {
-    CurrentLevel = heroLevel -1;
+    CurrentLevel = heroLevel - 1;
     Engine::GetLogger().LogEvent("ActivateUpgrade called with level: " + std::to_string(CurrentLevel));
-    
+
     if (CurrentLevel <= 3) {
         UpgradeActiveFlag = true;
     }
@@ -46,7 +48,7 @@ void Upgrade::CheckClick(Vector2 mousePoint) {
 void Upgrade::Update(double dt)
 {
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::P)) {
-            Engine::GetLogger().LogEvent("now UpgradeLevel: " + std::to_string(CurrentLevel));
+        Engine::GetLogger().LogEvent("now UpgradeLevel: " + std::to_string(CurrentLevel));
     }
 
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::U)) {
@@ -62,4 +64,3 @@ void Upgrade::Update(double dt)
         CheckClick(mousePoint);
     }
 }
-

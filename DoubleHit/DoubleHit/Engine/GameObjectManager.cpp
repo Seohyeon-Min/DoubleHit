@@ -10,6 +10,7 @@ Created:    Aprill 29, 2023
 
 
 #include "GameObjectManager.h"
+#include "../Game/Upgrade2.h"
 
 void CS230::GameObjectManager::Add(GameObject* object)
 {
@@ -26,6 +27,10 @@ void CS230::GameObjectManager::Unload()
 
 void CS230::GameObjectManager::UpdateAll(double dt)
 {
+	if (Upgrade::GetUpgradeActiveFlag()) {
+		dt = 0.0;
+	}
+
 	std::vector<GameObject*> destroy_objects;
 	for (auto object : objects) {
 		object->Update(dt);
