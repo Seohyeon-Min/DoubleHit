@@ -66,11 +66,14 @@ void Hero::State_Idle::CheckExit(GameObject* object) {
         hero->change_state(&hero->state_running);
     }
 
-    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
-        hero->change_state(&hero->state_jumping);
-    }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J) && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //light attack
         hero->change_state(&hero->state_light);
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //heavy attack
+        hero->change_state(&hero->state_heavy);
+    }
+    if (static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1) {
+        hero->change_state(&hero->state_LL);
     }
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true) { //heavy attack
         hero->change_state(&hero->state_heavy);
@@ -112,11 +115,14 @@ void Hero::State_Running::CheckExit(GameObject* object) {
     if (hero->GetVelocity().x == 0) {
         hero->change_state(&hero->state_idle);
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J) && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //light attack
         hero->change_state(&hero->state_light);
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true) { //heavy attack
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //heavy attack
         hero->change_state(&hero->state_heavy);
+    }
+    if (static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1) {
+        hero->change_state(&hero->state_LL);
     }
     if (hero->standing_on != nullptr && hero->standing_on->IsCollidingWith(hero) == false) {
         hero->standing_on = nullptr;
@@ -173,6 +179,23 @@ void Hero::State_Heavy::Enter(GameObject* object) {
 }
 void Hero::State_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Heavy::CheckExit(GameObject* object) {
+    Hero* hero = static_cast<Hero*>(object);
+    if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+        hero->change_state(&hero->state_idle);
+    }
+}
+
+void Hero::State_Light_Light::Enter(GameObject* object) {
+    Hero* hero = static_cast<Hero*>(object);
+    //Engine::GetLogger().LogDebug("Crash Point");
+    hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::LightLight)); //crash point
+    hero->SetVelocity({ 0, hero->GetVelocity().y });
+
+    //put if statement to select which skill to activate according to Upgrade
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light(hero));
+}
+void Hero::State_Light_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
+void Hero::State_Light_Light::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
         hero->change_state(&hero->state_idle);

@@ -86,7 +86,37 @@ void Hero_Heavy::ResolveCollision(GameObject* other_object)
     }
 }
 
+Hero_Light_Light::Hero_Light_Light(GameObject* object) :
+    Skill(object)
+{
+    AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_gg.spt", this));
+    skill_timer = new CS230::Timer(skill_time);
+    AddGOComponent(skill_timer);
+    direction = object->GetScale().x;
+    if (direction == -1) {
+        SetScale({ -1, 1 });
+    }
+}
 
+void Hero_Light_Light::Update(double dt)
+{
+    GameObject::Update(dt);
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+    }
+}
+
+void Hero_Light_Light::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::AirEnemy:
+        Destroy();
+        break;
+    case GameObjectTypes::GroundEnemy:
+        Destroy();
+        break;
+    }
+}
 
 GEnemyAttack::GEnemyAttack(GameObject* object) :
     Skill(object)

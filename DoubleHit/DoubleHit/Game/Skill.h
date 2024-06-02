@@ -62,25 +62,25 @@ private:
     static constexpr double damage = 10;
 };
 
-class Hero_Upgrade : public Skill {
+//class Hero_Upgrade : public Skill {
+//public:
+//    Hero_Upgrade(GameObject* object);
+//    Upgrade* upgrade;
+//    void GetUpgradeChoose(int num);
+//
+//    bool Upgrade1Enable = false;
+//    bool Upgrade2Enable = false;
+//    bool Upgrade3Enable = false;
+//    bool Upgrade4Enable = false;
+//
+//private:
+//
+//    int LL_Choose;
+//};
+
+class Hero_Light_Light : public Skill {
 public:
-    Hero_Upgrade(GameObject* object);
-    Upgrade* upgrade;
-    void GetUpgradeChoose(int num);
-
-    bool Upgrade1Enable = false;
-    bool Upgrade2Enable = false;
-    bool Upgrade3Enable = false;
-    bool Upgrade4Enable = false;
-
-private:
-
-    int LL_Choose;
-};
-
-class Hero_Upgrade_LL : public Hero_Upgrade {
-public:
-    Hero_Upgrade_LL(GameObject* object);
+    Hero_Light_Light(GameObject* object);
     GameObjectTypes Type() override { return GameObjectTypes::UpgradeLL; }
     std::string TypeName() override { return "UpgradeLL"; }
     void Update(double dt) override;
@@ -92,12 +92,29 @@ private:
     int direction;
     static constexpr double damage = 30;
     static constexpr double skill_time = 5;
-    
+
 };
 
-class Hero_Upgrade_LH : public Hero_Upgrade {
+class Hero_Light_Light_2 : public Skill {
 public:
-    Hero_Upgrade_LH(GameObject* object);
+    Hero_Light_Light_2(GameObject* object);
+    GameObjectTypes Type() override { return GameObjectTypes::UpgradeLL; }
+    std::string TypeName() override { return "UpgradeLL_2"; }
+    void Update(double dt) override;
+    void ResolveCollision(GameObject* other_object);
+    static constexpr double GetDamage() { return damage; }
+
+private:
+    CS230::Timer* skill_timer;
+    int direction;
+    static constexpr double damage = 30;
+    static constexpr double skill_time = 5;
+
+};
+
+class Hero_Light_Heavy : public Skill {
+public:
+    Hero_Light_Heavy(GameObject* object);
     GameObjectTypes Type() override { return GameObjectTypes::UpgradeLH; }
     std::string TypeName() override { return "UpgradeLH"; }
     void Update(double dt) override;
@@ -111,9 +128,25 @@ private:
     static constexpr double skill_time = 5;
 };
 
-class Hero_Upgrade_HL : public Hero_Upgrade {
+class Hero_Light_Heavy_2 : public Skill {
 public:
-    Hero_Upgrade_HL(GameObject* object);
+    Hero_Light_Heavy_2(GameObject* object);
+    GameObjectTypes Type() override { return GameObjectTypes::UpgradeLH; }
+    std::string TypeName() override { return "UpgradeLH_2"; }
+    void Update(double dt) override;
+    void ResolveCollision(GameObject* other_object);
+    static constexpr double GetDamage() { return damage; }
+
+private:
+    CS230::Timer* skill_timer;
+    int direction;
+    static constexpr double damage = 30;
+    static constexpr double skill_time = 5;
+};
+
+class Hero_Heavy_Light : public Skill {
+public:
+    Hero_Heavy_Light(GameObject* object);
     GameObjectTypes Type() override { return GameObjectTypes::UpgradeHL; }
     std::string TypeName() override { return "UpgradeHL"; }
     void Update(double dt) override;
@@ -127,11 +160,44 @@ private:
     static constexpr double skill_time = 5;
 };
 
-class Hero_Upgrade_HH : public Hero_Upgrade {
+class Hero_Heavy_Light_2 : public Skill {
 public:
-    Hero_Upgrade_HH(GameObject* object);
+    Hero_Heavy_Light_2(GameObject* object);
+    GameObjectTypes Type() override { return GameObjectTypes::UpgradeHL; }
+    std::string TypeName() override { return "UpgradeHL_2"; }
+    void Update(double dt) override;
+    void ResolveCollision(GameObject* other_object);
+    static constexpr double GetDamage() { return damage; }
+
+private:
+    CS230::Timer* skill_timer;
+    int direction;
+    static constexpr double damage = 30;
+    static constexpr double skill_time = 5;
+};
+
+class Hero_Heavy_Heavy : public Skill {
+public:
+    Hero_Heavy_Heavy(GameObject* object);
     GameObjectTypes Type() override { return GameObjectTypes::UpgradeHH; }
     std::string TypeName() override { return "UpgradeHH"; }
+    void Update(double dt) override;
+    void ResolveCollision(GameObject* other_object);
+    static constexpr double GetDamage() { return damage; }
+
+private:
+    CS230::Timer* skill_timer;
+    int direction;
+    static constexpr double damage = 50;
+    static constexpr double skill_time = 10;
+
+};
+
+class Hero_Heavy_Heavy_2 : public Skill {
+public:
+    Hero_Heavy_Heavy_2(GameObject* object);
+    GameObjectTypes Type() override { return GameObjectTypes::UpgradeHH; }
+    std::string TypeName() override { return "UpgradeHH_2"; }
     void Update(double dt) override;
     void ResolveCollision(GameObject* other_object);
     static constexpr double GetDamage() { return damage; }
