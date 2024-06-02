@@ -154,7 +154,6 @@ private:
         Light2,
         Heavy,
         Jumping,
-        Falling,
-        LightLight
+        Falling
     };
 };
