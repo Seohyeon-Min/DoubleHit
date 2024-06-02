@@ -10,7 +10,7 @@ Icon icon;
 Pet::Pet(Math::vec2 start_position) :
     GameObject(start_position)
 {
-    AddGOComponent(new CS230::Sprite("Assets/pet/pet.spt",this));
+    AddGOComponent(new CS230::Sprite("Assets/pet/pet.spt", this));
     SetScale({ 1,1 });
     current_state = &state_idle;
     current_state->Enter(this);
@@ -20,7 +20,7 @@ void Pet::State_Idle::Enter(GameObject* object) {
     Pet* pet = static_cast<Pet*>(object);
     pet->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
 }
-void Pet::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { 
+void Pet::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
     Pet* pet = static_cast<Pet*>(object);
     if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) { //light attack
         pet->MakeAttack(1); //is_light true
@@ -49,7 +49,7 @@ void Pet::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unu
     }
 }
 
-void Pet::State_Running::CheckExit(GameObject* object) 
+void Pet::State_Running::CheckExit(GameObject* object)
 {
     Pet* pet = static_cast<Pet*>(object);
     if (pet->GetVelocity().x == 0) {
@@ -74,11 +74,11 @@ void Pet::Update(double dt) {
         else { increasing = true; }
     }
 
-    Hero* hero =  Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
+    Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
     SetPosition({
         hero->GetPosition().x + radius * std::cos(angle),
         hero->GetPosition().y - radius * std::sin(angle) + 60.0f
-    });
+        });
 
     // flip
     if ((double)GetMouseX() > GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x && GetScale().x == -1) {
@@ -86,9 +86,9 @@ void Pet::Update(double dt) {
     }
     else if ((double)GetMouseX() <= GetPosition().x - (double)Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x && !(GetScale().x == -1)) {
         SetScale({ -1,1 });
-        }
+    }
 }
- 
+
 void Pet::Draw(Math::TransformationMatrix camera_matrix) {
     GameObject::Draw(camera_matrix);
 }
@@ -100,7 +100,7 @@ void Pet::MakeAttack(bool is_light)
     mouse_position.y *= -1;
     mouse_position.y += Engine::GetWindow().GetSize().y;
 
-    if(is_light)
+    if (is_light)
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Bullet(GetPosition(), { mouse_position.x, mouse_position.y }));
     else
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new BulletHeavy(GetPosition(), { mouse_position.x, mouse_position.y }));
