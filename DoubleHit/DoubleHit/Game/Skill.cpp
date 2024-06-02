@@ -90,6 +90,7 @@ Hero_Light_Light::Hero_Light_Light(GameObject* object) :
     Skill(object)
 {
     AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_gg.spt", this));
+    GetGOComponent<CS230::Sprite>()->PlayAnimation();
     skill_timer = new CS230::Timer(skill_time);
     AddGOComponent(skill_timer);
     direction = object->GetScale().x;

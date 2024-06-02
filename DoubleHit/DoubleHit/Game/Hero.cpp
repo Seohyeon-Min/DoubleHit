@@ -188,7 +188,7 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
 void Hero::State_Light_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     //Engine::GetLogger().LogDebug("Crash Point");
-    hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::LightLight)); //crash point
+    //hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::LightLight)); //crash point
     hero->SetVelocity({ 0, hero->GetVelocity().y });
 
     //put if statement to select which skill to activate according to Upgrade
