@@ -13,6 +13,7 @@ public:
     GameObjectTypes Type() override { return GameObjectTypes::Hero; }
     std::string TypeName() override { return "Hero"; }
     void Update(double dt) override;
+    void Draw(Math::TransformationMatrix camera_matrix) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
     bool CanCollideWith(GameObjectTypes) override;
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
@@ -21,7 +22,7 @@ public:
     int ReturnHeavyTimer();
     bool ReturnHeavyReady();
     int ReturnHeavyMax();
-
+    void StateIdle();
 
     int HeroLevel = 0;
 
@@ -51,6 +52,8 @@ private:
     double HealthRatio = BarMaxWidth / health_max;
     bool IsHeavyReady = false; //heavy attack cooldown check
     bool light_combo = false;
+    bool IsCombAttacking = false;
+    bool IsCombAttackVisible;
 
     double HeavyTimerMax = 4;
     CS230::Timer* Heavytimer;
@@ -111,7 +114,7 @@ private:
         std::string GetName() override { return "Combination attack - lightlight"; }
     };
 
-    /*class State_Light_Heavy : public State {
+    class State_Light_Heavy : public State {
     public:
         virtual void Enter(GameObject* object) override;
         virtual void Update(GameObject* object, double dt) override;
@@ -119,15 +122,15 @@ private:
         std::string GetName() override { return "Combination attack - lightheavy"; }
     };
 
-    class State_Heavy_Light : public State {
+    /*class State_Heavy_Light : public State {
     public:
         virtual void Enter(GameObject* object) override;
         virtual void Update(GameObject* object, double dt) override;
         virtual void CheckExit(GameObject* object) override;
         std::string GetName() override { return "Combination attack - heavylight"; }
-    };
+    };*/
 
-    class State_Heavy_Heavy : public State {
+    /*class State_Heavy_Heavy : public State {
     public:
         virtual void Enter(GameObject* object) override;
         virtual void Update(GameObject* object, double dt) override;
@@ -143,8 +146,8 @@ private:
     State_Heavy state_heavy;
     //State_Heavy_Light state_HL;
     State_Light_Light state_LL;
-    /*State_Light_Heavy state_LH;
-    State_Heavy_Heavy state_HH;*/
+    State_Light_Heavy state_LH;
+    //State_Heavy_Heavy state_HH;
 
 
     enum class Animations {
@@ -156,4 +159,6 @@ private:
         Jumping,
         Falling
     };
+
+    friend class Skill;
 };

@@ -4,6 +4,8 @@
 #include "GameObjectTypes.h"
 #include "Upgrade2.h"
 
+class Hero;
+
 class Skill : public CS230::GameObject {
 public:
     Skill(GameObject* object);
@@ -86,13 +88,23 @@ public:
     void Update(double dt) override;
     void ResolveCollision(GameObject* other_object);
     static constexpr double GetDamage() { return damage; }
+    bool GetEnded() { return IsEnded; }
 
 private:
     CS230::Timer* skill_timer;
+    Hero* hero;
     int direction;
-    static constexpr double damage = 30;
-    static constexpr double skill_time = 5;
+    static constexpr double damage = 50;
+    static constexpr double skill_time = 4;
+    static constexpr double add_time = 0.1;
+    static constexpr int TokenMax = 40;
+    int timeToken;
+    bool IsEnded = false;
 
+    enum class Animations {
+        Attack 
+    };
+    friend class Hero;
 };
 
 class Hero_Light_Light_2 : public Skill {
@@ -123,9 +135,16 @@ public:
 
 private:
     CS230::Timer* skill_timer;
+    Hero* hero;
     int direction;
-    static constexpr double damage = 30;
-    static constexpr double skill_time = 5;
+    static constexpr double damage = 50;
+    static constexpr double skill_time = 4;
+    bool IsEnded = false;
+
+    enum class Animations {
+        Attack
+    };
+    friend class Hero;
 };
 
 class Hero_Light_Heavy_2 : public Skill {

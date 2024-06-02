@@ -86,24 +86,38 @@ void Hero_Heavy::ResolveCollision(GameObject* other_object)
     }
 }
 
+// Multiple Hit
 Hero_Light_Light::Hero_Light_Light(GameObject* object) :
     Skill(object)
 {
     AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_gg.spt", this));
-    GetGOComponent<CS230::Sprite>()->PlayAnimation();
+    GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
     skill_timer = new CS230::Timer(skill_time);
     AddGOComponent(skill_timer);
     direction = object->GetScale().x;
     if (direction == -1) {
         SetScale({ -1, 1 });
     }
+    IsEnded = false;
+    hero = static_cast<Hero*>(object);
+    timeToken = 0;
 }
 
 void Hero_Light_Light::Update(double dt)
 {
     GameObject::Update(dt);
+
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J) && timeToken < TokenMax) {
+        timeToken++;
+        skill_timer->Add(add_time);
+    }
+
+    Engine::GetLogger().LogDebug(std::to_string(skill_timer->Remaining()) + "      " + std::to_string(timeToken));
+
     if (skill_timer->Remaining() == 0.0) {
         Destroy();
+        IsEnded = true;
+        hero->StateIdle();
     }
 }
 
@@ -111,11 +125,43 @@ void Hero_Light_Light::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
     case GameObjectTypes::AirEnemy:
-        Destroy();
-        break;
+        other_object->ResolveCollision(this);
     case GameObjectTypes::GroundEnemy:
+        other_object->ResolveCollision(this);
+    }
+}
+
+Hero_Light_Heavy::Hero_Light_Heavy(GameObject* object) :
+    Skill(object)
+{
+    AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_gs.spt", this));
+    GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+    skill_timer = new CS230::Timer(skill_time);
+    AddGOComponent(skill_timer);
+    direction = object->GetScale().x;
+    if (direction == -1) {
+        SetScale({ -1,1 });
+    }
+    IsEnded = false;
+    hero = static_cast<Hero*>(object);
+}
+
+void Hero_Light_Heavy::Update(double dt) {
+    GameObject::Update(dt);
+    if (skill_timer->Remaining() == 0.0) {
         Destroy();
-        break;
+        IsEnded = true;
+        hero->StateIdle();
+    }
+}
+
+void Hero_Light_Heavy::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::AirEnemy:
+        other_object->ResolveCollision(this);
+    case GameObjectTypes::GroundEnemy:
+        other_object->ResolveCollision(this);
     }
 }
 

@@ -12,4 +12,5 @@ Frame 728 0
 Frame 832 0
 Frame 936 0
 Frame 1040 0
+RectCollision 10 0 80 70
 Anim Assets/hero/anm/skill_p1_gg.anm
