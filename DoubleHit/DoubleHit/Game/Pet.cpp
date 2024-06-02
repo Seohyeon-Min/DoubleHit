@@ -22,11 +22,21 @@ void Pet::State_Idle::Enter(GameObject* object) {
 }
 void Pet::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
     Pet* pet = static_cast<Pet*>(object);
+<<<<<<< Updated upstream
     if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) { //light attack
         pet->MakeAttack(1); //is_light true
     }
     if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) { //heavy attack
         pet->MakeAttack(0);
+=======
+    if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //light attack
+        pet->MakeLightAttack(); //is_light true
+    }
+    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON) && pet->IsHeavyReady == true && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //heavy attack
+        pet->IsHeavyReady = false;
+        pet->Heavytimer->Set(pet->HeavyTimerMax);
+        pet->MakeHeavyAttack();
+>>>>>>> Stashed changes
     }
 }
 void Pet::State_Idle::CheckExit(GameObject* object) {
@@ -41,11 +51,21 @@ void Pet::State_Running::Enter(GameObject* object) {
 }
 void Pet::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
     Pet* pet = static_cast<Pet*>(object);
+<<<<<<< Updated upstream
     if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) { //light attack
         pet->MakeAttack(1); //is_light true
     }
     if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) { //heavy attack
         pet->MakeAttack(0);
+=======
+    if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //light attack
+        pet->MakeLightAttack(); //is_light true
+    }
+    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON) && pet->IsHeavyReady == true && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //heavy attack
+        pet->IsHeavyReady = false;
+        pet->Heavytimer->Set(pet->HeavyTimerMax);
+        pet->MakeHeavyAttack();
+>>>>>>> Stashed changes
     }
 }
 

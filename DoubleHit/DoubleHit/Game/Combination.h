@@ -53,6 +53,7 @@ private:
     Type type; // current combination state
     bool combiActiveFlag = false;
     double combiTimer = 0;
+    double combiCoolDown = 0;
     void ResetCombFlag() { combiActiveFlag = false; }
 };
 

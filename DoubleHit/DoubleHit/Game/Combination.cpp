@@ -10,7 +10,9 @@ Combination::KeyboardState currentKeyboardState = Combination::KeyboardState::KE
 Combination::MouseState currentMouseState = Combination::MouseState::MOUSE_NONE;
 
 Combination::Combination()
-{}
+{
+
+}
 
 void Combination::InitIcons() {
     for (int i = 0; i < 2; i++) {
@@ -151,6 +153,7 @@ void Combination::comb_skill1() {
     currentInputState = NONE;
     currentKeyboardState = KEY_NONE;
     currentMouseState = MOUSE_NONE;
+    Engine::GetLogger().LogDebug(std::to_string(static_cast<int>(GetCombination())));
     ResetCombFlag();
 }
 

@@ -1,6 +1,11 @@
 #pragma once
 #include "..\Engine\GameObject.h"
 #include "GameObjectTypes.h"
+<<<<<<< Updated upstream
+=======
+#include "..\Engine\Timer.h"
+#include "Combination.h"
+>>>>>>> Stashed changes
 
 
 class Pet : public CS230::GameObject {
