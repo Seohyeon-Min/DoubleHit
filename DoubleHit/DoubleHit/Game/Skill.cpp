@@ -88,21 +88,80 @@ void Hero_Heavy::ResolveCollision(GameObject* other_object)
     }
 }
 
-// Multiple Hit
-Hero_Light_Light::Hero_Light_Light(GameObject* object) :
+GEnemyAttack::GEnemyAttack(GameObject* object) :
     Skill(object)
 {
-    AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_gg.spt", this));
-    GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+    AddGOComponent(new CS230::Sprite("Assets/enemy/robot_attack.spt", this));
     skill_timer = new CS230::Timer(skill_time);
     AddGOComponent(skill_timer);
     direction = object->GetScale().x;
     if (direction == -1) {
         SetScale({ -1, 1 });
     }
-    IsEnded = false;
-    hero = static_cast<Hero*>(object);
-    timeToken = 0;
+}
+
+void GEnemyAttack::Update(double dt)
+{
+    GameObject::Update(dt);
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+    }
+}
+
+bool GEnemyAttack::CanCollideWith(GameObjectTypes other_object)
+{
+    switch (other_object) {
+    case GameObjectTypes::Hero:
+        return true;
+        break;
+    }
+    return false;
+}
+
+void GEnemyAttack::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::Hero:
+        RemoveGOComponent<CS230::Collision>();
+        break;
+    }
+}
+
+
+//=============== Combination ===========================//
+void Skill::GetUpgradeChoose(int num) {
+    switch (num) {
+    case1:
+        Hero_Light_Light* LL1;
+        LL1->UpgradeChooseLL1 = true;
+        break;
+
+    case2:
+        Hero_Light_Light_2* LL2;
+        LL2->UpgradeChooseLL2 = true;
+        break;
+    }
+}
+
+Hero_Light_Light::Hero_Light_Light(GameObject* object) :
+    Skill(object)
+{
+    if (UpgradeChooseLL1 == true) {
+        AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_gg.spt", this));
+        GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+        skill_timer = new CS230::Timer(skill_time);
+        AddGOComponent(skill_timer);
+        direction = object->GetScale().x;
+        if (direction == -1) {
+            SetScale({ -1, 1 });
+        }
+        IsEnded = false;
+        hero = static_cast<Hero*>(object);
+        timeToken = 0;
+    }
+    else {
+        Engine::GetLogger().LogEvent("Can't use");
+    }
 }
 
 void Hero_Light_Light::Update(double dt)
@@ -124,6 +183,46 @@ void Hero_Light_Light::Update(double dt)
 }
 
 void Hero_Light_Light::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::AirEnemy:
+        other_object->ResolveCollision(this);
+    case GameObjectTypes::GroundEnemy:
+        other_object->ResolveCollision(this);
+    }
+}
+
+Hero_Light_Light_2::Hero_Light_Light_2(GameObject* object) :
+    Skill(object)
+{
+
+    if (UpgradeChooseLL2 == true) {
+        AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_gs.spt", this));
+        skill_timer = new CS230::Timer(skill_time);
+        AddGOComponent(skill_timer);
+        direction = object->GetScale().x;
+        if (direction == -1) {
+            SetScale({ -1, 1 });
+        }
+        hero = static_cast<Hero*>(object);
+    }
+
+    else {
+        Engine::GetLogger().LogEvent("Can't use");
+    }
+}
+
+void Hero_Light_Light_2::Update(double dt)
+{
+    GameObject::Update(dt);
+
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+        hero->StateIdle();
+    }
+}
+
+void Hero_Light_Light_2::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
     case GameObjectTypes::AirEnemy:
@@ -165,67 +264,8 @@ void Hero_Light_Heavy::ResolveCollision(GameObject* other_object)
     }
 }
 
-GEnemyAttack::GEnemyAttack(GameObject* object) :
-    Skill(object)
-{
-    AddGOComponent(new CS230::Sprite("Assets/enemy/robot_attack.spt", this));
-    skill_timer = new CS230::Timer(skill_time);
-    AddGOComponent(skill_timer);
-    direction = object->GetScale().x;
-    if (direction == -1) {
-        SetScale({ -1, 1 });
-    }
-}
 
-void GEnemyAttack::Update(double dt)
-{
-    GameObject::Update(dt);
-    if (skill_timer->Remaining() == 0.0) {
-        Destroy();
-    }
-}
-
-bool GEnemyAttack::CanCollideWith(GameObjectTypes other_object)
-{
-    switch (other_object) {
-    case GameObjectTypes::Hero:
-        return true;
-        break;
-    }
-    return false;
-}
-
-void GEnemyAttack::ResolveCollision(GameObject* other_object)
-{
-    switch (other_object->Type()) {
-    case GameObjectTypes::Hero:
-        RemoveGOComponent<CS230::Collision>();
-        break;
-    }
-}
-
-//void Hero_Upgrade::GetUpgradeChoose(int num) {
-//    if (num == 0 || num == 1) {
-//        Upgrade1Enable = true;
-//        LL_Choose = num;
-//    }
-//}
-//
-//Hero_Upgrade_LL::Hero_Upgrade_LL(GameObject* object) : Hero_Upgrade(object) 
-//{
-//    if (Upgrade1Enable == true) {
-//
-//    }
-//}
-
-////AddGOComponent(new CS230::Sprite("Assets/hero/spt"));
-//skill_timer = new CS230::Timer(skill_time);
-//AddGOComponent(skill_timer);
-//direction = object->GetScale().x;
-//if (direction == -1) {
-//    SetScale({ -1, 1 });
-//}
-
+//=======================================================================//
 
 
 EEnemyAttack::EEnemyAttack(Math::vec2 position) :

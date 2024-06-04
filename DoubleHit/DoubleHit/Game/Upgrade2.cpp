@@ -3,7 +3,7 @@
 #include "Hero.h"
 #include "Skill.h"
 
-bool Upgrade::UpgradeActiveFlag = false;  // 전역 변수 초기화
+bool Upgrade::UpgradeActiveFlag = false;
 
 void Upgrade::ActivateUpgrade(int heroLevel) {
     CurrentLevel = heroLevel - 1;
@@ -37,9 +37,9 @@ void Upgrade::CheckClick(Vector2 mousePoint) {
                 Engine::GetLogger().LogEvent("Hero Level Up: " + std::to_string((CurrentLevel) * 2 + i + 1));
                 UpgradeActiveFlag = false;
 
-                /*if (hero_upgrade != nullptr) {
-                    hero_upgrade->GetUpgradeChoose(CurrentLevel*2+i+1);
-                }*/
+                if (skill_upgrade != nullptr) {
+                    skill_upgrade->GetUpgradeChoose(CurrentLevel*2+i+1);
+                }
             }
         }
     }

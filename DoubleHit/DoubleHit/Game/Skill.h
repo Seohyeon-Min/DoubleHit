@@ -13,6 +13,8 @@ public:
     GameObjectTypes Type() override { return GameObjectTypes::Skill; }
     std::string TypeName() override { return "Skill"; }
     bool CanCollideWith(GameObjectTypes other_object);
+    Upgrade* upgrade;
+    void GetUpgradeChoose(int num);
 
 };
 
@@ -65,22 +67,6 @@ private:
     static constexpr double damage = 4;
 };
 
-//class Hero_Upgrade : public Skill {
-//public:
-//    Hero_Upgrade(GameObject* object);
-//    Upgrade* upgrade;
-//    void GetUpgradeChoose(int num);
-//
-//    bool Upgrade1Enable = false;
-//    bool Upgrade2Enable = false;
-//    bool Upgrade3Enable = false;
-//    bool Upgrade4Enable = false;
-//
-//private:
-//
-//    int LL_Choose;
-//};
-
 class Hero_Light_Light : public Skill {
 public:
     Hero_Light_Light(GameObject* object);
@@ -90,6 +76,7 @@ public:
     void ResolveCollision(GameObject* other_object);
     static constexpr double GetDamage() { return damage; }
     bool GetEnded() { return IsEnded; }
+    bool UpgradeChooseLL1 = false;
 
 private:
     CS230::Timer* skill_timer;
@@ -116,8 +103,10 @@ public:
     void Update(double dt) override;
     void ResolveCollision(GameObject* other_object);
     static constexpr double GetDamage() { return damage; }
+    bool UpgradeChooseLL2 = false;
 
 private:
+    Hero* hero;
     CS230::Timer* skill_timer;
     int direction;
     static constexpr double damage = 30;
