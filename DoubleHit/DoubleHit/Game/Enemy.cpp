@@ -152,7 +152,17 @@ void GroundEnemy::ResolveCollision(GameObject* other_object)
             SetVelocity({ 0,0 });
         }
         break;
+    case GameObjectTypes::UpgradeLL:
+        Engine::GetLogger().LogDebug("Detected");
+        health -= Hero_Light_Light::GetDamage(); //should be run only once
+        if (health <= 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
     }
+
 }
 
 
@@ -273,6 +283,24 @@ void AirEnemy::ResolveCollision(GameObject* other_object)
         break;
     case GameObjectTypes::HeroHeavy:
         health -= Hero_Heavy::GetDamage(); //should be run only once
+        if (health <= 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
+    case GameObjectTypes::UpgradeLL:
+        Engine::GetLogger().LogDebug("Detected");
+        health -= Hero_Light_Light::GetDamage(); //should be run only once
+        if (health <= 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
+    case GameObjectTypes::UpgradeLH:
+        health -= Hero_Light_Heavy::GetDamage(); //should be run only once
+        
         if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));

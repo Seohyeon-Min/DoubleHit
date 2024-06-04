@@ -39,6 +39,10 @@ void CS230::Timer::Reset()
 	timer = timer_max;
 }
 
+void CS230::Timer::Add(double time) {
+	timer += time;
+}
+
 double CS230::Timer::Remaining()
 {
 	return timer;

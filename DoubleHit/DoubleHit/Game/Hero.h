@@ -13,6 +13,7 @@ public:
     GameObjectTypes Type() override { return GameObjectTypes::Hero; }
     std::string TypeName() override { return "Hero"; }
     void Update(double dt) override;
+    void Draw(Math::TransformationMatrix camera_matrix) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
     const bool GetOnEliteGround() const { return on_elite_ground; }
     bool CanCollideWith(GameObjectTypes) override;
@@ -21,7 +22,7 @@ public:
     int ReturnHeavyTimer();
     bool ReturnHeavyReady();
     int ReturnHeavyMax();
-
+    void StateIdle();
 
     int HeroLevel = 0;
 
@@ -49,6 +50,9 @@ private:
     bool light_combo = false;
     bool on_elite_ground = false;
     bool has_run = false;
+    bool IsCombAttacking = false;
+    bool IsHeroVisible = true;
+
     double HeavyTimerMax = 4;
     CS230::Timer* Heavytimer;
 
@@ -105,8 +109,32 @@ private:
         virtual void Enter(GameObject* object) override;
         virtual void Update(GameObject* object, double dt) override;
         virtual void CheckExit(GameObject* object) override;
-        std::string GetName() override { return "Combination attack - lightlgith"; }
+        std::string GetName() override { return "Combination attack - lightlight"; }
     };
+
+    class State_Light_Heavy : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Combination attack - lightheavy"; }
+    };
+
+    /*class State_Heavy_Light : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Combination attack - heavylight"; }
+    };*/
+
+    /*class State_Heavy_Heavy : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Combination attack - heavyheavy"; }
+    };*/
 
     State_Jumping state_jumping;
     State_Idle state_idle;
@@ -114,7 +142,11 @@ private:
     State_Running state_running;
     State_Light state_light;
     State_Heavy state_heavy;
-    
+    //State_Heavy_Light state_HL;
+    State_Light_Light state_LL;
+    State_Light_Heavy state_LH;
+    //State_Heavy_Heavy state_HH;
+
 
     enum class Animations {
         Idle,
@@ -124,6 +156,7 @@ private:
         Heavy,
         Jumping,
         Falling
-        //LightLight
     };
+
+    friend class Skill;
 };

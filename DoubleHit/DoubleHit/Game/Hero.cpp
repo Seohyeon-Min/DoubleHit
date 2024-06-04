@@ -27,6 +27,7 @@ Hero::Hero(Math::vec2 start_position, GameObject* standing_on, Upgrade* upgrade)
     current_state->Enter(this);
     IsHeavyReady = true;
     previousLevel = 0;
+
 }
 
 
@@ -65,11 +66,17 @@ void Hero::State_Idle::CheckExit(GameObject* object) {
         hero->change_state(&hero->state_running);
     }
 
-    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
-        hero->change_state(&hero->state_jumping);
-    }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J) && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //light attack
         hero->change_state(&hero->state_light);
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //heavy attack
+        hero->change_state(&hero->state_heavy);
+    }
+    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1 && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1) {
+        hero->change_state(&hero->state_LL);
+    }
+    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 2) {
+        hero->change_state(&hero->state_LH);
     }
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true) { //heavy attack
         hero->change_state(&hero->state_heavy);
@@ -111,11 +118,17 @@ void Hero::State_Running::CheckExit(GameObject* object) {
     if (hero->GetVelocity().x == 0) {
         hero->change_state(&hero->state_idle);
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J)) { //light attack
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J) && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //light attack
         hero->change_state(&hero->state_light);
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true) { //heavy attack
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //heavy attack
         hero->change_state(&hero->state_heavy);
+    }
+    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1) {
+        hero->change_state(&hero->state_LL);
+    }
+    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1 && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 2) {
+        hero->change_state(&hero->state_LH);
     }
     if (hero->standing_on != nullptr && hero->standing_on->IsCollidingWith(hero) == false) {
         hero->standing_on = nullptr;
@@ -179,6 +192,46 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
 }
     EliteFloor* elite_floor = nullptr;
 
+void Hero::State_Light_Light::Enter(GameObject* object) {
+    Hero* hero = static_cast<Hero*>(object);
+    hero->SetVelocity({ 0, hero->GetVelocity().y });
+    hero->IsHeroVisible = false;
+    //put if statement to select which skill to activate according to Upgrade
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light(hero));
+}
+void Hero::State_Light_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
+void Hero::State_Light_Light::CheckExit(GameObject* object) {
+}
+
+void Hero::State_Light_Heavy::Enter(GameObject* object) {
+    Hero* hero = static_cast<Hero*>(object);
+    hero->IsHeroVisible = false;
+    hero->SetVelocity({ 0, hero->GetVelocity().y });
+    //put if statement to select which skill to activate according to Upgrade
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy(hero));
+}
+void Hero::State_Light_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
+void Hero::State_Light_Heavy::CheckExit(GameObject* object) {
+}
+
+//void Hero::State_Heavy_Light::Enter(GameObject* object) {
+//    Hero* hero = static_cast<Hero*>(object);
+//    hero->SetVelocity({ 0, hero->GetVelocity().y });
+//    hero->IsCombAttacking = true;
+//    //put if statement to select which skill to activate according to Upgrade
+//    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light(hero));
+//}
+//void Hero::State_Heavy_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
+//void Hero::State_Heavy_Light::CheckExit(GameObject* object) {
+//    Hero* hero = static_cast<Hero*>(object);
+//}
+
+void Hero::Draw(Math::TransformationMatrix camera_matrix) {
+    if (IsHeroVisible == true) {
+        GameObject::Draw(camera_matrix);
+    }
+}
+
 void Hero::Update(double dt) {
     GameObject::Update(dt);
 
@@ -224,12 +277,13 @@ void Hero::Update(double dt) {
 
     //heavy cooldown
     if (IsHeavyReady == false) {
-        if (Heavytimer->Remaining() > 0) {
-            Engine::GetLogger().LogDebug("Remaining Heavy Attack CoolDown   :" + std::to_string(Heavytimer->Remaining()));
-        }
-        else if (Heavytimer->Remaining() == 0.0) {
+        if (Heavytimer->Remaining() == 0.0) {
             IsHeavyReady = true;
         }
+    }
+
+    if (Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == true) {
+        IsCombAttacking = true;
     }
 }
 
@@ -332,4 +386,10 @@ void Hero::HeroLevelCheck() {
         HeroLevel = previousLevel;
         upgrade->ActivateUpgrade(HeroLevel);
     }
+}
+
+void Hero::StateIdle() {
+    IsCombAttacking = false;
+    IsHeroVisible = true;
+    change_state(&state_idle);
 }

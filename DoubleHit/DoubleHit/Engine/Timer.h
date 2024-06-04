@@ -20,6 +20,7 @@ namespace CS230 {
         void Set(double time_remaining);
         void Update(double dt) override;
         void Reset();
+        void Add(double time);
         double Remaining();
         int RemainingInt();
         bool TickTock();

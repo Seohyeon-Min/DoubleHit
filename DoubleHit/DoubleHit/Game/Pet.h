@@ -1,6 +1,7 @@
 #pragma once
 #include "..\Engine\GameObject.h"
 #include "GameObjectTypes.h"
+#include "..\Engine\Timer.h"
 
 
 class Pet : public CS230::GameObject {
@@ -10,8 +11,12 @@ public:
     std::string TypeName() override { return "Pet"; }
     void Update(double dt) override;
     void Draw(Math::TransformationMatrix camera_matrix) override;
-    void MakeAttack(bool is_light);
+    void MakeLightAttack();
+    void MakeHeavyAttack();
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
+    int ReturnHeavyTimer();
+    bool ReturnHeavyReady();
+    int ReturnHeavyMax();
 
 private:
     const float radius = 40.0f;
@@ -40,4 +45,8 @@ private:
     enum class Animations {
         Idle
     };
+
+    CS230::Timer* Heavytimer;
+    bool IsHeavyReady = false;
+    double HeavyTimerMax = 3;
 };
