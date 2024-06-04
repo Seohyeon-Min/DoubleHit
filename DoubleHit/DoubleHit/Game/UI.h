@@ -15,12 +15,12 @@
 class UI : public CS230::Component {
 public:
 	UI(Hero* hero, Pet* pet);
-	void Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale);
+	void Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale, bool show = true);
 	void Draw();
 	void Update(double dt);
 	void Unload();
 
-private:
+protected:
 	Math::TransformationMatrix object_matrix;
 	struct Interface {
 		CS230::Texture* texture;

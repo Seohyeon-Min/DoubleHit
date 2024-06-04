@@ -1,0 +1,6 @@
+Assets/enemy/bullet2.png
+FrameSize 10 10
+HotSpot 5 5
+CircleCollision 5
+NumFrames 1
+Anim Assets/None.anm

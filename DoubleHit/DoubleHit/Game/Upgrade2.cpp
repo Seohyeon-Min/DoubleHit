@@ -17,7 +17,6 @@ void Upgrade::ActivateUpgrade(int heroLevel) {
 void Upgrade::DrawUpgrade() {
     Color color = upgradeOptionsColor[CurrentLevel];
 
-    rect = { 200, 200, 600, 600 };
 
     smallRects[0] = { rect.x + 50, rect.y + 50, 200, 500 };
     smallRects[1] = { rect.x + 50 + 200 + 100, rect.y + 50, 200, 500 };

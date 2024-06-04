@@ -19,6 +19,7 @@ Created:    March 8, 2023
 #include "UI.h"
 #include "HealthBar.h"
 #include "Fonts.h"
+#include "Skill.h"
 
 //random
 #include<cstdlib>
@@ -125,6 +126,9 @@ void Mode1::Load() {
     GetGSComponent<UI>()->Add("Assets/UI/Key_mouseLeft.png", { 1070,80 }, 2.0);
     GetGSComponent<UI>()->Add("Assets/UI/Key_mouseRight.png", { 1105,80 }, 2.0);
     GetGSComponent<UI>()->Add("Assets/UI/Key_Down.png", { 644, 115 }, 3.0);
+    GetGSComponent<UI>()->Add("Assets/UI/health_bar_back.png", { 215, 63 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/health_bar_back.png", { 215, 53 }, 2.0);
+    
     //GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
     
 
@@ -166,7 +170,10 @@ void Mode1::Update([[maybe_unused]] double dt) {
     spawn_time += dt;
 
     if (elite_spawn_timer->Remaining() == 0.0) {
+        //GetGSComponent<UI>()->Add("Assets/UI/warning.png", { (double)Engine::GetWindow().GetSize().x / 2, (double)Engine::GetWindow().GetSize().y / 2 }, 2.0);
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Warning({ (double)Engine::GetWindow().GetSize().x / 2, (double)Engine::GetWindow().GetSize().y / 2 }));
         GetGSComponent<CS230::GameObjectManager>()->Add(new EliteEnemy({ 1200,672 }));
+        GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Warning>()->Draw();
         elite_spawn_timer->Set(500);
     }
 
@@ -193,6 +200,7 @@ void Mode1::Draw() {
     GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), CS230::Camera::zoom);
     test_texture->Draw(Math::TranslationMatrix(Math::ivec2{ 0, 0 }));
     GetGSComponent<CS230::GameObjectManager>()->DrawAll(GetGSComponent<CS230::Camera>()->GetMatrix());
+    
     if (GetGSComponent<Combination>()->GetCombFlag() == true) {
         GetGSComponent<Combination>()->DrawIcons();
     }
@@ -221,10 +229,10 @@ void Mode1::Draw() {
 
 void Mode1::MakeGroundEnemy(){
 
-    //double randomX = GetRandomValue(0, 100);
-    //Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
+    double randomX = GetRandomValue(0, 2000);
+    Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
 
-    GroundEnemy* g_enemy = new GroundEnemy({100, floor});
+    GroundEnemy* g_enemy = new GroundEnemy({ randomX, floor});
 
     enemies.push_back(g_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy);
@@ -232,11 +240,11 @@ void Mode1::MakeGroundEnemy(){
 
 void Mode1::MakeAirEnemy() {
 
-    //double randomX = GetRandomValue(0, GetScreenWidth());
-    //double randomY = GetRandomValue(500, GetScreenHeight() - 100);
-    //Math::vec2 air_position = { randomX, randomY };    //random position
+    double randomX = GetRandomValue(0, 2000);
+    double randomY = GetRandomValue(500, 2000);
+    Math::vec2 air_position = { randomX, randomY };    //random position
 
-    AirEnemy* a_enemy = new AirEnemy({200,200});
+    AirEnemy* a_enemy = new AirEnemy({ randomX,randomY });
 
     enemies.push_back(a_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(a_enemy);

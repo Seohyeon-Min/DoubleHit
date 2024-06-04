@@ -126,7 +126,7 @@ AEnemyBullet::AEnemyBullet(Math::vec2 start_position, Math::vec2 targetPosition)
     Bullet(start_position, targetPosition),
     destination(targetPosition)
 {
-    AddGOComponent(new CS230::Sprite("Assets/pet/bullet.spt", this));
+    AddGOComponent(new CS230::Sprite("Assets/enemy/bullet2.spt", this));
     distance = GetAttackDirection();
 }
 

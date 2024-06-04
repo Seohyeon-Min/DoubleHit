@@ -4,12 +4,11 @@ UI::UI(Hero* hero, Pet* pet) : hero(hero), pet(pet) {
 	
 }
 
-void UI::Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale) {
+void UI::Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale, bool show) {
 	interfaces.push_back(Interface{ Engine::GetTextureManager().Load(texture_path), position , scale });
 }
 
 void UI::Update(double dt) {
-
 }
 
 void UI::Draw() {
