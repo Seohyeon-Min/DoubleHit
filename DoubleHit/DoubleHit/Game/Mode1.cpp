@@ -52,8 +52,8 @@ void Mode1::Load() {
     GetGSComponent<Combination>()->InitIcons();
     GetGSComponent<Background>()->Add("Assets/backgrounds/third3.png", 0.5);
     GetGSComponent<Background>()->Add("Assets/backgrounds/second.png", 1);
-    GetGSComponent<Background>()->Add("Assets/backgrounds/first.png", 1);
     GetGSComponent<Background>()->Add("Assets/backgrounds/road.png", 1);
+    GetGSComponent<Background>()->Add("Assets/backgrounds/first.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0, 0}, {  1680 , 5000}});
     test_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("You Have", 0xFFFF33FF);

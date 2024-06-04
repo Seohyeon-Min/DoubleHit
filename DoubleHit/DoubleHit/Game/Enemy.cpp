@@ -185,7 +185,7 @@ void AirEnemy::Update(double dt)
 {
     GameObject::Update(dt);
     Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
-    if (hero->GetOnEliteGround()) {
+    if (hero->GetOnEliteGround() && Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteEnemy>()) {
         Destroy();
     }
 
@@ -569,9 +569,9 @@ void EliteEnemy::ResolveCollision(GameObject* other_object)
         Destroy();
     }
     switch (other_object->Type()) {
-    //case GameObjectTypes::Bullet:
-    //    SetHealth(GetHealth() - Bullet::GetDamage() / demerit);
-    //    break;
+    case GameObjectTypes::Bullet:
+        SetHealth(GetHealth() - 1);
+        break;
     case GameObjectTypes::BulletHeavy:
         SetHealth(GetHealth() - 0.2);
         break;
