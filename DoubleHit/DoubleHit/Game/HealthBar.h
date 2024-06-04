@@ -40,3 +40,12 @@ public:
 private:
 	std::vector<HealthBarStruct> ehealth_bars;
 };
+
+class ExpBar : public HealthBar {
+public:
+	void Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale, CS230::GameObject* _object, double max_health);
+	void Unload();
+	void Draw(double exp);
+private:
+	std::vector<HealthBarStruct> exp_bars;
+};

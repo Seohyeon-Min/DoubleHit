@@ -6,6 +6,7 @@
 #include "Skill.h"
 #include "Bullet.h"
 #include "Floor.h"
+#include "HealthBar.h"
 #include "../Engine/Collision.h"
 #include "../Engine/Engine.h"
  
@@ -379,12 +380,16 @@ bool Hero::ReturnHeavyReady() {
 }
 
 void Hero::HeroLevelCheck() {
-    previousLevel = static_cast<int>(HeroExp) / 250;
-
+    previousLevel = static_cast<int>(HeroExp) / max_exp;
+    
     if (previousLevel > HeroLevel) {
+        Engine::GetGameStateManager().GetGSComponent<ExpBar>()->Unload();
+        max_exp *= 2;
+        Engine::GetGameStateManager().GetGSComponent<ExpBar>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0, this, max_exp);
         Engine::GetLogger().LogEvent("Hero Level Up: " + std::to_string(previousLevel));
         HeroLevel = previousLevel;
         upgrade->ActivateUpgrade(HeroLevel);
+        HeroExp = 0;
     }
 }
 

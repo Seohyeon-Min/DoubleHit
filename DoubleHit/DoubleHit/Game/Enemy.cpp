@@ -547,6 +547,7 @@ bool EliteEnemy::CanCollideWith(GameObjectTypes other_object)
     case GameObjectTypes::BulletHeavy:
     case GameObjectTypes::HeroLight:
     case GameObjectTypes::HeroHeavy:
+    case GameObjectTypes::UpgradeLL:
         return true;
         break;
     }
@@ -573,6 +574,9 @@ void EliteEnemy::ResolveCollision(GameObject* other_object)
         break;
     case GameObjectTypes::HeroHeavy:
         SetHealth(GetHealth() - Hero_Heavy::GetDamage());
+        break;
+    case GameObjectTypes::UpgradeLL:
+        SetHealth(GetHealth() - Hero_Light_Light::GetDamage());
         break;
     }
 }

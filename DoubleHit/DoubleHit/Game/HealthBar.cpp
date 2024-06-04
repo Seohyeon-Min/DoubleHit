@@ -60,3 +60,25 @@ void EliteHealthBar::Unload() {
 	ehealth_bars.clear();
 }
 
+
+void ExpBar::Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale, CS230::GameObject* _object, double max_health) {
+	exp_bars.push_back(HealthBarStruct{ Engine::GetTextureManager().Load(texture_path), position , scale , max_health, _object });
+}
+
+void ExpBar::Draw(double exp) {
+	for (auto health_bar : exp_bars) {
+		object_matrix = Math::TranslationMatrix(health_bar.position);
+		object_matrix *= Math::ScaleMatrix::ScaleMatrix(health_bar.scale);
+		if (health_bar.object != nullptr) {
+			double cut = ((health_bar.texture->GetSize().x / health_bar.max_health) * (health_bar.max_health - exp));
+			health_bar.texture->Draw(object_matrix, (int)cut);
+		}
+		else {
+			health_bar.texture->Draw(object_matrix);
+		}
+	}
+}
+
+void ExpBar::Unload() {
+	exp_bars.clear();
+}

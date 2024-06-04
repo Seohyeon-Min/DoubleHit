@@ -24,19 +24,17 @@ public:
     int ReturnHeavyMax();
     void StateIdle();
 
-    int HeroLevel = 0;
 
     void AddExp(int exp) {
         HeroExp += exp;
         HeroLevelCheck();
     }
-
-    double GetExp() const {
-        return HeroExp;
-    }
+    double GetExp() const { return HeroExp; }
 
     void HeroLevelCheck();
     static inline const double max_health = 100.0;
+    double max_exp = 1800;
+    int HeroLevel = 0;
  
 private:
     double HeroExp = 0;

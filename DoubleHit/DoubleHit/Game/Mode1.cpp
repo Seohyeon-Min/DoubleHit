@@ -114,13 +114,15 @@ void Mode1::Load() {
     GetGSComponent<UI>()->Add("Assets/UI/HeroSkill_Strong.png", { 175, 65 }, 1.0);
     GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Basic.png", { 1070, 65 }, 1.0);
     GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Strong.png", { 1105, 65 }, 1.0);
-    GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
+    //GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
     
 
     
     AddGSComponent(new HealthBar());
     AddGSComponent(new EliteHealthBar());
+    AddGSComponent(new ExpBar());
     GetGSComponent<HealthBar>()->Add("Assets/UI/health_bar.png", { 215, 63 }, 2.0, hero_ptr, hero_ptr->max_health);
+    GetGSComponent<ExpBar>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0, hero_ptr, hero_ptr->max_exp);
     //CombinationUI
     AddGSComponent(new CombinationUI(combination_ptr));
 
@@ -175,6 +177,7 @@ void Mode1::Draw() {
     GetGSComponent<UI>()->Draw();
     GetGSComponent<HealthBar>()->Draw();
     GetGSComponent<EliteHealthBar>()->Draw();
+    GetGSComponent<ExpBar>()->Draw(hero_ptr->GetExp());
     GetGSComponent<CombinationUI>()->Draw();
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
 

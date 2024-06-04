@@ -95,7 +95,7 @@ private:
     CS230::Timer* skill_timer;
     Hero* hero;
     int direction;
-    static constexpr double damage = 50;
+    static constexpr double damage = 0.5;
     static constexpr double skill_time = 2;
     static constexpr double add_time = 0.1;
     static constexpr int TokenMax = 60;
