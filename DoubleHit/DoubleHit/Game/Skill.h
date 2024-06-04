@@ -255,8 +255,8 @@ private:
 class EEnemyLight : public Skill {
 public:
     EEnemyLight(GameObject* object);
-    GameObjectTypes Type() override { return GameObjectTypes::GEnemyAttack; }
-    std::string TypeName() override { return "GEnemyAttack"; }
+    GameObjectTypes Type() override { return GameObjectTypes::ElitePunch; }
+    std::string TypeName() override { return "ElitePunch"; }
     void Update(double dt) override;
     bool CanCollideWith(GameObjectTypes other_object);
     void ResolveCollision(GameObject* other_object);

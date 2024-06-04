@@ -336,6 +336,7 @@ bool Hero::CanCollideWith(GameObjectTypes other_object)
     case GameObjectTypes::AEnemyBullet:
     case GameObjectTypes::GEnemyAttack:
     case GameObjectTypes::EEnemyAttack:
+    case GameObjectTypes::ElitePunch:
         return true;
         break;
     }
@@ -373,7 +374,14 @@ void Hero::ResolveCollision(GameObject* other_object)
             TakeDamage(GEnemyAttack::GetDamage());
             break;
         case GameObjectTypes::EEnemyAttack:
-            TakeDamage(EEnemyAttack::GetDamage());
+                TakeDamage(EEnemyAttack::GetDamage());
+            break;
+        case GameObjectTypes::ElitePunch:
+            if (current_state == &state_LL) {
+                TakeDamage(EEnemyAttack::GetDamage() / 5);
+            }
+            else
+                TakeDamage(EEnemyAttack::GetDamage());
             break;
     }
 }

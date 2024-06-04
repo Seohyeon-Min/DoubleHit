@@ -573,7 +573,7 @@ void EliteEnemy::ResolveCollision(GameObject* other_object)
     //    SetHealth(GetHealth() - Bullet::GetDamage() / demerit);
     //    break;
     case GameObjectTypes::BulletHeavy:
-        SetHealth(GetHealth() - BulletHeavy::GetDamage() / demerit);
+        SetHealth(GetHealth() - 0.2);
         break;
     case GameObjectTypes::HeroLight:
         SetHealth(GetHealth() - Hero_Light::GetDamage() / demerit);

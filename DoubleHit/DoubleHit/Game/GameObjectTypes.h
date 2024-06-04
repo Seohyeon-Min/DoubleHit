@@ -23,6 +23,7 @@ enum class GameObjectTypes {
 	AEnemyBullet,
 	GEnemyAttack,
 	EEnemyAttack,
+	ElitePunch,
 	EliteFloor,
 	Skill,
 	HeroLight,

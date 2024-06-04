@@ -50,7 +50,7 @@ private:
 
     std::vector<Enemy*> enemies; //enemy vectors
     CS230::Timer* elite_spawn_timer;
-    static constexpr double elite_spawn_time = 7;
+    static constexpr double elite_spawn_time = 18;
     double spawn_time = 0;
     const double enemy_spawn_time = 1; // every x second
     static constexpr int mouse_radius = 15; //temporary mouse asset

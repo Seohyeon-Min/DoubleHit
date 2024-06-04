@@ -51,7 +51,7 @@ public:
 private:
     Math::vec2 destination;
     Math::vec2 distance;
-    static constexpr double damage = 4;
+    static constexpr double damage = 1;
     static constexpr double attack_speed = 700;
     friend class Pet;
 };

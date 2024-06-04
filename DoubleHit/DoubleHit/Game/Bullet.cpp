@@ -114,7 +114,7 @@ void BulletHeavy::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
     case GameObjectTypes::EliteEnemy:
-        Destroy();
+        //Destroy();
         break;
     }
 

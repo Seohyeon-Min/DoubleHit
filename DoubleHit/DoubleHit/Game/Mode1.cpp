@@ -148,10 +148,7 @@ void Mode1::Load() {
     GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_SB.png", SBPosition, StrongScale);
     GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_SS.png", SSPosition, StrongScale);
 
-    for (auto& enemyPtr : enemies) {  //reset enemies
-        delete enemyPtr;
-    }
-    enemies.clear();
+
 
     elite_spawn_timer = new CS230::Timer(elite_spawn_time);
     AddGSComponent(elite_spawn_timer);
@@ -194,6 +191,10 @@ void Mode1::Update([[maybe_unused]] double dt) {
         score = GetGSComponent<CS230::Score>()->Value();
         update_score_text(score);
     }
+
+    if (IsKeyPressed(KEY_R)) {
+        Engine::GetGameStateManager().ReloadState();
+    }
 }
 
 void Mode1::Draw() {
@@ -217,7 +218,7 @@ void Mode1::Draw() {
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
 
 
-    test_texture->Draw(Math::TranslationMatrix(Math::ivec2{ 0 , 0 }));  //font test
+    //test_texture->Draw(Math::TranslationMatrix(Math::ivec2{ 0 , 0 }));  //font test
 
     if (GetGSComponent<Upgrade>()->GetUpgradeActive() == true) {
         GetGSComponent<Upgrade>()->DrawUpgrade();
@@ -260,5 +261,9 @@ void Mode1::MakeEnemy() {
 
 void Mode1::Unload() {
     GetGSComponent<Background>()->Unload();
+    GetGSComponent<CS230::GameObjectManager>()->Unload();
+    ClearGSComponents();
     hero_ptr = nullptr;
+
+    enemies.clear();
 }
