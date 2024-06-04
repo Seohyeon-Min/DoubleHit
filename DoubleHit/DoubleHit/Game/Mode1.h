@@ -56,4 +56,6 @@ private:
 
     double BasicScale = 1.0;
     double StrongScale = 0.33;
+
+    CS230::Texture* test_texture; //font test (delete later)
 };

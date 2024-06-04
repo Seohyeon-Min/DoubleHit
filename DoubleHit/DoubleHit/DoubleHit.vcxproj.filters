@@ -124,6 +124,9 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\Mainmenu.h">
+          <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Fonts.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>

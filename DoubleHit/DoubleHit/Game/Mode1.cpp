@@ -18,6 +18,7 @@ Created:    March 8, 2023
 #include "Floor.h"
 #include "UI.h"
 #include "HealthBar.h"
+#include "Fonts.h"
 
 //random
 #include<cstdlib>
@@ -47,7 +48,8 @@ void Mode1::Load() {
     GetGSComponent<Background>()->Add("Assets/small_background.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     GetGSComponent<CS230::Camera>()->SetLimit({ { 0,0 }, {  GetGSComponent<Background>()->GetSize() - Engine::GetWindow().GetSize() } });
-    
+    test_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("You Have", 0xFFFF33FF);
+
 
     Floor* starting_floor_ptr = new Floor(Math::irect{ { 0, 0 }, { 2560, static_cast<int>(floor) } });
     GetGSComponent<CS230::GameObjectManager>()->Add(starting_floor_ptr);
@@ -88,9 +90,6 @@ void Mode1::Load() {
 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1601, 768 }, { 1857, 800 } }));  //brick top
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1760, 896 }, { 1856, 928 } }));  //brick board
-
-
- 
 
 
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr, upgradeInstance);
@@ -169,6 +168,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
     GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), CS230::Camera::zoom);
+    test_texture->Draw(Math::TranslationMatrix(Math::ivec2{ 0, 0 }));
     GetGSComponent<CS230::GameObjectManager>()->DrawAll(GetGSComponent<CS230::Camera>()->GetMatrix());
     if (GetGSComponent<Combination>()->GetCombFlag() == true) {
         GetGSComponent<Combination>()->DrawIcons();
@@ -182,10 +182,12 @@ void Mode1::Draw() {
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
 
 
+    test_texture->Draw(Math::TranslationMatrix(Math::ivec2{ 0 , 0 }));  //font test
+
     if (GetGSComponent<Upgrade>()->GetUpgradeActive() == true) {
         GetGSComponent<Upgrade>()->DrawUpgrade();
     }
-    
+
 }
 
 //####################################################################################

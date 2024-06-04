@@ -46,6 +46,7 @@
     <ClInclude Include="Game\Combination.h" />
     <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\Floor.h" />
+    <ClInclude Include="Game\Fonts.h" />
     <ClInclude Include="Game\GameObjectTypes.h" />
     <ClInclude Include="Game\Gravity.h" />
     <ClInclude Include="Game\HealthBar.h" />
