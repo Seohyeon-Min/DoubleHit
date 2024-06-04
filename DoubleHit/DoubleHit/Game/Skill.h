@@ -289,18 +289,3 @@ private:
 
 };
 
-class Warning : public Skill {
-public:
-    Warning(Math::vec2 position);
-    GameObjectTypes Type() override { return GameObjectTypes::UpgradeHH; }
-    std::string TypeName() override { return "Warning"; }
-    void Update(double dt) override;
-    void Draw();
-
-private:
-    CS230::Timer* skill_timer;
-    static constexpr double skill_time = 10;
-    CS230::Texture* texture;
-    Math::vec2 position;
-    double scale = 2.0;
-};

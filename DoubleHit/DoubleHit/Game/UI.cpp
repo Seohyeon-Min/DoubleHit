@@ -58,3 +58,28 @@ void CombinationUI::Draw() {
 void CombinationUI::Unload() {
 	skills.clear();
 }
+
+
+
+Warning::Warning(Math::vec2 _position) :
+	UI(nullptr,nullptr)
+{
+	texture = Engine::GetTextureManager().Load("Assets/UI/warning.png");
+	position = _position;
+}
+
+void Warning::Update(double dt)
+{
+	show_timer += dt;
+	if (show_timer > show_time) {
+		del = true;
+	}
+}
+
+void Warning::Draw()
+{
+	Math::TransformationMatrix object_matrix;
+	object_matrix = Math::TranslationMatrix(position);
+	object_matrix *= Math::ScaleMatrix::ScaleMatrix(scale);
+	texture->Draw(object_matrix);
+}

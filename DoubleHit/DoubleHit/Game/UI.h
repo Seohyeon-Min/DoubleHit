@@ -59,3 +59,19 @@ private:
 	Combination* combination;
 	
 };
+
+class Warning : public UI {
+public:
+	Warning(Math::vec2 position);
+	void Update(double dt) override;
+	void Draw();
+	bool GetDelete() { return del; }
+
+private:
+	double show_timer = 0;
+	bool del = false;
+	static constexpr double show_time = 5;
+	CS230::Texture* texture;
+	Math::vec2 position;
+	double scale = 2.0;
+};

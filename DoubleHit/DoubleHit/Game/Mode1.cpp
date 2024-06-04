@@ -73,9 +73,9 @@ void Mode1::Load() {
 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1280, 352 }, { 1440, 384 } }));   //cross light
 
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1568, 256 }, { 1696, 288 } }));    //hospital door 
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1472, 416 }, { 1792, 448 } }));    //hospital middle 
-    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1408, 544 }, { 1856, 576 } }));    //hospital top
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1568, 276 }, { 1696, 288 } }));    //hospital door 
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1472, 426 }, { 1792, 448 } }));    //hospital middle 
+    GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1408, 554 }, { 1856, 576 } }));    //hospital top
 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1824, 320 }, { 1920, 352 } }));    //electro middle 
     GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1888, 480 }, { 2048, 512 } }));    //electro line 
@@ -170,13 +170,14 @@ void Mode1::Update([[maybe_unused]] double dt) {
     spawn_time += dt;
 
     if (elite_spawn_timer->Remaining() == 0.0) {
-        //GetGSComponent<UI>()->Add("Assets/UI/warning.png", { (double)Engine::GetWindow().GetSize().x / 2, (double)Engine::GetWindow().GetSize().y / 2 }, 2.0);
-        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Warning({ (double)Engine::GetWindow().GetSize().x / 2, (double)Engine::GetWindow().GetSize().y / 2 }));
+        AddGSComponent(new Warning({ 0,  (double)Engine::GetWindow().GetSize().y / 2 + 100 }));
         GetGSComponent<CS230::GameObjectManager>()->Add(new EliteEnemy({ 1200,672 }));
-        GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Warning>()->Draw();
         elite_spawn_timer->Set(500);
-    }
 
+    }
+    if (GetGSComponent<Warning>() && GetGSComponent<Warning>()->GetDelete()) {
+        RemoveGSComponent<Warning>();
+    }
     if (spawn_time > enemy_spawn_time && !hero_ptr->GetOnEliteGround()) { // spawn logic
         MakeEnemy();
         spawn_time = 0;
@@ -210,6 +211,9 @@ void Mode1::Draw() {
     GetGSComponent<EliteHealthBar>()->Draw();
     GetGSComponent<ExpBar>()->Draw(hero_ptr->GetExp());
     GetGSComponent<CombinationUI>()->Draw();
+    if (GetGSComponent<Warning>()) {
+        GetGSComponent<Warning>()->Draw();
+    }
     DrawCircle(GetMouseX(), GetMouseY(), mouse_radius, mouse_color);
 
 

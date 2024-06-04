@@ -328,29 +328,3 @@ void EEnemyLight::ResolveCollision(GameObject* other_object)
     }
 }
 
-Warning::Warning(Math::vec2 _position):
-Skill(_position)
-{
-    //AddGOComponent(new CS230::Sprite("Assets/enemy/elite_enemy_attack_alert.spt", this));
-    texture = Engine::GetTextureManager().Load("Assets/UI/warning.png");
-    skill_timer = new CS230::Timer(skill_time);
-    AddGOComponent(skill_timer);
-    position = _position;
-}
-
-void Warning::Update(double dt)
-{
-    GameObject::Update(dt);
-    if (skill_timer->Remaining() == 0.0) {
-        Destroy();
-    }
-}
-
-void Warning::Draw()
-{
-        Math::TransformationMatrix object_matrix;
-        object_matrix = Math::TranslationMatrix(position);
-        object_matrix *= Math::ScaleMatrix::ScaleMatrix(scale);
-        texture->Draw(object_matrix);
-    
-}

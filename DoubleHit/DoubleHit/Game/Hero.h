@@ -33,7 +33,7 @@ public:
 
     void HeroLevelCheck();
     static inline const double max_health = 100.0;
-    double max_exp = 100; // 1800
+    double max_exp = 1800; // 1800
     int HeroLevel = 0;
  
 private:
