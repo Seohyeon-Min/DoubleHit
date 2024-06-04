@@ -47,10 +47,10 @@ void Pet::State_Running::Enter(GameObject* object) {
 }
 void Pet::State_Running::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) {
     Pet* pet = static_cast<Pet*>(object);
-    if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) { //light attack
+    if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //light attack
         pet->MakeLightAttack(); //is_light true
     }
-    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON) && pet->IsHeavyReady == true) { //heavy attack
+    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON) && pet->IsHeavyReady == true && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //heavy attack
         pet->IsHeavyReady = false;
         pet->Heavytimer->Set(pet->HeavyTimerMax);
         pet->MakeHeavyAttack();

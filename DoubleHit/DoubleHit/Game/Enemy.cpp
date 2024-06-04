@@ -276,6 +276,7 @@ void AirEnemy::ResolveCollision(GameObject* other_object)
         }
         break;
     case GameObjectTypes::UpgradeLL:
+        Engine::GetLogger().LogDebug("Detected");
         health -= Hero_Light_Light::GetDamage(); //should be run only once
         if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
@@ -285,6 +286,7 @@ void AirEnemy::ResolveCollision(GameObject* other_object)
         break;
     case GameObjectTypes::UpgradeLH:
         health -= Hero_Light_Heavy::GetDamage(); //should be run only once
+        
         if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));

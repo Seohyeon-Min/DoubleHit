@@ -95,9 +95,9 @@ private:
     Hero* hero;
     int direction;
     static constexpr double damage = 50;
-    static constexpr double skill_time = 4;
+    static constexpr double skill_time = 2;
     static constexpr double add_time = 0.1;
-    static constexpr int TokenMax = 40;
+    static constexpr int TokenMax = 60;
     int timeToken;
     bool IsEnded = false;
 
@@ -134,11 +134,9 @@ public:
     static constexpr double GetDamage() { return damage; }
 
 private:
-    CS230::Timer* skill_timer;
     Hero* hero;
     int direction;
     static constexpr double damage = 50;
-    static constexpr double skill_time = 4;
     bool IsEnded = false;
 
     enum class Animations {
