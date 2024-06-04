@@ -246,12 +246,12 @@ void Hero::Update(double dt) {
     if (!on_elite_ground) {
         has_run = false;
         if (collider != nullptr) {
-            if (collider->WorldBoundary().Left() < Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x) {
-                UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x - collider->WorldBoundary().Left(),0 });
+            if (collider->WorldBoundary().Left() < 0) {
+                UpdatePosition({ 0 - collider->WorldBoundary().Left(),0 });
                 SetVelocity({ 0, GetVelocity().y });
             }
-            if (collider->WorldBoundary().Right() > Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x) {
-                UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<CS230::Camera>()->GetPosition().x + Engine::GetWindow().GetSize().x - collider->WorldBoundary().Right(),0 });
+            if (collider->WorldBoundary().Right() > Engine::GetGameStateManager().GetGSComponent<Background>()->GetSize().x - GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2) {
+                UpdatePosition({ Engine::GetGameStateManager().GetGSComponent<Background>()->GetSize().x - collider->WorldBoundary().Right() - GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2,0 });
                 SetVelocity({ 0, GetVelocity().y });
             }
         }

@@ -37,5 +37,18 @@ Math::TransformationMatrix CS230::Camera::GetMatrix() {
 void CS230::Camera::Update(const Math::vec2& player_position) {
 
     position = { -(Engine::GetWindow().GetSize().x / (2 * zoom) - player_position.x), -(120 - player_position.y) };
+
+    if (position.x < limit.Left()) {
+        position.x = limit.Left();
+    }
+    if (position.x > limit.Right()) {
+        position.x = limit.Right();
+    }
+    if (position.y < limit.Bottom()) {
+        position.y = limit.Bottom();
+    }
+    if (position.y > limit.Top()) {
+        position.y = limit.Top();
+    }
 }
 
