@@ -58,7 +58,10 @@ void GroundEnemy::Update(double dt)
             if (hero != nullptr) {
                 hero->AddExp(150);
                 Engine::GetLogger().LogEvent("Add Exp 150 ");
+
             }
+            Engine::GetLogger().LogEvent("Add Score 300 ");
+            Engine::GetGameStateManager().GetGSComponent<CS230::Score>()->Add(300);
         }
     }
     else {
@@ -202,6 +205,9 @@ void AirEnemy::Update(double dt)
                 hero->AddExp(150);
                 Engine::GetLogger().LogEvent("Add Exp 150");
             }
+
+            Engine::GetLogger().LogEvent("Add Score 200 ");
+            Engine::GetGameStateManager().GetGSComponent<CS230::Score>()->Add(200);
         }
         //else if (GetGOComponent<CS230::Collision>() == nullptr) {
         //    Destroy();

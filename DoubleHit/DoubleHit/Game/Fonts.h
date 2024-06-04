@@ -12,5 +12,6 @@ Created:    March 8, 2023
 #pragma once
 
 enum Fonts {
-	Basic
+	Basic,
+	Simple
 };

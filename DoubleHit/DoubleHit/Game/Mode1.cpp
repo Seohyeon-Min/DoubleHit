@@ -28,6 +28,10 @@ Created:    March 8, 2023
 Mode1::Mode1() : hero_ptr()
 { }
 
+void Mode1::update_score_text(int getscore) {
+    score_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Score: " + std::to_string(getscore), 0x000000FF);
+}
+
 void Mode1::Load() {
 #ifdef _DEBUG
     AddGSComponent(new CS230::ShowCollision());
@@ -116,6 +120,11 @@ void Mode1::Load() {
     GetGSComponent<UI>()->Add("Assets/UI/HeroSkill_Strong.png", { 175, 65 }, 1.0);
     GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Basic.png", { 1070, 65 }, 1.0);
     GetGSComponent<UI>()->Add("Assets/UI/PetSkill_Strong.png", { 1105, 65 }, 1.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Key_J.png", { 140,80 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Key_K.png", { 175,80 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Key_mouseLeft.png", { 1070,80 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Key_mouseRight.png", { 1105,80 }, 2.0);
+    GetGSComponent<UI>()->Add("Assets/UI/Key_Down.png", { 644, 115 }, 3.0);
     //GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
     
 
@@ -142,6 +151,11 @@ void Mode1::Load() {
 
     elite_spawn_timer = new CS230::Timer(elite_spawn_time);
     AddGSComponent(elite_spawn_timer);
+
+    //score
+    score = 0;
+    update_score_text(score);
+    AddGSComponent(new CS230::Score(score));
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
@@ -166,6 +180,12 @@ void Mode1::Update([[maybe_unused]] double dt) {
     }
     GetGSComponent<UI>()->Update(dt);
     GetGSComponent<CombinationUI>()->Update(dt);
+
+    //score
+    if (GetGSComponent<CS230::Score>()->Value() != score) {
+        score = GetGSComponent<CS230::Score>()->Value();
+        update_score_text(score);
+    }
 }
 
 void Mode1::Draw() {
@@ -190,6 +210,9 @@ void Mode1::Draw() {
     if (GetGSComponent<Upgrade>()->GetUpgradeActive() == true) {
         GetGSComponent<Upgrade>()->DrawUpgrade();
     }
+
+    //score
+    score_texture->Draw(Math::TranslationMatrix(Math::ivec2{ 0, Engine::GetWindow().GetSize().y - score_texture->GetSize().y }));
 
 }
 
