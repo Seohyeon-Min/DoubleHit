@@ -16,6 +16,7 @@ Created:    March 8, 2023
 #include "Background.h"
 #include "Enemy.h"
 #include "raylib.h"
+#include "Score.h"
 
 class Hero;
 class Pet;
@@ -38,9 +39,15 @@ public:
         return "Mode1";
     }
 private:
+
+    void update_score_text(int score);
+    CS230::Texture* score_texture;
+    int score;
+
     Hero* hero_ptr;
     Pet* pet_ptr;
     Combination* combination_ptr;
+
     std::vector<Enemy*> enemies; //enemy vectors
     CS230::Timer* elite_spawn_timer;
     static constexpr double elite_spawn_time = 7;
