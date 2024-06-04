@@ -22,10 +22,10 @@ Mainmenu::Mainmenu() {
 
 void Mainmenu::Load() {
     index = 0;
-    engine_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("CS230 Engine Test", 0x6E47ABFF);
-    side_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("Side Scroller", 0xFFFFFFFF);
-    space_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("Space Shooter", 0x4DAB47FF);
-    exit_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("exit", 0x4DAB47FF);
+    engine_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("CS230 Engine Test", 0x6E47ABFF);
+    side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
+    space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x4DAB47FF);
+    exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Quit", 0x4DAB47FF);
 }
 
 void Mainmenu::Update([[maybe_unused]] double dt) {
@@ -46,7 +46,7 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
         if (index == 0)
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         if (index == 1)
-            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode2));
+            //Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode2));
         if (index == 2)
             Engine::GetGameStateManager().ClearNextGameState();
     }
@@ -58,19 +58,19 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
             if (side_texture != nullptr) {
                 delete side_texture;
             }
-            side_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("Side Scroller", 0xFFFFFFFF);
+            side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
         }
         if (index == 1) {
             if (space_texture != nullptr) {
                 delete space_texture;
             }
-            space_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("Space Shooter", 0xFFFFFFFF);
+            space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
         }
         if (index == 2) {
             if (exit_texture != nullptr) {
                 delete exit_texture;
             }
-            exit_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("exit", 0xFFFFFFFF);
+            exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Quit", 0xFFFFFFFF);
         }
         updated = true;
         hasrun = false;
@@ -81,19 +81,19 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
                 if (side_texture != nullptr) {
                     delete side_texture;
                 }
-                side_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("Side Scroller", 0x4DAB47FF);
+                side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0x4DAB47FF);
             }
             if (index != 1) {
                 if (space_texture != nullptr) {
                     delete space_texture;
                 }
-                space_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("Space Shooter", 0x4DAB47FF);
+                space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0x4DAB47FF);
             }
             if (index != 2) {
                 if (exit_texture != nullptr) {
                     delete exit_texture;
                 }
-                exit_texture = Engine::GetFont(static_cast<int>(Fonts::Outlined)).PrintToTexture("exit", 0x4DAB47FF);
+                exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Quit", 0x4DAB47FF);
             }
         }
         hasrun = true;

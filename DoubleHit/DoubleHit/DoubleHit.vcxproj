@@ -26,6 +26,7 @@
     <ClInclude Include="Engine\ComponentManager.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Font.h" />
+    <ClInclude Include="Engine\Fonts.h" />
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\GameObjectManager.h" />
     <ClInclude Include="Engine\GameState.h" />
