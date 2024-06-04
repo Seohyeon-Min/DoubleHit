@@ -21,6 +21,8 @@ Hero::Hero(Math::vec2 start_position, GameObject* standing_on, Upgrade* upgrade)
     // heavy attack cooldown check
     Heavytimer = new CS230::Timer(0.0);
     AddGOComponent(Heavytimer);
+    Dashtimer = new CS230::Timer(0.0);
+    AddGOComponent(Dashtimer);
     SetHealth(max_health);
     SetScale({ 1,1 });
 
@@ -60,10 +62,18 @@ void Hero::State_Idle::Enter(GameObject* object) {
 void Hero::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Idle::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift) && Engine::GetInput().KeyDown(CS230::Input::Keys::A) && hero->IsDashReady == true) {
+        hero->DashDirection = - 1;
+        hero->change_state(&hero->state_dash);
+    }
+    else if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         hero->change_state(&hero->state_running);
     }
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift) && Engine::GetInput().KeyDown(CS230::Input::Keys::D) && hero->IsDashReady == true) {
+        hero->DashDirection = 1;
+        hero->change_state(&hero->state_dash);
+    }
+    else if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
         hero->change_state(&hero->state_running);
     }
 
@@ -134,6 +144,31 @@ void Hero::State_Running::CheckExit(GameObject* object) {
     if (hero->standing_on != nullptr && hero->standing_on->IsCollidingWith(hero) == false) {
         hero->standing_on = nullptr;
         hero->change_state(&hero->state_falling);
+    }
+}
+
+void Hero::State_Dash::Enter(GameObject* object) {
+    Hero* hero = static_cast<Hero*>(object);
+    hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light));
+    hero->Dashtimer->Set(hero->DashTimerMax);
+    hero->IsDashReady = false;
+    hero->IsHeroSuper = true;
+    hero->UpdatePosition({hero->DashDirection * hero->DashPosition, 0 });
+}
+
+void Hero::State_Dash::Update(GameObject* object, double dt) {
+}
+
+void Hero::State_Dash::CheckExit(GameObject* object) {
+    Hero* hero = static_cast<Hero*>(object);
+    if (hero->standing_on != nullptr && hero->standing_on->IsCollidingWith(hero) == false) {
+        hero->standing_on = nullptr;
+        hero->IsHeroSuper = false;
+        hero->change_state(&hero->state_falling);
+    }
+    else if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+        hero->IsHeroSuper = false;
+        hero->change_state(&hero->state_idle);
     }
 }
 
@@ -283,6 +318,12 @@ void Hero::Update(double dt) {
         }
     }
 
+    if (IsDashReady == false) {
+        if (Dashtimer->Remaining() == 0.0) {
+            IsDashReady = true;
+        }
+    }
+
     if (Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == true) {
         IsCombAttacking = true;
     }
@@ -357,8 +398,9 @@ void Hero::update_x_velocity(double dt) {
 }
 
 void Hero::TakeDamage(double damage) {
-    SetHealth(GetHealth() - damage);
-
+    if (IsHeroSuper == false) {
+        SetHealth(GetHealth() - damage);
+    }
     if (GetHealth() <= 0) {
 
         std::cout << "Game Over." << std::endl;

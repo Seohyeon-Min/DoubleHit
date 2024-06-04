@@ -43,16 +43,24 @@ private:
 
     GameObject* standing_on;
     void update_x_velocity(double dt);
+
     static inline const  Math::vec2 velocity = { 200, 500 };//500
     bool IsHeavyReady = false; //heavy attack cooldown check
+    bool IsDashReady = true;
     bool light_combo = false;
     bool on_elite_ground = false;
     bool has_run = false;
     bool IsCombAttacking = false;
     bool IsHeroVisible = true;
+    bool IsHeroSuper;
+    double DashDirection = 1;
+    static constexpr double DashPosition = 200;
 
     double HeavyTimerMax = 4;
     CS230::Timer* Heavytimer;
+
+    double DashTimerMax = 2;
+    CS230::Timer* Dashtimer;
 
     class State_Jumping : public State {
     public:
@@ -84,6 +92,14 @@ private:
         virtual void Update(GameObject* object, double dt) override;
         virtual void CheckExit(GameObject* object) override;
         std::string GetName() override { return "Running"; }
+    };
+
+    class State_Dash : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Dashing"; }
     };
 
     class State_Light : public State {
@@ -140,6 +156,7 @@ private:
     State_Running state_running;
     State_Light state_light;
     State_Heavy state_heavy;
+    State_Dash state_dash;
     //State_Heavy_Light state_HL;
     State_Light_Light state_LL;
     State_Light_Heavy state_LH;
