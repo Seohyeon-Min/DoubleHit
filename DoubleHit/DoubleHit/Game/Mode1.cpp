@@ -40,6 +40,8 @@ void Mode1::Load() {
     Upgrade* upgradeInstance = new Upgrade();
     AddGSComponent(upgradeInstance);
 
+    GetGSComponent<Upgrade>()->Add("Assets/UI/whitelayer.png", { (double)Engine::GetWindow().GetSize().x / 2, 50 }, 2.0);
+
     GetGSComponent<Combination>()->InitIcons();
     GetGSComponent<Background>()->Add("Assets/small_background.png", 1);
     GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });

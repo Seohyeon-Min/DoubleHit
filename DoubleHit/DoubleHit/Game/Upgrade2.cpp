@@ -3,6 +3,16 @@
 #include "Hero.h"
 #include "Skill.h"
 
+<<<<<<< Updated upstream
+=======
+bool Upgrade::UpgradeActiveFlag = false;
+
+void Upgrade::Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale) {
+    upgradeImages.push_back(upgradeImage{ Engine::GetTextureManager().Load(texture_path) });
+}
+
+
+>>>>>>> Stashed changes
 void Upgrade::ActivateUpgrade(int heroLevel) {
     CurrentLevel = heroLevel -1;
     Engine::GetLogger().LogEvent("ActivateUpgrade called with level: " + std::to_string(CurrentLevel));
@@ -14,6 +24,7 @@ void Upgrade::ActivateUpgrade(int heroLevel) {
 
 void Upgrade::DrawUpgrade() {
     Color color = upgradeOptionsColor[CurrentLevel];
+    
 
     rect = { 200, 200, 600, 600 };
 
