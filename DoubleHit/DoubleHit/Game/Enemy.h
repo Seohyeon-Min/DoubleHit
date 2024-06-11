@@ -23,7 +23,7 @@ private:
 
 class GroundEnemy : public Enemy{
 public:
-    GroundEnemy(Math::vec2 start_position);
+    GroundEnemy(Math::vec2 position, Hero* hero, double left_boundary, double right_boundary);
     GameObjectTypes Type() override { return GameObjectTypes::GroundEnemy; }
     std::string TypeName() override { return "GroundEnemy"; }
     void Update(double dt) override;
@@ -33,6 +33,8 @@ public:
 
 private:
 
+    double left_boundary;
+    double right_boundary;
     bool has_run = false;
     bool attackExecuted = false;
     bool attack = false;
@@ -44,6 +46,53 @@ private:
     static constexpr double shooting_range = 50;
     static constexpr double attack_time = 2.8;
     CS230::Timer* attack_timer;
+    Hero* hero;
+
+    class State_Dead : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Dead"; }
+    };
+
+    class State_Walking : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Walking"; }
+    };
+
+    class State_Angry : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Angry"; }
+    };
+
+    class State_Attack : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Angry"; }
+    };
+
+    class State_Idle : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Angry"; }
+    };
+
+    State_Dead state_dead;
+    State_Walking state_walking;
+    State_Angry state_angry;
+    State_Attack state_attack;
+    State_Idle state_idle;
 
     enum class Animations {
         Idle,

@@ -30,15 +30,181 @@ Math::vec2 Enemy::Normalize(const Math::vec2& vec) {
 
 //###############################################################################################################################################################################################################
 
-GroundEnemy::GroundEnemy(Math::vec2 start_position ):
-    Enemy(start_position)
+GroundEnemy::GroundEnemy(Math::vec2 position, Hero* _hero, double _left_boundary, double _right_boundary):
+    Enemy(position)
 {
     distance = 600;
     CS230::GameObject::AddGOComponent(new CS230::Sprite("Assets/enemy/robot.spt", this));
+    left_boundary = _left_boundary;
+    right_boundary = _right_boundary;
     SetScale({1,1});
     attack_timer = new CS230::Timer(attack_time);
     AddGOComponent(attack_timer);
+    current_state = &state_walking;
+    current_state->Enter(this);
+    hero = _hero;
 }
+
+void GroundEnemy::State_Dead::Enter(GameObject* object)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+    robot->SetPosition({ robot->GetPosition().x , robot->GetPosition().y });
+    robot->SetVelocity({ 0,0 });
+}
+void GroundEnemy::State_Dead::Update(GameObject* object, double dt)
+{}
+void GroundEnemy::State_Dead::CheckExit(GameObject* object)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    if (robot->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+        if (robot->hero != nullptr) {
+            robot->hero->AddExp(150);
+            Engine::GetLogger().LogEvent("Add Exp 150 ");
+        }
+        Engine::GetLogger().LogEvent("Add Score 300 ");
+        Engine::GetGameStateManager().GetGSComponent<CS230::Score>()->Add(300);
+        robot->Destroy();
+    }
+}
+
+
+void GroundEnemy::State_Walking::Enter(GameObject* object)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Running));
+    robot->SetVelocity({ robot->speed,0 });
+}
+void GroundEnemy::State_Walking::Update(GameObject* object, double dt)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+
+    CS230::RectCollision* collider = robot->GetGOComponent<CS230::RectCollision>();
+    if (collider != nullptr) {
+        if (collider->WorldBoundary().Left() < robot->left_boundary) {
+            robot->SetPosition({ robot->left_boundary - (collider->WorldBoundary().Right() - collider->WorldBoundary().Left()) / 2 + 5, robot->GetPosition().y });
+            robot->SetVelocity({ robot->speed, robot->GetVelocity().y });
+            robot->SetScale({ 1,1 });
+        }
+        if (collider->WorldBoundary().Right() > robot->right_boundary) {
+            robot->SetPosition({ robot->right_boundary + (collider->WorldBoundary().Right() - collider->WorldBoundary().Left()) / 2 - 5, robot->GetPosition().y });
+            robot->SetVelocity({ -robot->speed, robot->GetVelocity().y });
+            robot->SetScale({ -1,1 });
+            robot->GetScale();
+            robot->GetVelocity();
+        }
+    }
+}
+void GroundEnemy::State_Walking::CheckExit(GameObject* object)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    if (robot->hero->GetPosition().x > robot->left_boundary && robot->hero->GetPosition().x < robot->GetPosition().x && robot->GetScale().x == -1) {
+        robot->change_state(&robot->state_angry);
+    }
+    if (robot->hero->GetPosition().x < robot->right_boundary && robot->hero->GetPosition().x > robot->GetPosition().x && robot->GetScale().x == 1) {
+        robot->change_state(&robot->state_angry);
+    }
+}
+
+
+void GroundEnemy::State_Angry::Enter(GameObject* object)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Running));
+}
+void GroundEnemy::State_Angry::Update(GameObject* object, double dt)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+
+    CS230::RectCollision* collider = robot->GetGOComponent<CS230::RectCollision>();
+    if (collider != nullptr) {
+        if (collider->WorldBoundary().Left() < robot->left_boundary) {
+            robot->SetPosition({ robot->left_boundary - (collider->WorldBoundary().Right() - collider->WorldBoundary().Left()) / 2 + 5, robot->GetPosition().y });
+            robot->SetVelocity({ robot->speed, robot->GetVelocity().y });
+        }
+        if (collider->WorldBoundary().Right() > robot->right_boundary) {
+            robot->SetPosition({ robot->right_boundary + (collider->WorldBoundary().Right() - collider->WorldBoundary().Left()) / 2 - 5, robot->GetPosition().y });
+            robot->SetVelocity({ -robot->speed, robot->GetVelocity().y });
+            robot->GetScale();
+            robot->GetVelocity();
+        }
+    }
+
+    robot->x_distance = robot->hero->GetPosition().x - robot->GetPosition().x;
+    robot->direction = Math::vec2(robot->x_distance, 0.0);    //no direction in y
+    robot->distance = std::sqrt(robot->direction.x * robot->direction.x + robot->direction.y * robot->direction.y);     //calculate distance
+    robot->SetVelocity({ robot->Normalize(robot->direction).x * robot->speed , robot->Normalize(robot->direction).y * robot->speed });
+
+    if (robot->GetVelocity().x < 0) {
+        robot->SetScale({ 1,1 });
+    }
+    else if (robot->GetVelocity().x >= 0) {
+        robot->SetScale({ -1,1 });
+    }
+}
+void GroundEnemy::State_Angry::CheckExit(GameObject* object)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    if (robot->distance <= robot->min_distance) {
+        robot->change_state(&robot->state_idle);
+    }
+}
+
+
+void GroundEnemy::State_Attack::Enter(GameObject* object)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+    robot->SetPosition({ robot->GetPosition().x , robot->GetPosition().y });
+    robot->SetVelocity({ 0,0 });
+}
+void GroundEnemy::State_Attack::Update(GameObject* object, double dt)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    if (robot->GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
+        if (robot->GetGOComponent<CS230::Sprite>()->GetCurrentFrame() == 13 && !robot->attackExecuted) {
+            robot->attack = true;
+        }
+    }
+    if (robot->attack) {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new GEnemyAttack(robot));
+        robot->attack = false;
+        robot->attackExecuted = true;
+    }
+}
+void GroundEnemy::State_Attack::CheckExit(GameObject* object)
+{
+
+}
+
+
+void GroundEnemy::State_Idle::Enter(GameObject* object)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
+    robot->SetPosition({ robot->GetPosition().x , robot->GetPosition().y });
+    robot->SetVelocity({ 0,0 });
+}
+void GroundEnemy::State_Idle::Update(GameObject* object, double dt)
+{}
+void GroundEnemy::State_Idle::CheckExit(GameObject* object)
+{
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    if (robot->attack_timer->Remaining() == 0.0) {
+        robot->attack_timer->Set(attack_time);
+        robot->attackExecuted = false;
+        robot->change_state(&robot->state_attack);
+    }
+}
+
+
+
+
+
+
+
+
+
 
 void GroundEnemy::Update(double dt)
 {
@@ -47,22 +213,9 @@ void GroundEnemy::Update(double dt)
     if (hero->GetOnEliteGround()) {
         Destroy();
     }
-    if (attack) {
-        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new GEnemyAttack(this));
-        attack = false;
-        attackExecuted = true;
-    }
-    if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Die)) {
-        if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
-            Destroy();
-            if (hero != nullptr) {
-                hero->AddExp(150);
-                Engine::GetLogger().LogEvent("Add Exp 150 ");
 
-            }
-            Engine::GetLogger().LogEvent("Add Score 300 ");
-            Engine::GetGameStateManager().GetGSComponent<CS230::Score>()->Add(300);
-        }
+    if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Die)) {
+        
     }
     else {
         x_distance = hero->GetPosition().x - GetPosition().x;
@@ -122,52 +275,32 @@ bool GroundEnemy::CanCollideWith(GameObjectTypes other_object)
 
 void GroundEnemy::ResolveCollision(GameObject* other_object)
 {
+    if (health < 0) {
+        RemoveGOComponent<CS230::Collision>();
+        GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+        SetVelocity({ 0,0 });
+    }
+
     switch (other_object->Type()) {
     case GameObjectTypes::Bullet:
         health -= Bullet::GetDamage() / 2;
-        if (health <= 0) {
-            RemoveGOComponent<CS230::Collision>();
-            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
-            SetVelocity({ 0,0 });
-        }
         break;
     case GameObjectTypes::BulletHeavy:
         health -= BulletHeavy::GetDamage();
-        if (health < 0) {
-            RemoveGOComponent<CS230::Collision>();
-            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
-            SetVelocity({ 0,0 });
-        }
         break;
     case GameObjectTypes::HeroLight:
         health -= Hero_Light::GetDamage(); //should be run only once
-        if (health <= 0) {
-            RemoveGOComponent<CS230::Collision>();
-            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
-            SetVelocity({ 0,0 });
-        }
         break;
     case GameObjectTypes::HeroHeavy:
         health -= Hero_Heavy::GetDamage(); //should be run only once
-        if (health <= 0) {
-            RemoveGOComponent<CS230::Collision>();
-            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
-            SetVelocity({ 0,0 });
-        }
         break;
     case GameObjectTypes::UpgradeLL:
         Engine::GetLogger().LogDebug("Detected");
         health -= Hero_Light_Light::GetDamage(); //should be run only once
-        if (health <= 0) {
-            RemoveGOComponent<CS230::Collision>();
-            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
-            SetVelocity({ 0,0 });
-        }
         break;
     }
 
 }
-
 
 //###############################################################################################################################################################################################################
 
@@ -187,64 +320,6 @@ void AirEnemy::Update(double dt)
     Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
     if (hero->GetOnEliteGround() && Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteEnemy>()) {
         Destroy();
-    }
-
-    if (attack) {
-        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new AEnemyBullet(GetPosition(), { hero->GetPosition() }));
-        attack = false;
-        attackExecuted = true;
-    }
-    if (!has_run) {
-        GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Idle));
-        has_run = true;
-    }
-    else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Die)) {
-        if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
-            Destroy();
-            if (hero != nullptr) {
-                hero->AddExp(150);
-                Engine::GetLogger().LogEvent("Add Exp 150");
-            }
-
-            Engine::GetLogger().LogEvent("Add Score 200 ");
-            Engine::GetGameStateManager().GetGSComponent<CS230::Score>()->Add(200);
-        }
-        //else if (GetGOComponent<CS230::Collision>() == nullptr) {
-        //    Destroy();
-        //}
-    }
-    else {
-        direction = const_cast<Math::vec2&>(hero->GetPosition()) - GetPosition();
-        distance = std::sqrt((direction.x * direction.x) + (direction.y * direction.y));     //calculate distance
-        
-        if (distance <= min_distance || GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
-            SetVelocity({ 0,0 });
-            if (GetGOComponent<CS230::Sprite>()->GetCurrentFrame() == 11 && !attackExecuted) {
-                attack = true;
-            }
-        }
-        else if (distance > min_distance) {  //collision
-            SetVelocity({ Normalize(direction).x * speed , Normalize(direction).y * speed });
-            
-            if (GetVelocity().x < 0) {
-                SetScale({ 1,1 });
-            }
-            else if (GetVelocity().x >= 0) {
-                SetScale({ -1,1 });
-            }
-        }
-        if (distance < shooting_range) {
-            if (attack_timer->Remaining() == 0.0) {
-                attack_timer->Set(attack_time);
-                GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
-                attackExecuted = false;
-            }
-            else if (GetGOComponent<CS230::Sprite>()->CurrentAnimation() == static_cast<int>(Animations::Attack)) {
-                if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
-                    has_run = false;
-                }
-            }
-        }
     }
 }
 

@@ -236,8 +236,8 @@ void Mode1::MakeGroundEnemy(){
 
     double randomX = GetRandomValue(0, 2000);
     Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
-
-    GroundEnemy* g_enemy = new GroundEnemy({ randomX, floor});
+    //GroundEnemy(Math::vec2 position, Hero* hero, double left_boundary, double right_boundary);
+    GroundEnemy* g_enemy = new GroundEnemy({ randomX, floor}, hero_ptr, );
 
     enemies.push_back(g_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy);
