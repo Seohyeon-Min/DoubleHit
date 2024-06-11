@@ -34,8 +34,20 @@ public:
         return HeroExp;
     }
 
+    void GetUpgradeChoose(int Option);
+    int option = 0;
+
+    int GetOption() const { return option; }
+
     void HeroLevelCheck();
+<<<<<<< Updated upstream
  
+=======
+    static inline const double max_health = 100.0;
+    double max_exp = 1800; // 1800
+    int HeroLevel = 0;
+
+>>>>>>> Stashed changes
 private:
     double HeroExp = 0;
     Upgrade* upgrade;
@@ -110,6 +122,34 @@ private:
         std::string GetName() override { return "Combination attack - lightlgith"; }
     };
 
+<<<<<<< Updated upstream
+=======
+    class State_Light_Heavy : public State {
+    public:
+        int option;
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Combination attack - lightheavy"; }
+    };
+
+    /*class State_Heavy_Light : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Combination attack - heavylight"; }
+    };*/
+
+    /*class State_Heavy_Heavy : public State {
+    public:
+        virtual void Enter(GameObject* object) override;
+        virtual void Update(GameObject* object, double dt) override;
+        virtual void CheckExit(GameObject* object) override;
+        std::string GetName() override { return "Combination attack - heavyheavy"; }
+    };*/
+
+>>>>>>> Stashed changes
     State_Jumping state_jumping;
     State_Idle state_idle;
     State_Falling state_falling;

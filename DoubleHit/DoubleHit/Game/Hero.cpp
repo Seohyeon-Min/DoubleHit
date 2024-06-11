@@ -178,6 +178,81 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
         hero->change_state(&hero->state_idle);
     }
 }
+<<<<<<< Updated upstream
+=======
+    EliteFloor* elite_floor = nullptr;
+
+void Hero::GetUpgradeChoose(int Option) {
+    Engine::GetLogger().LogEvent(" Upgrade " + std::to_string(Option));
+    opti
+        on = Option;
+    
+}
+
+void Hero::State_Light_Light::Enter(GameObject* object) {
+    Hero* hero = static_cast<Hero*>(object);
+    int option = hero->GetOption();
+    hero->SetVelocity({ 0, hero->GetVelocity().y });
+    //hero->IsHeroVisible = false;
+    //put if statement to select which skill to activate according to Upgrade
+
+    /*switch (option) {
+    case1:
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light(hero));
+        break;
+    case2:
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light_2(hero));
+        break;
+    default:
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy(hero));
+        break;
+    }*/
+    //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light_2(hero));
+    
+    if (option == 1) {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light(hero));
+    }
+    else if (option == 2) {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light_2(hero));
+    }
+    else {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light(hero));
+    }
+    
+}
+void Hero::State_Light_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
+void Hero::State_Light_Light::CheckExit(GameObject* object) {
+}
+
+void Hero::State_Light_Heavy::Enter(GameObject* object) {
+    Hero* hero = static_cast<Hero*>(object);
+    hero->IsHeroVisible = false;
+    hero->SetVelocity({ 0, hero->GetVelocity().y });
+    //put if statement to select which skill to activate according to Upgrade
+    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy(hero));
+}
+void Hero::State_Light_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
+void Hero::State_Light_Heavy::CheckExit(GameObject* object) {
+}
+
+//void Hero::State_Heavy_Light::Enter(GameObject* object) {
+//    Hero* hero = static_cast<Hero*>(object);
+//    hero->SetVelocity({ 0, hero->GetVelocity().y });
+//    hero->IsCombAttacking = true;
+//    //put if statement to select which skill to activate according to Upgrade
+//    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light(hero));
+//}
+//void Hero::State_Heavy_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
+//void Hero::State_Heavy_Light::CheckExit(GameObject* object) {
+//    Hero* hero = static_cast<Hero*>(object);
+//}
+
+void Hero::Draw(Math::TransformationMatrix camera_matrix) {
+    if (IsHeroVisible == true) {
+        GameObject::Draw(camera_matrix);
+    }
+}
+>>>>>>> Stashed changes
 
 void Hero::Update(double dt) {
     GameObject::Update(dt);

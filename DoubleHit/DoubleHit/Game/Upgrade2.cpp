@@ -42,15 +42,20 @@ void Upgrade::CheckClick(Vector2 mousePoint) {
     for (int i = 0; i < 2; i++) {
         if (UpgradeActiveFlag == true) {
             if (CheckCollisionPointRec(mousePoint, smallRects[i])) {
+                int upgradeChoice = CurrentLevel * 2 + i + 1;
+                hero->GetUpgradeChoose(upgradeChoice);
                 Engine::GetLogger().LogEvent("Clicked Upgrade");
-                Engine::GetLogger().LogEvent("Hero Level Up: " + std::to_string((CurrentLevel) * 2 + i + 1));
+                Engine::GetLogger().LogEvent("Hero Level Up: " + std::to_string(upgradeChoice));
                 UpgradeActiveFlag = false;
+<<<<<<< Updated upstream
 
                 
 
                 if (hero_upgrade != nullptr) {
                     hero_upgrade->GetUpgradeChoose(CurrentLevel*2+i+1);
                 }
+=======
+>>>>>>> Stashed changes
             }
         }
     }

@@ -5,7 +5,7 @@
 #include "../Engine/Texture.h"
 #include "../Engine/GameObjectManager.h"
 
-class Hero_Upgrade;
+class Hero;
 
 class Upgrade : public CS230::Component {
 public:
@@ -33,6 +33,7 @@ public:
 
 
 private:
+<<<<<<< Updated upstream
     struct upgradeImage {
         CS230::Texture* texture;
         Math::vec2 position;
@@ -41,6 +42,9 @@ private:
     Math::TransformationMatrix object_matrix;
     std::vector<upgradeImage> upgradeImages;
     Hero_Upgrade* hero_upgrade;
+=======
+    Hero* hero;
+>>>>>>> Stashed changes
     Rectangle rect;
     Rectangle smallRects[2];
     float radius;

@@ -92,10 +92,50 @@ public:
     static constexpr double GetDamage() { return damage; }
 
 private:
+<<<<<<< Updated upstream
     
+=======
+    CS230::Timer* skill_timer;
+    Hero* hero;
     int direction;
+    static constexpr double damage = 0.5;
+    static constexpr double skill_time = 2;
+    static constexpr double add_time = 0.1;
+    static constexpr int TokenMax = 60;
+    int timeToken;
+    bool IsEnded = false;
+
+    enum class Animations {
+        Attack 
+    };
+    friend class Hero;
+};
+
+class Hero_Light_Light_2 : public Skill {
+public:
+    Hero_Light_Light_2(GameObject* object);
+    GameObjectTypes Type() override { return GameObjectTypes::UpgradeLL; }
+    std::string TypeName() override { return "UpgradeLL_2"; }
+    void Update(double dt) override;
+    void ResolveCollision(GameObject* other_object);
+    static constexpr double GetDamage() { return damage; }
+
+private:
+    CS230::Timer* skill_timer;
+    Hero* hero;
+>>>>>>> Stashed changes
+    int direction;
+    enum class Animations {
+        Attack
+    };
+    bool IsEnded = false;
     static constexpr double damage = 30;
+<<<<<<< Updated upstream
     
+=======
+    static constexpr double skill_time = 5;
+    friend class Hero;
+>>>>>>> Stashed changes
 };
 
 class Hero_Upgrade_LH : public Hero_Upgrade {

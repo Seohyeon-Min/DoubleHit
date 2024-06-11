@@ -87,6 +87,105 @@ void Hero_Heavy::ResolveCollision(GameObject* other_object)
 }
 
 
+<<<<<<< Updated upstream
+=======
+Hero_Light_Light_2::Hero_Light_Light_2(GameObject* object) :
+    Skill(object)
+{
+    AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p2_gg.spt", this));
+    GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+    skill_timer = new CS230::Timer(skill_time);
+    AddGOComponent(skill_timer);
+    direction = object->GetScale().x;
+    if (direction == -1) {
+        SetScale({ -1, 1 });
+    }
+    hero = static_cast<Hero*>(object);
+    IsEnded = false;
+}
+
+void Hero_Light_Light::Update(double dt)
+{
+    GameObject::Update(dt);
+
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J) && timeToken < TokenMax) {
+        timeToken++;
+        skill_timer->Add(add_time);
+    }
+
+    Engine::GetLogger().LogDebug(std::to_string(skill_timer->Remaining()) + "      " + std::to_string(timeToken));
+
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+        IsEnded = true;
+        hero->StateIdle();
+    }
+}
+
+void Hero_Light_Light_2::Update(double dt)
+{
+    GameObject::Update(dt);
+
+    if (skill_timer->Remaining() == 0.0) {
+        Destroy();
+        IsEnded = true;
+        hero->StateIdle();
+    }
+}
+
+void Hero_Light_Light::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::AirEnemy:
+        other_object->ResolveCollision(this);
+    case GameObjectTypes::GroundEnemy:
+        other_object->ResolveCollision(this);
+    }
+}
+
+void Hero_Light_Light_2::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::AirEnemy:
+        other_object->ResolveCollision(this);
+    case GameObjectTypes::GroundEnemy:
+        other_object->ResolveCollision(this);
+    }
+}
+
+
+Hero_Light_Heavy::Hero_Light_Heavy(GameObject* object) :
+    Skill(object)
+{
+    AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_gs.spt", this));
+    GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+    direction = object->GetScale().x;
+    if (direction == -1) {
+        SetScale({ -1,1 });
+    }
+    IsEnded = false;
+    hero = static_cast<Hero*>(object);
+}
+
+void Hero_Light_Heavy::Update(double dt) {
+    GameObject::Update(dt);
+    if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+        Destroy();
+        IsEnded = true;
+        hero->StateIdle();
+    }
+}
+
+void Hero_Light_Heavy::ResolveCollision(GameObject* other_object)
+{
+    switch (other_object->Type()) {
+    case GameObjectTypes::AirEnemy:
+        other_object->ResolveCollision(this);
+    case GameObjectTypes::GroundEnemy:
+        other_object->ResolveCollision(this);
+    }
+}
+>>>>>>> Stashed changes
 
 GEnemyAttack::GEnemyAttack(GameObject* object) :
     Skill(object)
@@ -127,7 +226,21 @@ void GEnemyAttack::ResolveCollision(GameObject* other_object)
     }
 }
 
+<<<<<<< Updated upstream
 void Hero_Upgrade::Update(double dt) {
+=======
+EEnemyAttack::EEnemyAttack(Math::vec2 position) :
+    Skill(position)
+{
+    AddGOComponent(new CS230::Sprite("Assets/enemy/elite_enemy_attack.spt", this));
+    skill_timer = new CS230::Timer(skill_time);
+    AddGOComponent(skill_timer);
+    GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
+}
+
+void EEnemyAttack::Update(double dt)
+{
+>>>>>>> Stashed changes
     GameObject::Update(dt);
     if (skill_timer->Remaining() == 0.0) {
         Destroy();
