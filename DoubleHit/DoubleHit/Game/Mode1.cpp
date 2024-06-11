@@ -165,7 +165,6 @@ void Mode1::Update([[maybe_unused]] double dt) {
 void Mode1::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
     GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), CS230::Camera::zoom);
-    test_texture->Draw(Math::TranslationMatrix(Math::ivec2{ 0, 0 }));
     GetGSComponent<CS230::GameObjectManager>()->DrawAll(GetGSComponent<CS230::Camera>()->GetMatrix());
     
     if (GetGSComponent<Combination>()->GetCombFlag() == true) {
@@ -208,7 +207,7 @@ void Mode1::MakeGroundEnemy() {
 
     enemies.push_back(g_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy);
-    //GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy_f);
+    GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy_f);
 }
 
 void Mode1::MakeAirEnemy() {

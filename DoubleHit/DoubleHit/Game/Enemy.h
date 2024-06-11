@@ -40,7 +40,7 @@ private:
     bool attack = false;
     static constexpr double speed = 40;
     static constexpr double angry_speed = 80;
-    double min_distance = 30;
+    double min_distance = 40;
     double x_distance;
     double distance;
     double health = 10;

@@ -90,18 +90,13 @@ void GroundEnemy::State_Walking::Update(GameObject* object, double dt)
             robot->SetVelocity({ -robot->speed, robot->GetVelocity().y });
             robot->SetScale({ 1,1 });
         }
-
     }
 }
 void GroundEnemy::State_Walking::CheckExit(GameObject* object)
 {
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
-    if (robot->hero->GetPosition().x > robot->left_boundary && robot->hero->GetPosition().y >= robot->y_position - 10 && robot->hero->GetPosition().y < robot->y_position + 100 &&
-        robot->hero->GetPosition().x < robot->GetPosition().x && robot->GetScale().x == -1) {
-        robot->change_state(&robot->state_angry);
-    }
-    if (robot->hero->GetPosition().x > robot->left_boundary && robot->hero->GetPosition().y >= robot->y_position - 10 && robot->hero->GetPosition().y < robot->y_position + 100 &&
-        robot->hero->GetPosition().x > robot->GetPosition().x && robot->GetScale().x == -1) {
+    if (robot->hero->GetPosition().x >= robot->left_boundary - 15 && robot->hero->GetPosition().x <= robot->right_boundary + 15 &&
+        robot->hero->GetPosition().y >= robot->y_position - 30 && robot->hero->GetPosition().y <= robot->y_position + 60 && robot->hero) {
         robot->change_state(&robot->state_angry);
     }
 }
@@ -111,18 +106,28 @@ void GroundEnemy::State_Angry::Enter(GameObject* object)
 {
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
     robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Running));
+    robot->SetVelocity({ robot->angry_speed,0 });
 }
 void GroundEnemy::State_Angry::Update(GameObject* object, double dt)
 {
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
 
     CS230::RectCollision* collider = robot->GetGOComponent<CS230::RectCollision>();
+
     if (collider != nullptr) {
         if (collider->WorldBoundary().Left() < robot->left_boundary) {
             robot->SetVelocity({ robot->angry_speed, robot->GetVelocity().y });
         }
-        if (collider->WorldBoundary().Right() > robot->right_boundary) {
+        else if (collider->WorldBoundary().Right() > robot->right_boundary) {
             robot->SetVelocity({ -robot->angry_speed, robot->GetVelocity().y });
+        }
+        else {
+            if (robot->hero->GetPosition().x < robot->GetPosition().x && robot->GetScale().x == 1) {
+                robot->SetVelocity({ -robot->angry_speed, robot->GetVelocity().y });
+            }
+            else if (robot->hero->GetPosition().x > robot->GetPosition().x && robot->GetScale().x == -1) {
+                robot->SetVelocity({ robot->angry_speed, robot->GetVelocity().y });
+            }
         }
     }
 
@@ -138,11 +143,13 @@ void GroundEnemy::State_Angry::CheckExit(GameObject* object)
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
     robot->x_distance = robot->hero->GetPosition().x - robot->GetPosition().x;
 
-    if (robot->distance <= robot->min_distance) {
-        robot->change_state(&robot->state_attack);
+
+    if (abs(robot->x_distance) <= robot->min_distance) {
+        robot->change_state(&robot->state_idle);
     }
 
-    if (robot->distance > 100) {
+    if (!(robot->hero->GetPosition().x >= robot->left_boundary - 15 && robot->hero->GetPosition().x <= robot->right_boundary + 15 &&
+        robot->hero->GetPosition().y >= robot->y_position - 30 && robot->hero->GetPosition().y <= robot->y_position + 60 && robot->hero)) {
         robot->change_state(&robot->state_walking);
     }
 }
@@ -189,13 +196,15 @@ void GroundEnemy::State_Idle::Update(GameObject* object, double dt)
 {}
 void GroundEnemy::State_Idle::CheckExit(GameObject* object)
 {
-    GroundEnemy* robot = static_cast<GroundEnemy*>(object);
+    GroundEnemy* robot = static_cast<GroundEnemy*>(object);\
+
+    robot->x_distance = robot->hero->GetPosition().x - robot->GetPosition().x;
     if (robot->attack_timer->Remaining() == 0.0) {
         robot->attack_timer->Set(attack_time);
         robot->attackExecuted = false;
         robot->change_state(&robot->state_attack);
     }
-    if (robot->distance >= robot->min_distance) {
+    if (abs(robot->x_distance) > robot->min_distance) {
         robot->change_state(&robot->state_angry);
     }
 }
