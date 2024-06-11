@@ -64,43 +64,6 @@ void Mode1::Load() {
 
     ////layer 1
     AddGSComponent(new CS230::PlatformManager("Assets/backgrounds/platform.plf"));
-    //GetGSComponent<CS230::PlatformManager>()->Load("Assets/backgrounds/platform.plf");
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 480, 480 }, { 704, 512  } }));     //hamburger 
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 225, 352  }, {  545, 384 } }));    //hamburger left
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 640, 352 }, { 960, 384 } }));     // hamburger right
-
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 992, 224 }, { 1152, 256 } }));   //conv door
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1152, 320 }, { 1248, 352 } }));    //conv window
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 992, 416 }, { 1280 , 448  } }));    //conv top
-
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1280, 352 }, { 1440, 384 } }));   //cross light
-
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1568, 276 }, { 1696, 288 } }));    //hospital door 
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1472, 426 }, { 1792, 448 } }));    //hospital middle 
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1408, 554 }, { 1856, 576 } }));    //hospital top
-
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1824, 320 }, { 1920, 352 } }));    //electro middle 
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1888, 480 }, { 2048, 512 } }));    //electro line 
-
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 224 }, { 2112, 256 } }));    //green door 
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2016, 608 }, { 2176, 640 } }));    //green balcony
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 2176, 736 }, { 2461, 768 } }));    //green flag
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1888, 896 }, { 2527 , 928 } }));    //green top
-    // 
-    ////layer 2
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 64, 608 }, { 512, 640 } }));   //amore top
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 128, 704 }, { 224, 736 } }));   //amore mini_1
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 224, 800 }, { 320, 832 } }));   //amore mini_2
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 320 , 896 }, { 416, 928  } }));   //amore mini_3
-
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 544, 992 }, { 864, 1024 } }));     //window building top
-
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new EliteFloor(Math::irect{ { 928, 640 }, { 1568, 672 } }));  //twin middle
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 928, 1024 }, { 1568, 1056 } }));  //twin top 
-
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1601, 768 }, { 1857, 800 } }));  //brick top
-    //GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(Math::irect{ { 1760, 896 }, { 1856, 928 } }));  //brick board
-
 
     hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr, upgradeInstance);
     //hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * zoom), floor }, starting_floor_ptr, upgradeInstance);
@@ -234,15 +197,18 @@ void Mode1::Draw() {
 //####################################################################################
 
 
-void Mode1::MakeGroundEnemy(){
+void Mode1::MakeGroundEnemy() {
 
     double randomX = GetRandomValue(0, 2000);
     Math::vec2 ground_position = { GetRandomValue(1, 0) ? randomX : GetScreenWidth() - randomX, floor };    //random position
-    //GroundEnemy(Math::vec2 position, Hero* hero, double left_boundary, double right_boundary);
-    GroundEnemy* g_enemy = new GroundEnemy({ randomX, floor}, hero_ptr, );
+    Math::irect r_platform = GetGSComponent<CS230::PlatformManager>()->GetRandomPlatform();
+    //GroundEnemy(Math::vec2 position, Hero* hero, Math::vec2 platform_point1, Math::vec2 platform_point2);
+    GroundEnemy* g_enemy = new GroundEnemy({ (double)r_platform.point_1.x + 50, (double)r_platform.point_2.y }, hero_ptr, (Math::vec2)r_platform.point_1, (Math::vec2)r_platform.point_2);
+    GroundEnemy* g_enemy_f = new GroundEnemy({ randomX, floor }, hero_ptr, { 0, 0 }, {(double)GetGSComponent<Background>()->GetSize().x, floor});
 
     enemies.push_back(g_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy);
+    //GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy_f);
 }
 
 void Mode1::MakeAirEnemy() {

@@ -23,7 +23,7 @@ private:
 
 class GroundEnemy : public Enemy{
 public:
-    GroundEnemy(Math::vec2 position, Hero* hero, double left_boundary, double right_boundary);
+    GroundEnemy(Math::vec2 position, Hero* hero, Math::vec2 platform_point1, Math::vec2 platform_point2);
     GameObjectTypes Type() override { return GameObjectTypes::GroundEnemy; }
     std::string TypeName() override { return "GroundEnemy"; }
     void Update(double dt) override;
@@ -32,13 +32,14 @@ public:
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
 
 private:
-
+    double y_position;
     double left_boundary;
     double right_boundary;
     bool has_run = false;
     bool attackExecuted = false;
     bool attack = false;
-    double speed = 80;
+    static constexpr double speed = 40;
+    static constexpr double angry_speed = 80;
     double min_distance = 30;
     double x_distance;
     double distance;

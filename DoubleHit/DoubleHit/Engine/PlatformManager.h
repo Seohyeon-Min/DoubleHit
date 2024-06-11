@@ -26,8 +26,9 @@ namespace CS230 {
 
         PlatformManager(const Sprite&) = delete;
         PlatformManager& operator=(const Sprite&) = delete;
- 
+
         void Load(const std::filesystem::path& sprite_file);
+        const Math::irect GetRandomPlatform();
 
     private:
         std::vector<Math::irect> platforms;

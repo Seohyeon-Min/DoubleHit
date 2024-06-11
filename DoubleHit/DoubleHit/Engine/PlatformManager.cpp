@@ -31,6 +31,7 @@ void CS230::PlatformManager::Load(const std::filesystem::path& sprite_file) {
             in_file >> point.y;
             rect.point_2 = point;
 
+            platforms.push_back(rect);
             Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Floor(rect));
         }
         else if (text == "ElitePlatform") {
@@ -42,6 +43,7 @@ void CS230::PlatformManager::Load(const std::filesystem::path& sprite_file) {
             in_file >> point.y;
             rect.point_2 = point;
 
+            platforms.push_back(rect);
             Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new EliteFloor(rect));
         }
         else {
@@ -49,4 +51,11 @@ void CS230::PlatformManager::Load(const std::filesystem::path& sprite_file) {
         }
         in_file >> text;
     }
+}
+
+const Math::irect CS230::PlatformManager::GetRandomPlatform()
+{
+    int index;
+    index = GetRandomValue(0, platforms.size() - 1);
+    return platforms[index];
 }
