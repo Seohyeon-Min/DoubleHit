@@ -13,6 +13,7 @@ Created:    March 8, 2023
 #include "../Engine/Sprite.h"
 #include "..\Engine\Camera.h"
 #include "..\Engine\GameObjectManager.h"
+#include "../Engine/PlatformManager.h"
 #include "Background.h"
 #include "Enemy.h"
 #include "raylib.h"

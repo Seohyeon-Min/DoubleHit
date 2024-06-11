@@ -34,6 +34,7 @@
     <ClInclude Include="Engine\Input.h" />
     <ClInclude Include="Engine\logger.h" />
     <ClInclude Include="Engine\Matrix.h" />
+    <ClInclude Include="Engine\PlatformManager.h" />
     <ClInclude Include="Engine\Rect.h" />
     <ClInclude Include="Engine\ShowCollision.h" />
     <ClInclude Include="Engine\Sprite.h" />
@@ -74,6 +75,7 @@
     <ClCompile Include="Engine\Input.cpp" />
     <ClCompile Include="Engine\logger.cpp" />
     <ClCompile Include="Engine\Matrix.cpp" />
+    <ClCompile Include="Engine\PlatformManager.cpp" />
     <ClCompile Include="Engine\ShowCollision.cpp" />
     <ClCompile Include="Engine\Sprite.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
