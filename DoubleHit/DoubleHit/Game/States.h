@@ -5,5 +5,6 @@ enum class States {
     Logo,
     Mainmenu,
     Credit,
-    Mode1
+    Mode1,
+    GameOver
 };

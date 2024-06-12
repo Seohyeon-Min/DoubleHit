@@ -9,6 +9,7 @@
 #include "HealthBar.h"
 #include "../Engine/Collision.h"
 #include "../Engine/Engine.h"
+#include "States.h"
  
 #include <iostream> //delete later
 
@@ -484,7 +485,7 @@ void Hero::TakeDamage(double damage) {
         SetHealth(GetHealth() - damage);
     }
     if (GetHealth() <= 0) {
-
+        Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::GameOver));
         std::cout << "Game Over." << std::endl;
     }
     else {
