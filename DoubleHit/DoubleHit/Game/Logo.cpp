@@ -13,7 +13,7 @@ Created:    March 8, 2023
 #include "Logo.h"
 
 
-Logo::Logo() {
+Logo::Logo():next(false){
 
 }
 
@@ -26,7 +26,10 @@ void Logo::Load() {
 
 void Logo::Update([[maybe_unused]] double dt) {
     Engine::GetLogger().LogDebug(std::to_string(counter));
-    if (counter >= 2) {
+    if (counter >= 1.5) {
+        game_texture->~Texture();
+        next = true;
+    }if (counter >= 3) {
         Engine::GetGameStateManager().ClearNextGameState();
     }
     counter += dt;
@@ -41,5 +44,7 @@ void Logo::Draw() {
     Engine::GetWindow().Clear(0x000000FF);
 
     game_texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - game_texture->GetSize()) / 2.0 }));
-    team_texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - game_texture->GetSize()) / 2.0 }));
+    if (next == true) {
+        team_texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - team_texture->GetSize()) / 2.0 }));
+    }
 }

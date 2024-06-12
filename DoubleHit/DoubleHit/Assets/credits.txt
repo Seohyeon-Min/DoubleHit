@@ -1,5 +1,3 @@
-Team name and logo 
-
 
 Producer 
 0x3362FFFF Dohyung Kwon 
@@ -14,8 +12,6 @@ QA and Test Lead
 0x3362FFFF Jaesik Kang 
 
 
-
-
 Faculty and Advisors 
 
 Programming 
@@ -24,8 +20,6 @@ Programming
 
 Special Thanks 
 0x3362FFFF Haneul Lee 
-
-
 
 
 Created at Digipen Institute of Technology 
@@ -43,11 +37,14 @@ EXECUTIVES
 
 
 WWW . DIGIPEN . EDU 
-COPYRIGHT 2024 BY DIGIPEN (USA), LLC. ALL RIGHTS RESERVED 
+COPYRIGHT 2024 BY DIGIPEN (USA), LLC.
+ALL RIGHTS RESERVED 
 
+0x3362FFFF Aesprite 
+0x3362FFFF     Igara Studio S.A. 
 
+0x3362FFFF Spine 
+0x3362FFFF     Esoteric Software LLC 
 
-
-0x3362FFFF Aesprite 2017-2024 Igara Studio S.A. 
-0x3362FFFF Spine 2013-2024 Esoteric Software LLC 
-0x3362FFFF Visual Studio Microsoft 2024 
+0x3362FFFF Visual Studio 
+0x3362FFFF     Microsoft

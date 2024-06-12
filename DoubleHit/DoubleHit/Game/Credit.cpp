@@ -28,12 +28,23 @@ void Credit::Load() {
     for (size_t i = 0; i < credit_textures.size(); ++i) {
         credit_positions.push_back(posY - i * (font_size));
     }
+
+    //images
+    game_texture = Engine::GetTextureManager().Load("Assets/Double_Hit_Logo.png");
+    team_texture = Engine::GetTextureManager().Load("Assets/InFront_Logo.png");
 }
 
 
 void Credit::Update([[maybe_unused]] double dt) {
+    if (counter >= 1) {
+        game_texture->~Texture();
+        next = true;
+    }if (counter >= 2) {
+        team_texture->~Texture();
+        next2 = true;
+    }
 
-    // Update position
+    // Update text position
     for (double& posY : credit_positions) {
         posY += dt * 70.0;
 
@@ -49,6 +60,9 @@ void Credit::Update([[maybe_unused]] double dt) {
 
         Engine::GetGameStateManager().ClearNextGameState();
     }
+
+
+    counter += dt;
 }
 
 void Credit::Unload() {
@@ -58,12 +72,27 @@ void Credit::Unload() {
 
 void Credit::Draw() {
     Engine::GetWindow().Clear(0x000000ff);
-    posY = 0;
-    int i = 0;
-    for (CS230::Texture* credit : credit_textures) {
-        
-        credit->Draw(Math::TranslationMatrix(Math::vec2{ (double)Engine::GetWindow().GetSize().x/2 - (double)credit->GetSize().x/2, credit_positions[i]}));
-        i++;
+
+    game_texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - game_texture->GetSize()) / 2.0 }));
+    if (next == true) {
+        team_texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - team_texture->GetSize()) / 2.0 }));
+    }  
+    if (next2 == true) {
+        posY = 0;
+        int i = 0;
+        for (CS230::Texture* credit : credit_textures) {
+            if (credit->GetSize().x >= 1280) {
+                credit->Draw(Math::TranslationMatrix(Math::vec2{
+                10,
+                credit_positions[i] }));
+            }
+            credit->Draw(Math::TranslationMatrix(Math::vec2{ 
+                10, 
+                credit_positions[i] }));
+            
+            i++;
+        }
+
     }
 
 }
@@ -74,12 +103,12 @@ void Credit::Read_File(const std::string& filename) {
 
     while (std::getline(file, line)) {
         if (line.empty()) {
-            CS230::Texture* texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture(" ", 0xffffffff);
+            CS230::Texture* texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("    ", 0xffffffff);
             credit_textures.push_back(texture);
         }
         else if (line.rfind("0x", 0) == 0) {    //find color text
             unsigned int currentColor = std::stoul(line, nullptr, 16);
-            line = line.substr(11);
+            line = line.substr(10);
             CS230::Texture* texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture(line, currentColor);
             credit_textures.push_back(texture);
         }

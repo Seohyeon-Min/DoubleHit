@@ -24,6 +24,12 @@ public:
 private:
     void Read_File(const std::string& filename);
 
+    double counter = 0;
+    bool next = false;
+    bool next2 = false;
+    CS230::Texture* team_texture;
+    CS230::Texture* game_texture;
+
     std::vector<CS230::Texture*> credit_textures;
     std::vector<double> credit_positions;
     double font_size = 67;
