@@ -22,11 +22,10 @@ int main() {
     engine.GetGameStateManager().AddGameState(mainmenu);
     Credit creidt;
     engine.GetGameStateManager().AddGameState(creidt);
-    GameOver gameover;
-    engine.GetGameStateManager().AddGameState(gameover);
-
     Mode1 mode1;
     engine.GetGameStateManager().AddGameState(mode1);
+    GameOver gameover;
+    engine.GetGameStateManager().AddGameState(gameover);
 
     while (engine.HasGameEnded() == false) {
         engine.Update();
