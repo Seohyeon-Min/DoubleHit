@@ -12,9 +12,16 @@ Created:    May 07, 2023
 #include "../Engine/Engine.h"
 #include "States.h"
 #include "Mainmenu.h"
+#include "Sound.h"
 
 
 Mainmenu::Mainmenu() {
+
+    if (!IsMusicStreamPlaying) {
+        PlayMusicStream(lobby);
+    }
+
+    PlayMusicStream(lobby);
     texts.push_back(side_texture);
     texts.push_back(space_texture);
     texts.push_back(exit_texture);
@@ -30,6 +37,8 @@ void Mainmenu::Load() {
 
 void Mainmenu::Update([[maybe_unused]] double dt) {
 
+    UpdateMusicStream(lobby);
+    //GetGSComponent<UI>()->Update(dt, -20);
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Up)) {
         index--;
         updated = false;
@@ -44,10 +53,18 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
     }
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Enter)) {
         if (index == 0)
+            //StopMusicStream(lobby);
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         if (index == 1)
             //Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode2));
         if (index == 2)
+            //StopMusicStream(lobby);
+            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
+        if (index == 2)
+            //StopMusicStream(lobby);
+            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
+        if (index == 3)
+            //StopMusicStream(lobby);
             Engine::GetGameStateManager().ClearNextGameState();
     }
 
