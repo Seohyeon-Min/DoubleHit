@@ -52,3 +52,21 @@ void CS230::Camera::Update(const Math::vec2& player_position) {
     }
 }
 
+
+void CS230::Camera::Update_Main(const Math::vec2& mouse_position) {
+
+    position_main = { -(Engine::GetWindow().GetSize().x - mouse_position.x), -(mouse_position.y) };
+
+    if (position_main.x < limit_main.Left()) {
+        position_main.x = limit_main.Left();
+    }
+    if (position_main.x > limit_main.Right()) {
+        position_main.x = limit_main.Right();
+    }
+    if (position_main.y < limit_main.Bottom()) {
+        position_main.y = limit_main.Bottom();
+    }
+    if (position_main.y > limit_main.Top()) {
+        position_main.y = limit_main.Top();
+    }
+}

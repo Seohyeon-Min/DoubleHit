@@ -12,6 +12,10 @@ Created:    May 07, 2023
 #include "../Engine/GameState.h"
 #include "../Engine/Texture.h"
 #include "../Engine/Fonts.h"
+#include "Background.h"
+#include "..\Engine\Camera.h"
+
+
 
 class Mainmenu : public CS230::GameState {
 public:
@@ -26,7 +30,7 @@ private:
     int index = 0;
     bool updated = false;
     bool hasrun = false;
-    CS230::Texture* engine_texture;
+    CS230::Texture* main_background;
     CS230::Texture* side_texture;
     CS230::Texture* space_texture;
     CS230::Texture* credit_texture;
