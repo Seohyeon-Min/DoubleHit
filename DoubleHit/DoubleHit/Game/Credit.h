@@ -22,6 +22,17 @@ public:
 
     std::string GetName() override { return "Credit"; }
 private:
+    void Read_File(const std::string& filename);
+
     double counter = 0;
-    CS230::Texture* texture;
+    bool next = false;
+    bool next2 = false;
+    CS230::Texture* team_texture;
+    CS230::Texture* game_texture;
+
+    std::vector<CS230::Texture*> credit_textures;
+    std::vector<double> credit_positions;
+    double font_size = 67;
+    double posY;
+    double modiY; //spacing
 };

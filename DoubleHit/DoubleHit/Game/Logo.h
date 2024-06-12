@@ -23,6 +23,7 @@ public:
     std::string GetName() override { return "Logo"; }
 private:
     double counter = 0;
+    bool next;
     CS230::Texture* team_texture;
     CS230::Texture* game_texture;
 };

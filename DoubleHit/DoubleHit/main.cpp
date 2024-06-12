@@ -14,6 +14,9 @@ int main() {
     engine.AddFont("Assets/Font_Simple.png");
     InitAudioDevice();
     LoadAudio();
+
+    engine.AddFont("Assets/Font_Basic.png");
+
     Splash splash;
     engine.GetGameStateManager().AddGameState(splash);
     Logo logo;
