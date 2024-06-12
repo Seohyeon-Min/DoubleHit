@@ -1,6 +1,7 @@
 
 #include "Engine/Engine.h"
 #include "Game/Mode1.h"
+#include "Game/Mainmenu.h"
 #include "Game/Splash.h"
 
 int main() {
@@ -11,6 +12,8 @@ int main() {
 
     Splash splash;
     engine.GetGameStateManager().AddGameState(splash);
+    Mainmenu mainmenu;
+    engine.GetGameStateManager().AddGameState(mainmenu);
     Mode1 mode1;
     engine.GetGameStateManager().AddGameState(mode1);
 
