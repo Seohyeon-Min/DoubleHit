@@ -146,7 +146,8 @@ void Mode1::Update([[maybe_unused]] double dt) {
     }
     
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::Escape)) {
-        Engine::GetGameStateManager().ClearNextGameState();
+        Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mainmenu));
+        //Engine::GetGameStateManager().ClearNextGameState();
     }
     GetGSComponent<UI>()->Update(dt);
     GetGSComponent<CombinationUI>()->Update(dt);

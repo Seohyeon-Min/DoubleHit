@@ -12,6 +12,7 @@ Created:    May 07, 2023
 #include "../Engine/Engine.h"
 #include "States.h"
 #include "Mainmenu.h"
+#include "Background.h"
 
 
 Mainmenu::Mainmenu() {
@@ -22,6 +23,9 @@ Mainmenu::Mainmenu() {
 
 void Mainmenu::Load() {
     index = 0;
+
+    AddGSComponent(new Background());
+    GetGSComponent<Background>()->Add("Assets/backgrounds/mainmenu.png", 1);
     engine_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("CS230 Engine Test", 0x6E47ABFF);
     side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
     space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x4DAB47FF);
@@ -64,7 +68,7 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
             if (space_texture != nullptr) {
                 delete space_texture;
             }
-            space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
+            space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0xFFFFFFFF);
         }
         if (index == 2) {
             if (exit_texture != nullptr) {
@@ -87,7 +91,7 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
                 if (space_texture != nullptr) {
                     delete space_texture;
                 }
-                space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0x4DAB47FF);
+                space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x4DAB47FF);
             }
             if (index != 2) {
                 if (exit_texture != nullptr) {
@@ -118,7 +122,7 @@ void Mainmenu::Unload() {
 
 
 void Mainmenu::Draw() {
-    Engine::GetWindow().Clear(0x000000);
+    GetGSComponent<Background>()->Draw(, 1);
     engine_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - engine_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - engine_texture->GetSize().y - 20 }));
     side_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - side_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - side_texture->GetSize().y - 150 }));
     space_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - space_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - space_texture->GetSize().y - 250 }));

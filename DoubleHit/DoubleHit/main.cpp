@@ -2,6 +2,7 @@
 #include "Engine/Engine.h"
 #include "Game/Mode1.h"
 #include "Game/Splash.h"
+#include "Game/Mainmenu.h"
 
 int main() {
     Engine& engine = Engine::Instance();
@@ -13,6 +14,8 @@ int main() {
     engine.GetGameStateManager().AddGameState(splash);
     Mode1 mode1;
     engine.GetGameStateManager().AddGameState(mode1);
+    Mainmenu mainmenu;
+    engine.GetGameStateManager().AddGameState(mainmenu);
 
     while (engine.HasGameEnded() == false) {
         engine.Update();
