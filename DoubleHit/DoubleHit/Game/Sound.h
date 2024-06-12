@@ -2,6 +2,9 @@
 
 #include "raylib.h"
 
+extern Music lobby;
+extern Music main_theme;
+
 extern Sound hero_jump;
 extern Sound hero_land;
 

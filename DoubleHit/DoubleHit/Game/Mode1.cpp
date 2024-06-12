@@ -128,9 +128,14 @@ void Mode1::Load() {
     score = 0;
     update_score_text(score);
     AddGSComponent(new CS230::Score(score));
+
+    if (!IsMusicStreamPlaying(main_theme)) {
+        PlayMusicStream(main_theme);
+    }
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {
+    UpdateMusicStream(main_theme);
     UpdateGSComponents(dt);
     GetGSComponent<CS230::Camera>()->Update(hero_ptr->GetPosition());
     GetGSComponent<CS230::GameObjectManager>()->UpdateAll(dt);

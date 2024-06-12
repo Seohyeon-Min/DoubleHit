@@ -14,7 +14,7 @@ Created:    May 07, 2023
 #include "Mainmenu.h"
 #include "Background.h"
 #include "UI.h"
-
+#include "Sound.h"
 
 Mainmenu::Mainmenu() {
     texts.push_back(side_texture);
@@ -24,6 +24,9 @@ Mainmenu::Mainmenu() {
 }
 
 void Mainmenu::Load() {   
+    if (!IsMusicStreamPlaying(lobby)) {
+        PlayMusicStream(lobby);
+    }
     index = 0;
     main_background = Engine::GetTextureManager().Load("Assets/main.png");
     side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
@@ -34,7 +37,7 @@ void Mainmenu::Load() {
 }
 
 void Mainmenu::Update([[maybe_unused]] double dt) {
-
+    UpdateMusicStream(lobby);
     //GetGSComponent<UI>()->Update(dt, -20);
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Up)) {
         index--;
