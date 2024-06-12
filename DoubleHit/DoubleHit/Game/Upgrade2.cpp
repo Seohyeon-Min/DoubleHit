@@ -14,18 +14,27 @@ void Upgrade::ActivateUpgrade(int heroLevel) {
     }
 }
 
+void Upgrade::Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale) {
+    upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load(texture_path), position , scale });
+}
+
 void Upgrade::DrawUpgrade() {
     Color color = upgradeOptionsColor[CurrentLevel];
 
-
-    smallRects[0] = { rect.x + 50, rect.y + 50, 200, 500 };
-    smallRects[1] = { rect.x + 50 + 200 + 100, rect.y + 50, 200, 500 };
+    smallRects[0] = { rect.x + 200, rect.y + 50, 300, 500 };
+    smallRects[1] = { rect.x + 500 + 200 + 100, rect.y + 50, 300, 500 };
 
     DrawRectangleRec(rect, BLACK);
 
-    for (int i = 0; i < 2; i++) {
-        DrawRectangleRec(smallRects[i], color);
+    for (int i = 0; i < upgradeUI.size(); i++) {
+        object_matrix = Math::TranslationMatrix(upgradeUI[i].position);
+        object_matrix *= Math::ScaleMatrix::ScaleMatrix(upgradeUI[i].scale);
+        upgradeUI[i].texture->Draw(object_matrix);
     }
+
+    /*for (int i = 0; i < 2; i++) {
+        DrawRectangleRec(smallRects[i], color);
+    }*/
 }
 
 void Upgrade::CheckClick(Vector2 mousePoint) {
@@ -64,3 +73,9 @@ void Upgrade::Update(double dt)
         CheckClick(mousePoint);
     }
 }
+
+//UpgradeIcon::UpgradeIcon(Math::vec2 position) :
+//    Upgrade() 
+//{
+//    texture = Engine::GetTextureManager().Load("");
+//}

@@ -86,7 +86,31 @@ void CombinationUI::Unload() {
 	skills.clear();
 }
 
+UpgradeUI::UpgradeUI(Upgrade* upgrade) : upgrade(upgrade) {
 
+}
+
+void UpgradeUI::Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale) {
+	upgrades.push_back(Upgrades{ Engine::GetTextureManager().Load(texture_path), position, scale });
+}
+
+void UpgradeUI::Draw() {
+	if (upgrade->GetUpgradeActive() == true) {
+		for (int i = 0; i < upgrades.size(); i++) {
+			object_matrix = Math::TranslationMatrix(upgrades[i].position);
+			object_matrix *= Math::ScaleMatrix::ScaleMatrix(upgrades[i].scale);
+			upgrades[i].texture->Draw(object_matrix);
+		}
+	}
+}
+
+void UpgradeUI::Update(double dt) {
+
+}
+
+void UpgradeUI::Unload() {
+	upgrades.clear();
+}
 
 Warning::Warning(Math::vec2 _position) :
 	UI(nullptr,nullptr)

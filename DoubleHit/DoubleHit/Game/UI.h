@@ -11,6 +11,7 @@
 #include "Hero.h"
 #include "Pet.h"
 #include "Combination.h"
+#include "Upgrade2.h"
 
 class UI : public CS230::Component {
 public:
@@ -59,6 +60,29 @@ private:
 
 	Combination* combination;
 	
+};
+
+class UpgradeUI : public CS230::Component {
+public:
+	UpgradeUI(Upgrade* upgrade);
+	void Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale);
+	void Draw();
+	void Update(double dt);
+	void Unload();
+
+private:
+	Math::TransformationMatrix object_matrix;
+	struct Upgrades {
+		CS230::Texture* texture;
+		Math::vec2 position;
+		double scale;
+	};
+	std::vector<Upgrades> upgrades;
+	Color attackDisable = { 0, 0, 0, 150 };
+
+	int IconHeight = 32;
+
+	Upgrade* upgrade;
 };
 
 class Warning : public UI {

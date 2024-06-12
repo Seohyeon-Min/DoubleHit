@@ -13,6 +13,7 @@ public:
     void CheckClick(Vector2 mousePoint);
     void Update(double dt);
     void ActivateUpgrade(int heroLevel);
+    void Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale);
 
     bool GetUpgradeActive() const { return UpgradeActiveFlag; }
 
@@ -23,6 +24,17 @@ public:
     static bool GetUpgradeActiveFlag() { return UpgradeActiveFlag; }
     static void SetUpgradeActiveFlag(bool flag) { UpgradeActiveFlag = flag; }
 
+    Math::TransformationMatrix object_matrix;
+    struct upgrade {
+        CS230::Texture* texture;
+        Math::vec2 position;
+        double scale;
+    };
+    std::vector<upgrade> upgradeUI;
+
+protected:
+    
+
 private:
     Hero* hero_upgrade;
     Rectangle rect;
@@ -32,3 +44,15 @@ private:
     bool ChooseUpgrade = false;
     int UpgradeLevel;
 };
+
+//class UpgradeIcon : public Upgrade {
+//public:
+//    UpgradeIcon(Math::vec2 position);
+//    void Update(double dt) override;
+//    void Draw();
+//
+//private:
+//    CS230::Texture* texture;
+//    Math::vec2 position;
+//    double scale = 2.0;
+//};
