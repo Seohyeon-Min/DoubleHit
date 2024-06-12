@@ -18,7 +18,6 @@ Created:    March 8, 2023
 #include "Enemy.h"
 #include "raylib.h"
 #include "Score.h"
-#include "Sound.h"
 
 class Hero;
 class Pet;

@@ -110,6 +110,7 @@ void Hero_Light_Light::Update(double dt)
     GameObject::Update(dt);
 
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J) && timeToken < TokenMax) {
+        PlaySound(skill_p1_gg_punch);
         timeToken++;
         skill_timer->Add(add_time);
     }
