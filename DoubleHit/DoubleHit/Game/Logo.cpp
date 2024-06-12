@@ -31,6 +31,7 @@ void Logo::Update([[maybe_unused]] double dt) {
         next = true;
     }if (counter >= 3) {
         Engine::GetGameStateManager().ClearNextGameState();
+        next = false;
     }
     counter += dt;
 }
