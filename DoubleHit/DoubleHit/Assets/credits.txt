@@ -1,0 +1,7 @@
+Director: John Doe
+Producer: Jane Smith
+0x230070ff Lead Developer: Alice Johnson
+Designer: Bob Brown
+Music: Michael Green
+Special Thanks: The Raylib Community
+0x230070ff Thank you for playing!

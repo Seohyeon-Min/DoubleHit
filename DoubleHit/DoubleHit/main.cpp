@@ -16,8 +16,6 @@ int main() {
     engine.GetGameStateManager().AddGameState(splash);
     Logo logo;
     engine.GetGameStateManager().AddGameState(logo);
-
-
     Mainmenu mainmenu;
     engine.GetGameStateManager().AddGameState(mainmenu);
     Credit creidt;

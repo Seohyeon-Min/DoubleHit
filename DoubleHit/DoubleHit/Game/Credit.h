@@ -22,18 +22,10 @@ public:
 
     std::string GetName() override { return "Credit"; }
 private:
-    struct CreditLine {
-        std::string text;
-        Color color;
-    };
-    std::vector<CreditLine> LoadCreditsFromFile(const std::string& filename);
+    void Read_File(const std::string& filename);
 
-    double counter = 0;
-    CS230::Texture* texture;
-    float counter;
-    std::vector<CreditLine> credits;
-    float fontSize;
+    std::vector<CS230::Texture*> credit_textures;
     float spacing;
-    float positionY;
-    float totalCreditsHeight;
+    float posY;
+    float modiY; //spacing
 };

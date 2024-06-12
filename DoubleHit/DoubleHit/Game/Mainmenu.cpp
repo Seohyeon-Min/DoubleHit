@@ -51,7 +51,7 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
         if (index == 1)
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         if (index == 2)
-            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
+            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Credit));
         if (index == 3)
             Engine::GetGameStateManager().ClearNextGameState();
     }
