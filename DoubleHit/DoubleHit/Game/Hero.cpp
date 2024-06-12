@@ -188,6 +188,7 @@ void Hero::State_Dash::CheckExit(GameObject* object) {
 
 
 void Hero::State_Light::Enter(GameObject* object) {
+    PlaySound(skill_p1_gg_punch);
     Hero* hero = static_cast<Hero*>(object);
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light));
     hero->SetVelocity({ 0, hero->GetVelocity().y });
@@ -207,6 +208,7 @@ void Hero::State_Light::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
         if (hero->light_combo && hero->GetGOComponent<CS230::Sprite>()->AnimationEnded() && hero->standing_on != nullptr) {
+            PlaySound(skill_p1_gg_punch);
             hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light2));
             Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light(hero));
             hero->light_combo = false;
@@ -226,6 +228,7 @@ void Hero::State_Light::CheckExit(GameObject* object) {
 
 
 void Hero::State_Heavy::Enter(GameObject* object) {
+    PlaySound(hero_heavy);
     Hero* hero = static_cast<Hero*>(object);
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Heavy));
     hero->IsHeavyReady = false;

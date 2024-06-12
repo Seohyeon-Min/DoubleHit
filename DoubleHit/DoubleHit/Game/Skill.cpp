@@ -110,7 +110,7 @@ void Hero_Light_Light::Update(double dt)
     GameObject::Update(dt);
 
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J) && timeToken < TokenMax) {
-        PlaySound(skill_p1_gg_punch);
+        PlaySound(hero_heavy);
         timeToken++;
         skill_timer->Add(add_time);
     }
@@ -208,6 +208,7 @@ void Hero_Heavy_Light::ResolveCollision(GameObject* other_object)
 Hero_Heavy_Heavy::Hero_Heavy_Heavy(GameObject* object) :
     Skill(object)
 {
+    PlaySound(skill_p2_gg);
     AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_ss.spt", this));
     GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
     direction = object->GetScale().x;
