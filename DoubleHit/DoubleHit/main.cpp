@@ -10,7 +10,7 @@ int main() {
     Engine& engine = Engine::Instance();
     engine.Start("DoubleHit");
 
-    engine.AddFont("Assets/Font_Basic.png");
+    engine.AddFont("Assets/Font_Simple.png");
 
     Splash splash;
     engine.GetGameStateManager().AddGameState(splash);
