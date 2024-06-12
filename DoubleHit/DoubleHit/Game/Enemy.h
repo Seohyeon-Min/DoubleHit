@@ -46,6 +46,7 @@ private:
     double health = 10;
     static constexpr double shooting_range = 50;
     static constexpr double attack_time = 2.8;
+    static constexpr double hurt_velocity = 100;
     CS230::Timer* attack_timer;
     Hero* hero;
 
@@ -126,6 +127,7 @@ private:
     static constexpr double shooting_range = 380;
     static constexpr double damage = 10;     //unused... yet
     static constexpr double attack_time = 2.8;
+    static constexpr double hurt_velocity = 100;
     CS230::Timer* attack_timer;
 
     enum class Animations {

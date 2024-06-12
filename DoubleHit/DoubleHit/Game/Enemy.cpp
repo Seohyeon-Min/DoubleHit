@@ -253,8 +253,17 @@ void GroundEnemy::ResolveCollision(GameObject* other_object)
         health -= Hero_Heavy::GetDamage(); //should be run only once
         break;
     case GameObjectTypes::UpgradeLL:
-        Engine::GetLogger().LogDebug("Detected");
         health -= Hero_Light_Light::GetDamage(); //should be run only once
+        break;
+    case GameObjectTypes::UpgradeLH:
+        health -= Hero_Light_Heavy::GetDamage();
+        UpdatePosition({ GetScale().x * hurt_velocity, 0 });
+        break;
+    case GameObjectTypes::UpgradeHL:
+        health -= Hero_Heavy_Light::GetDamage();
+        break;
+    case GameObjectTypes::UpgradeHH:
+        health -= Hero_Heavy_Light::GetDamage();
         break;
     }
 
@@ -398,7 +407,23 @@ void AirEnemy::ResolveCollision(GameObject* other_object)
         break;
     case GameObjectTypes::UpgradeLH:
         health -= Hero_Light_Heavy::GetDamage(); //should be run only once
-        
+        UpdatePosition({ GetScale().x * hurt_velocity, 0 });
+        if (health <= 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
+    case GameObjectTypes::UpgradeHL:
+        health -= Hero_Heavy_Light::GetDamage(); //should be run only once
+        if (health <= 0) {
+            RemoveGOComponent<CS230::Collision>();
+            GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+            SetVelocity({ 0,0 });
+        }
+        break;
+    case GameObjectTypes::UpgradeHH:
+        health -= Hero_Heavy_Light::GetDamage(); //should be run only once
         if (health <= 0) {
             RemoveGOComponent<CS230::Collision>();
             GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
@@ -646,6 +671,9 @@ bool EliteEnemy::CanCollideWith(GameObjectTypes other_object)
     case GameObjectTypes::HeroLight:
     case GameObjectTypes::HeroHeavy:
     case GameObjectTypes::UpgradeLL:
+    case GameObjectTypes::UpgradeLH:
+    case GameObjectTypes::UpgradeHL:
+    case GameObjectTypes::UpgradeHH:
         return true;
         break;
     }
@@ -675,6 +703,15 @@ void EliteEnemy::ResolveCollision(GameObject* other_object)
         break;
     case GameObjectTypes::UpgradeLL:
         SetHealth(GetHealth() - Hero_Light_Light::GetDamage());
+        break;
+    case GameObjectTypes::UpgradeLH:
+        SetHealth(GetHealth() - Hero_Light_Heavy::GetDamage());
+        break;
+    case GameObjectTypes::UpgradeHL:
+        SetHealth(GetHealth() - Hero_Heavy_Light::GetDamage());
+        break;
+    case GameObjectTypes::UpgradeHH:
+        SetHealth(GetHealth() - Hero_Heavy_Heavy::GetDamage());
         break;
     }
 }

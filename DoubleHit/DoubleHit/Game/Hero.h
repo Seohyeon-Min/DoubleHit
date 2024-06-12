@@ -37,6 +37,7 @@ public:
     int GetOption() const { return option; }
 
     void HeroLevelCheck();
+    void update_HL_position(int direction);
     static inline const double max_health = 100.0;
     double max_exp = 1800; // 1800
     int HeroLevel = 0;
@@ -60,6 +61,7 @@ private:
     bool IsHeroSuper;
     double DashDirection = 1;
     static constexpr double DashPosition = 200;
+    static constexpr double HL_Position = 260;
 
     double HeavyTimerMax = 4;
     CS230::Timer* Heavytimer;
@@ -139,21 +141,21 @@ private:
         std::string GetName() override { return "Combination attack - lightheavy"; }
     };
 
-    /*class State_Heavy_Light : public State {
+    class State_Heavy_Light : public State {
     public:
         virtual void Enter(GameObject* object) override;
         virtual void Update(GameObject* object, double dt) override;
         virtual void CheckExit(GameObject* object) override;
         std::string GetName() override { return "Combination attack - heavylight"; }
-    };*/
+    };
 
-    /*class State_Heavy_Heavy : public State {
+    class State_Heavy_Heavy : public State {
     public:
         virtual void Enter(GameObject* object) override;
         virtual void Update(GameObject* object, double dt) override;
         virtual void CheckExit(GameObject* object) override;
         std::string GetName() override { return "Combination attack - heavyheavy"; }
-    };*/
+    };
 
     State_Jumping state_jumping;
     State_Idle state_idle;
@@ -162,10 +164,10 @@ private:
     State_Light state_light;
     State_Heavy state_heavy;
     State_Dash state_dash;
-    //State_Heavy_Light state_HL;
+    State_Heavy_Light state_HL;
     State_Light_Light state_LL;
     State_Light_Heavy state_LH;
-    //State_Heavy_Heavy state_HH;
+    State_Heavy_Heavy state_HH;
 
 
     enum class Animations {
