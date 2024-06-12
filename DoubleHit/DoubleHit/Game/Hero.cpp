@@ -88,16 +88,16 @@ void Hero::State_Idle::CheckExit(GameObject* object) {
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //heavy attack
         hero->change_state(&hero->state_heavy);
     }
-    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1) {
+    if (hero->HeroLevel >= 1 && hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1) {
         hero->change_state(&hero->state_LL);
     }
-    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 2) {
+    if (hero->HeroLevel >= 2 && hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 2) {
         hero->change_state(&hero->state_LH);
     }
-    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 3) {
+    if (hero->HeroLevel >= 3 && hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 3) {
         hero->change_state(&hero->state_HL);
     }
-    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 4) {
+    if (hero->HeroLevel >= 4 && hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 4) {
         hero->change_state(&hero->state_HH);
     }
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true) { //heavy attack
@@ -155,16 +155,16 @@ void Hero::State_Running::CheckExit(GameObject* object) {
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::K) && hero->IsHeavyReady == true && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //heavy attack
         hero->change_state(&hero->state_heavy);
     }
-    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1) {
+    if (hero->HeroLevel >= 1 && hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 1) {
         hero->change_state(&hero->state_LL);
     }
-    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 2) {
+    if (hero->HeroLevel >= 2 && hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 2) {
         hero->change_state(&hero->state_LH);
     }
-    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 3) {
+    if (hero->HeroLevel >= 3 && hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 3) {
         hero->change_state(&hero->state_HL);
     }
-    if (hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 4) {
+    if (hero->HeroLevel >= 4 && hero->IsCombAttacking == true && static_cast<int>(Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombination()) == 4) {
         hero->change_state(&hero->state_HH);
     }
     if (hero->standing_on != nullptr && hero->standing_on->IsCollidingWith(hero) == false) {
