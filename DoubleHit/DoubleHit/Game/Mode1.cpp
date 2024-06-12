@@ -122,6 +122,8 @@ void Mode1::Load() {
     score = 0;
     update_score_text(score);
     AddGSComponent(new CS230::Score(score));
+
+    LoadAudio();
 }
 
 void Mode1::Update([[maybe_unused]] double dt) {

@@ -138,6 +138,9 @@
     <ClInclude Include="Engine\PlatformManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Sound.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
@@ -242,6 +245,9 @@
     </ClCompile>
     <ClCompile Include="Engine\PlatformManager.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Sound.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

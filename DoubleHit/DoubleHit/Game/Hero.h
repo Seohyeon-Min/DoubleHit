@@ -6,6 +6,7 @@
 #include "Combination.h"
 #include "GameObjectTypes.h"
 #include "Upgrade2.h"
+#include "Sound.h"
 
 class Hero : public CS230::GameObject {
 public:

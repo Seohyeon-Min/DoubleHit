@@ -31,6 +31,8 @@ Hero::Hero(Math::vec2 start_position, GameObject* standing_on, Upgrade* upgrade)
     IsHeavyReady = true;
     previousLevel = 0;
 
+    SetSoundVolume(skill_p2_gg, 100);
+
 }
 
 
@@ -242,6 +244,7 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
 
 void Hero::State_Light_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
+    PlaySound(skill_p2_gg);
     hero->SetVelocity({ 0, hero->GetVelocity().y });
     hero->IsHeroVisible = false;
     //put if statement to select which skill to activate according to Upgrade
