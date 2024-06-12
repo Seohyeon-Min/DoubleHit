@@ -1,0 +1,13 @@
+Assets/hero/png/skill_p1_sg.png
+FrameSize 370  100
+HotSpot 43 0 
+RectCollision -43 0 327  100 
+Frame 0 0
+Frame 370 0
+Frame 740 0
+Frame 1110 0
+Frame 1480 0
+Frame 1850 0
+Frame 2220 0
+Frame 2590 0
+Anim Assets/hero/anm/skill_p1_sg.anm

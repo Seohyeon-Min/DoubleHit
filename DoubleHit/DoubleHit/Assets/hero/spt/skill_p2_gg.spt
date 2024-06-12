@@ -1,7 +1,7 @@
 Assets/hero/png/skill_p2_gg.png
 FrameSize 90 160
 HotSpot 45  0
-RectCollision 0 0 90 160 
+RectCollision -45 0 45 160 
 Frame 0 0
 Frame 90 0
 Frame 180 0
