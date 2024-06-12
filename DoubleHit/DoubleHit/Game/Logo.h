@@ -12,17 +12,17 @@ Created:    March 8, 2023
 #include "../Engine/GameState.h"
 #include "../Engine/Texture.h"
 
-class Splash : public CS230::GameState {
+class Logo : public CS230::GameState {
 public:
-    Splash();
+    Logo();
     void Load() override;
     void Update(double dt) override;
     void Unload() override;
     void Draw() override;
 
-    std::string GetName() override { return "Splash"; }
+    std::string GetName() override { return "Logo"; }
 private:
     double counter = 0;
-    CS230::Texture* texture;
-    CS230::Texture* texture2;
+    CS230::Texture* team_texture;
+    CS230::Texture* game_texture;
 };

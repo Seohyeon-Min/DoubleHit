@@ -24,9 +24,12 @@ namespace CS230 {
         void SetLimit(Math::irect new_limit);
         Math::TransformationMatrix GetMatrix();
         void Update(const Math::vec2& player_position);
+        void Update_Main(const Math::vec2& player_position);
         static constexpr double zoom = 1.5;
     private:
         Math::irect limit;
+        Math::irect limit_main;
         Math::vec2 position;
+        Math::vec2 position_main;
     };
 }
