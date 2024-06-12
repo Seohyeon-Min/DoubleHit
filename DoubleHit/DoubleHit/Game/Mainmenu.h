@@ -12,7 +12,6 @@ Created:    May 07, 2023
 #include "../Engine/GameState.h"
 #include "../Engine/Texture.h"
 #include "../Engine/Fonts.h"
-#include "Mode1.h"
 
 class Mainmenu : public CS230::GameState {
 public:

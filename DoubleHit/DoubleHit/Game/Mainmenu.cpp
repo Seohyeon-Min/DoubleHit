@@ -44,13 +44,13 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
         if (index >= texts.size())
             index = 0;
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Enter)) {
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Enter)) {
         if (index == 0)
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         if (index == 1)
-            //Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode2));
+            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         if (index == 2)
-            //Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Credit));
+            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         if (index == 3)
             Engine::GetGameStateManager().ClearNextGameState();
     }
@@ -128,9 +128,9 @@ void Mainmenu::Unload() {
     space_texture = nullptr;
     credit_texture = nullptr;
     exit_texture = nullptr;
-    //for (CS230::Texture* texture : texts) {
-    //    delete texture; 
-    //}
+    for (CS230::Texture* texture : texts) {
+       delete texture; 
+    }
 }
 
 
