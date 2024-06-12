@@ -31,6 +31,11 @@ public:
     }
     double GetExp() const { return HeroExp; }
 
+    void GetUpgradeChoose(int Option);
+    int option = 0;
+
+    int GetOption() const { return option; }
+
     void HeroLevelCheck();
     static inline const double max_health = 100.0;
     double max_exp = 1800; // 1800

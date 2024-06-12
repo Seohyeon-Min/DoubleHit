@@ -118,11 +118,15 @@ public:
     static constexpr double GetDamage() { return damage; }
 
 private:
+    Hero* hero;
     CS230::Timer* skill_timer;
     int direction;
+    enum class Animations {
+        Attack
+    };
     static constexpr double damage = 30;
     static constexpr double skill_time = 5;
-
+    friend class Hero;
 };
 
 class Hero_Light_Heavy : public Skill {

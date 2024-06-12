@@ -228,24 +228,28 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
 }
     EliteFloor* elite_floor = nullptr;
 
+void Hero::GetUpgradeChoose(int Option) {
+    option = Option;
+}
+
+
+
 void Hero::State_Light_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->SetVelocity({ 0, hero->GetVelocity().y });
-    hero->IsHeroVisible = false;
     //put if statement to select which skill to activate according to Upgrade
-    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light(hero));
-
     int option = hero->GetOption();
-    //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light(hero));
     //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light_2(hero));
     if (option == 1) {
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light(hero));
+        hero->IsHeroVisible = false;
     }
     else if (option == 2) {
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light_2(hero));
+        hero->IsHeroVisible = true;
     }
-    
 }
+
 void Hero::State_Light_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Light_Light::CheckExit(GameObject* object) {
 }
