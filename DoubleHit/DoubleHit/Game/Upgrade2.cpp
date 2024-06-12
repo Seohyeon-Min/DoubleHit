@@ -4,12 +4,12 @@
 #include "Skill.h"
 
 bool Upgrade::UpgradeActiveFlag = false;  // 전역 변수 초기화
-
+int cnt = 0;
 void Upgrade::ActivateUpgrade(int heroLevel) {
     CurrentLevel = heroLevel - 1;
     Engine::GetLogger().LogEvent("ActivateUpgrade called with level: " + std::to_string(CurrentLevel));
 
-    if (CurrentLevel <= 3) {
+    if (cnt < 4) {
         UpgradeActiveFlag = true;
     }
 }
@@ -47,8 +47,9 @@ void Upgrade::CheckClick(Vector2 mousePoint) {
 
                 Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
                 hero_upgrade = hero;
-                hero_upgrade->GetUpgradeChoose(CurrentLevel*2+i+1);
-            
+                chose_ups.push_back(i);
+                hero_upgrade->GetUpgradeChoose(chose_ups);
+                cnt++;
             }
         }
     }

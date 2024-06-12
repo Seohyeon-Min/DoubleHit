@@ -16,7 +16,7 @@ public:
     void Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale);
 
     bool GetUpgradeActive() const { return UpgradeActiveFlag; }
-
+    std::vector<bool> GetChooseUp() { return chose_ups; }
     Color upgradeOptionsColor[4] = { BLUE, RED, GREEN, YELLOW };
 
     int CurrentLevel;
@@ -36,6 +36,7 @@ protected:
     
 
 private:
+    std::vector<bool> chose_ups;
     Hero* hero_upgrade;
     Rectangle rect;
     Rectangle smallRects[2];

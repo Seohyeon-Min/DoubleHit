@@ -32,10 +32,10 @@ public:
     }
     double GetExp() const { return HeroExp; }
 
-    void GetUpgradeChoose(int Option);
-    int option = 0;
+    void GetUpgradeChoose(std::vector<bool> Option);
+    std::vector<bool> option;
 
-    int GetOption() const { return option; }
+    std::vector<bool> GetOption() const { return option; }
 
     void HeroLevelCheck();
     void update_HL_position(int direction);

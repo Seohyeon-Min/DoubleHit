@@ -268,24 +268,25 @@ void Hero::State_Heavy::CheckExit(GameObject* object) {
 }
     EliteFloor* elite_floor = nullptr;
 
-void Hero::GetUpgradeChoose(int Option) {
+void Hero::GetUpgradeChoose(std::vector<bool> Option) {
     option = Option;
 }
-
 
 
 void Hero::State_Light_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     PlaySound(skill_p1_gg);
     hero->SetVelocity({ 0, hero->GetVelocity().y });
+
     //put if statement to select which skill to activate according to Upgrade
-    int option = hero->GetOption();
+    bool option = hero->GetOption()[0];
+    
     //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light_2(hero));
-    if (option == 1) {
+    if (!option) {
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light(hero));
         hero->IsHeroVisible = false;
     }
-    else if (option == 2) {
+    else {
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Light_2(hero));
         hero->IsHeroVisible = true;
     }
@@ -300,14 +301,14 @@ void Hero::State_Light_Heavy::Enter(GameObject* object) {
     hero->IsHeroVisible = false;
     hero->SetVelocity({ 0, hero->GetVelocity().y });
     //put if statement to select which skill to activate according to Upgrade
-    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy(hero));
-    /*int option = hero->GetOption();
-    if (option == 3) {
+    //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy(hero));
+    bool option = hero->GetOption()[1];
+    if (!option) {
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy(hero));
     }
-    else if (option == 4) {
-        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy_2(hero));
-    }*/
+    else  {
+        //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy_2(hero));
+    }
 }
 void Hero::State_Light_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Light_Heavy::CheckExit(GameObject* object) {
@@ -318,7 +319,14 @@ void Hero::State_Heavy_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->IsHeroVisible = false;
     hero->SetVelocity({ 0,hero->GetVelocity().y });
-    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light(hero));
+    //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light(hero));
+    bool option = hero->GetOption()[2];
+    if (!option) {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light(hero));
+    }
+    else if (option == 6) {
+        //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light_2(hero));
+    }
 }
 void Hero::State_Heavy_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt){ }
 void Hero::State_Heavy_Light::CheckExit(GameObject* object) {
@@ -329,7 +337,14 @@ void Hero::State_Heavy_Heavy::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->IsHeroVisible = false;
     hero->SetVelocity({ 0,hero->GetVelocity().y });
-    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Heavy(hero));
+    //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Heavy(hero));
+    bool option = hero->GetOption()[3];
+    if (!option) {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Heavy(hero));
+    }
+    else if (option == 8) {
+        //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Heavy_2(hero));
+    }
 }
 void Hero::State_Heavy_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Heavy_Heavy::CheckExit(GameObject* object) {
@@ -345,6 +360,14 @@ void Hero::Draw(Math::TransformationMatrix camera_matrix) {
 
 void Hero::Update(double dt) {
     GameObject::Update(dt);
+
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::H)) {
+        SetHealth(GetHealth() + 10);
+    }
+
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::E)) {
+        HeroExp += 900;
+    }
 
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::I)) {
         std::cout << HeroExp << " ";
@@ -505,7 +528,7 @@ bool Hero::ReturnHeavyReady() {
 }
 
 void Hero::HeroLevelCheck() {
-    previousLevel = static_cast<int>(HeroExp) / max_exp;
+    previousLevel = static_cast<int>(HeroExp) / 1800;
     
     if (previousLevel > HeroLevel) {
         Engine::GetGameStateManager().GetGSComponent<ExpBar>()->Unload();

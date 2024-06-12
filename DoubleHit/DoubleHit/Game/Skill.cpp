@@ -177,6 +177,8 @@ Hero_Light_Heavy::Hero_Light_Heavy(GameObject* object) :
     AddGOComponent(new CS230::Sprite("Assets/hero/spt/skill_p1_gs.spt", this));
     GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Attack));
     direction = object->GetScale().x;
+    skill_timer = new CS230::Timer(skill_time);
+    AddGOComponent(skill_timer);
     if (direction == -1) {
         SetScale({ -1,1 });
     }
@@ -186,7 +188,7 @@ Hero_Light_Heavy::Hero_Light_Heavy(GameObject* object) :
 
 void Hero_Light_Heavy::Update(double dt) {
     GameObject::Update(dt);
-    if (GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
+    if (skill_timer->Remaining() == 0.0) {
         Destroy();
         IsEnded = true;
         hero->StateIdle();

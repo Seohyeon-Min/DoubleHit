@@ -140,6 +140,8 @@ public:
     static constexpr double GetDamage() { return damage; }
 
 private:
+    CS230::Timer* skill_timer;
+    static constexpr double skill_time = 5;
     Hero* hero;
     int direction;
     static constexpr double damage = 30;
