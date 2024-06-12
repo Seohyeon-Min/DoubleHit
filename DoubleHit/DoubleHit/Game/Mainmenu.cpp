@@ -35,7 +35,7 @@ void Mainmenu::Load() {
 
 void Mainmenu::Update([[maybe_unused]] double dt) {
 
-    GetGSComponent<UI>()->Update(dt, -20);
+    //GetGSComponent<UI>()->Update(dt, -20);
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Up)) {
         index--;
         updated = false;

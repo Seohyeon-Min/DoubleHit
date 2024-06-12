@@ -236,11 +236,6 @@ bool GroundEnemy::CanCollideWith(GameObjectTypes other_object)
 
 void GroundEnemy::ResolveCollision(GameObject* other_object)
 {
-    if (health < 0) {
-        RemoveGOComponent<CS230::Collision>();
-        change_state(&state_dead);
-        SetVelocity({ 0,0 });
-    }
 
     switch (other_object->Type()) {
     case GameObjectTypes::Bullet:
@@ -268,6 +263,12 @@ void GroundEnemy::ResolveCollision(GameObject* other_object)
     case GameObjectTypes::UpgradeHH:
         health -= Hero_Heavy_Light::GetDamage();
         break;
+    }
+
+    if (health <= 0) {
+        RemoveGOComponent<CS230::Collision>();
+        change_state(&state_dead);
+        SetVelocity({ 0,0 });
     }
 
 }

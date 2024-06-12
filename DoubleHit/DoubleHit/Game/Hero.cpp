@@ -62,19 +62,24 @@ void Hero::State_Idle::Enter(GameObject* object) {
 void Hero::State_Idle::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Idle::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift) && Engine::GetInput().KeyDown(CS230::Input::Keys::A) && hero->IsDashReady == true) {
-        hero->DashDirection = - 1;
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift) && hero->IsDashReady == true) {
+        if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) hero->DashDirection = -1;
+        else if (hero->GetScale().x == -1) hero->DashDirection = -1;
+        hero->change_state(&hero->state_dash);
+    }
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift) && hero->IsDashReady == true) {
+        if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) hero->DashDirection = 1;
+        else if (hero->GetScale().x == 1) hero->DashDirection = 1;
         hero->change_state(&hero->state_dash);
     }
     else if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
         hero->change_state(&hero->state_running);
     }
-    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift) && Engine::GetInput().KeyDown(CS230::Input::Keys::D) && hero->IsDashReady == true) {
-        hero->DashDirection = 1;
-        hero->change_state(&hero->state_dash);
-    }
     else if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
         hero->change_state(&hero->state_running);
+    }
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
+        hero->change_state(&hero->state_jumping);
     }
 
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::J) && Engine::GetGameStateManager().GetGSComponent<Combination>()->GetCombFlag() == false) { //light attack
@@ -128,7 +133,14 @@ void Hero::State_Running::Update(GameObject* object, double dt) {
 }
 void Hero::State_Running::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift) && Engine::GetInput().KeyDown(CS230::Input::Keys::A) && hero->IsDashReady == true) {
+        hero->DashDirection = -1;
+        hero->change_state(&hero->state_dash);
+    }
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift) && Engine::GetInput().KeyDown(CS230::Input::Keys::D) && hero->IsDashReady == true) {
+        hero->DashDirection = 1;
+        hero->change_state(&hero->state_dash);
+    }
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
         hero->change_state(&hero->state_jumping);
     }
@@ -203,6 +215,16 @@ void Hero::State_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unus
 }
 void Hero::State_Light::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift) && hero->IsDashReady == true) {
+        if(Engine::GetInput().KeyDown(CS230::Input::Keys::D)) hero->DashDirection = 1;
+        else if(hero->GetScale().x == -1) hero->DashDirection = -1;
+        hero->change_state(&hero->state_dash);
+    }
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Shift)  && hero->IsDashReady == true) {
+        if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) hero->DashDirection = -1;
+        else if (hero->GetScale().x == 1) hero->DashDirection = 1;
+        hero->change_state(&hero->state_dash);
+    }
     if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
         if (hero->light_combo && hero->GetGOComponent<CS230::Sprite>()->AnimationEnded() && hero->standing_on != nullptr) {
             hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light2));
