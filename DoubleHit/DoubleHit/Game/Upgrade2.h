@@ -3,7 +3,7 @@
 #include "../Engine/Engine.h"
 #include "../Engine/Vec2.h"
 
-class Hero_Upgrade;
+class Hero;
 
 class Upgrade : public CS230::Component {
 public:
@@ -24,7 +24,7 @@ public:
     static void SetUpgradeActiveFlag(bool flag) { UpgradeActiveFlag = flag; }
 
 private:
-    Hero_Upgrade* hero_upgrade;
+    Hero* hero_upgrade;
     Rectangle rect;
     Rectangle smallRects[2];
     float radius;
