@@ -1,7 +1,50 @@
-Director: John Doe
-Producer: Jane Smith
-0x230070ff Lead Developer: Alice Johnson
-Designer: Bob Brown
-Music: Michael Green
-Special Thanks: The Raylib Community
-0x230070ff Thank you for playing!
+3. Team name and/or logo
+
+
+Producer
+Dohyung Kwon
+
+Technical Lead
+Seohyun Min
+
+Art and Design Lead
+Won Kim
+
+QA and Test Lead
+Jaesik Kang
+
+Special Thanks
+Haneul Lee (TA)
+
+Faculty and Advisors
+
+Programming
+Rudy Caston
+Jonathan Holmes
+
+Special Thanks
+Haneul Lee (TA)
+
+Created at
+Digipen Institute of Technology
+
+
+PRESIDENT
+CLAUDE COMAIR
+
+EXECUTIVES
+
+JASON CHU SAMIR ABOU SAMRA MICHELE COMAIR
+
+ANGELA KUGLER ERIK MOHRMANN
+BENJAMIN ELLINGER MELVIN GONSALVEZ
+
+
+WWW.DIGIPEN.EDU
+COPYRIGHT © 2024 BY DIGIPEN (USA), LLC. ALL RIGHTS RESERVED 
+
+
+7. Credits and/or logos for software, tools and libraries used on your project
+Aesprite © 2017‐2024 Igara Studio S.A. 
+Spine © 2013-2024 Esoteric Software LLC
+Visual Studio  © Microsoft 2024

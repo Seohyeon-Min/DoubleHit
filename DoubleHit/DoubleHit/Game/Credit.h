@@ -25,7 +25,7 @@ private:
     void Read_File(const std::string& filename);
 
     std::vector<CS230::Texture*> credit_textures;
-    float spacing;
-    float posY;
-    float modiY; //spacing
+    std::vector<double> credit_positions;
+    double posY;
+    double modiY; //spacing
 };

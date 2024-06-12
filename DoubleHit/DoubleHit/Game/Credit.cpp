@@ -14,22 +14,31 @@ Created:    March 8, 2023
 #include "Fonts.h"
 
 
-Credit::Credit() : spacing(2), posY(0) {
+Credit::Credit() {
 
 }
 
 void Credit::Load() {
-    Read_File("credits.txt");
-   
-    posY = static_cast<float>(Engine::GetWindow().GetSize().y);
+    credit_positions.clear();
+    credit_textures.clear();
+    Read_File("Assets/credits.txt");
+    posY = 67;
+
+    //set Y position.
+    for (size_t i = 0; i < credit_textures.size(); ++i) {
+        credit_positions.push_back(posY - i * (67 ));
+    }
 }
 
 
 void Credit::Update([[maybe_unused]] double dt) {
 
     // Update the position of the credits
-    posY -= static_cast<float>(dt) * 50.0f; // Adjust the speed multiplier as needed
-  
+    //posY += dt* 10.0; // Adjust the speed multiplier as needed
+    for (double& posY : credit_positions) {
+        posY += dt * 50.0; // Adjust the speed multiplier as needed
+    }
+
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Up)) {
 
         Engine::GetGameStateManager().ClearNextGameState();
@@ -45,24 +54,25 @@ void Credit::Unload() {
 
 void Credit::Draw() {
     Engine::GetWindow().Clear(0x000000ff);
+    posY = 0;
+    int i = 0;
     for (CS230::Texture* credit : credit_textures) {
-        credit->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x/2, Engine::GetWindow().GetSize().y / 2 }));
-
-        posY += credit->GetSize().y + spacing;
+        
+        credit->Draw(Math::TranslationMatrix(Math::vec2{ (double)Engine::GetWindow().GetSize().x/2, credit_positions[i]}));
+        i++;
     }
 
 }
 
-//read texts from txt.file
 void Credit::Read_File(const std::string& filename) {
     std::ifstream file(filename);
     std::string line;
     unsigned int currentColor = 0xffffffff;
 
     while (std::getline(file, line)) {
-        if (line.rfind("0x", 0) == 0 && line.size() == 10) {    //find color text
+        if (line.rfind("0x", 0) == 0) {    //find color text
             currentColor = std::stoul(line, nullptr, 16);
-
+            line = line.substr(11);
             CS230::Texture* texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture(line, currentColor);
             credit_textures.push_back(texture);
         }
