@@ -204,11 +204,9 @@ void Mode1::MakeGroundEnemy() {
     Math::irect r_platform = GetGSComponent<CS230::PlatformManager>()->GetRandomPlatform();
     //GroundEnemy(Math::vec2 position, Hero* hero, Math::vec2 platform_point1, Math::vec2 platform_point2);
     GroundEnemy* g_enemy = new GroundEnemy({ (double)r_platform.point_1.x + 50, (double)r_platform.point_2.y }, hero_ptr, (Math::vec2)r_platform.point_1, (Math::vec2)r_platform.point_2);
-    GroundEnemy* g_enemy_f = new GroundEnemy({ randomX, floor }, hero_ptr, { 0, 0 }, {(double)GetGSComponent<Background>()->GetSize().x, floor});
 
     enemies.push_back(g_enemy);
     GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy);
-    GetGSComponent<CS230::GameObjectManager>()->Add(g_enemy_f);
 }
 
 void Mode1::MakeAirEnemy() {
