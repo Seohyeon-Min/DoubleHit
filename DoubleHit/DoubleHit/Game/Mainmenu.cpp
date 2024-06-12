@@ -12,6 +12,8 @@ Created:    May 07, 2023
 #include "../Engine/Engine.h"
 #include "States.h"
 #include "Mainmenu.h"
+#include "Background.h"
+#include "UI.h"
 
 
 Mainmenu::Mainmenu() {
@@ -33,6 +35,7 @@ void Mainmenu::Load() {
 
 void Mainmenu::Update([[maybe_unused]] double dt) {
 
+    GetGSComponent<UI>()->Update(dt, -20);
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Up)) {
         index--;
         updated = false;

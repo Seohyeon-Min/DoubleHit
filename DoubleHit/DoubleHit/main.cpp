@@ -26,6 +26,8 @@ int main() {
 
     Mode1 mode1;
     engine.GetGameStateManager().AddGameState(mode1);
+    Mainmenu mainmenu;
+    engine.GetGameStateManager().AddGameState(mainmenu);
 
     while (engine.HasGameEnded() == false) {
         engine.Update();

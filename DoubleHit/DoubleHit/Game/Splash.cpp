@@ -20,6 +20,7 @@ Splash::Splash() {
 void Splash::Load() {
     counter = 0;
     texture = Engine::GetTextureManager().Load("Assets/DigiPen.png");
+    //texture2 = Engine::GetTextureManager().Load("Assets/logo.png");
 }
 
 
@@ -38,6 +39,11 @@ void Splash::Unload() {
 
 void Splash::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-
-    texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
+    if (counter >= 0 /*&& counter <= 2*/) {
+        texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
+    }
+    //else if (counter >= 2) {
+    //    texture2->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
+    //}
+    
 }

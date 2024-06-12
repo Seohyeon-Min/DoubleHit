@@ -19,6 +19,7 @@ void Background::Draw(const CS230::Camera& camera, const double zoom)
 	}
 }
 
+
 Math::ivec2 Background::GetSize()
 {
 	return backgrounds[backgrounds.size() - 1].texture->GetSize();;

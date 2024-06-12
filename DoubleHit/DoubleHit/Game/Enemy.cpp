@@ -52,9 +52,12 @@ void GroundEnemy::State_Dead::Enter(GameObject* object)
     robot->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
     robot->SetPosition({ robot->GetPosition().x , robot->GetPosition().y });
     robot->SetVelocity({ 0,0 });
+
 }
 void GroundEnemy::State_Dead::Update(GameObject* object, double dt)
-{}
+{
+
+}
 void GroundEnemy::State_Dead::CheckExit(GameObject* object)
 {
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
@@ -213,7 +216,7 @@ void GroundEnemy::Update(double dt)
 {
     GameObject::Update(dt);
     Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
-    if (hero->GetOnEliteGround()) {
+    if (hero->GetOnEliteGround() && Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteEnemy>()) {
         Destroy();
     }
 }
@@ -235,7 +238,7 @@ void GroundEnemy::ResolveCollision(GameObject* other_object)
 {
     if (health < 0) {
         RemoveGOComponent<CS230::Collision>();
-        GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Die));
+        change_state(&state_dead);
         SetVelocity({ 0,0 });
     }
 

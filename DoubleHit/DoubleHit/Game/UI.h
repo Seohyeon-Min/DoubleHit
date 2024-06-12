@@ -18,6 +18,7 @@ public:
 	void Add(const std::filesystem::path& texture_path, Math::vec2 position, double scale, bool show = true);
 	void Draw();
 	void Update(double dt);
+	void Update(double dt, double speed);
 	void Unload();
 
 protected:
