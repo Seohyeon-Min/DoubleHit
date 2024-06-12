@@ -1,50 +1,53 @@
-Team name and logo
+Team name and logo 
 
 
-Producer
-0x3362FFFF Dohyung Kwon
+Producer 
+0x3362FFFF Dohyung Kwon 
 
 Technical Lead
-0x3362FFFF Seohyun Min
+0x3362FFFF Seohyun Min 
 
-Art and Design Lead
-0x3362FFFF Won Kim
+Art and Design Lead 
+0x3362FFFF Won Kim 
 
-QA and Test Lead
-0x3362FFFF Jaesik Kang
+QA and Test Lead 
+0x3362FFFF Jaesik Kang 
 
 
 
-Faculty and Advisors
 
-Programming
-0x3362FFFF Rudy Caston
-0x3362FFFF Jonathan Holmes
+Faculty and Advisors 
 
-Special Thanks
+Programming 
+0x3362FFFF Rudy Caston 
+0x3362FFFF Jonathan Holmes 
+
+Special Thanks 
 0x3362FFFF Haneul Lee 
 
-Created at
-0x3362FFFF Digipen Institute of Technology
 
 
-PRESIDENT
-0x3362FFFF CLAUDE COMAIR
+
+Created at Digipen Institute of Technology 
+
+PRESIDENT 
+0x3362FFFF CLAUDE COMAIR 
 
 EXECUTIVES
+0x3362FFFF JASON CHU SAMIR 
+0x3362FFFF ABOU SAMRA 
+0x3362FFFF MICHELE COMAIR 
 
-0x3362FFFF JASON CHU SAMIR ABOU SAMRA MICHELE COMAIR
-
-0x3362FFFF ANGELA KUGLER ERIK MOHRMANN
-0x3362FFFF BENJAMIN ELLINGER MELVIN GONSALVEZ
+0x3362FFFF ANGELA KUGLER ERIK MOHRMANN 
+0x3362FFFF BENJAMIN ELLINGER MELVIN GONSALVEZ 
 
 
-WWW.DIGIPEN.EDU
+WWW . DIGIPEN . EDU 
 COPYRIGHT 2024 BY DIGIPEN (USA), LLC. ALL RIGHTS RESERVED 
 
 
-Credits and/or logos for software, tools and libraries used on your project
 
-0x3362FFFF Aesprite 2017‐2024 Igara Studio S.A. 
-0x3362FFFF Spine 2013-2024 Esoteric Software LLC
-0x3362FFFF Visual Studio Microsoft 2024
+
+0x3362FFFF Aesprite 2017-2024 Igara Studio S.A. 
+0x3362FFFF Spine 2013-2024 Esoteric Software LLC 
+0x3362FFFF Visual Studio Microsoft 2024 

@@ -33,18 +33,22 @@ void Credit::Load() {
 
 void Credit::Update([[maybe_unused]] double dt) {
 
-    // Update the position of the credits
-    //posY += dt* 10.0; // Adjust the speed multiplier as needed
+    // Update position
     for (double& posY : credit_positions) {
-        posY += dt * 50.0; // Adjust the speed multiplier as needed
-    }
+        posY += dt * 70.0;
 
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Up)) {
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) { //faster
+            posY += dt * 200.0;
+        }
+    }
+    
+    if (static_cast<int>(credit_positions.back()) > Engine::GetWindow().GetSize().y + credit_textures.back()->GetSize().y/2) {
+        Engine::GetGameStateManager().ClearNextGameState();
+    }
+    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Escape)) {
 
         Engine::GetGameStateManager().ClearNextGameState();
     }
-    
-    
 }
 
 void Credit::Unload() {
@@ -58,7 +62,7 @@ void Credit::Draw() {
     int i = 0;
     for (CS230::Texture* credit : credit_textures) {
         
-        credit->Draw(Math::TranslationMatrix(Math::vec2{ (double)Engine::GetWindow().GetSize().x/2, credit_positions[i]}));
+        credit->Draw(Math::TranslationMatrix(Math::vec2{ (double)Engine::GetWindow().GetSize().x/2 - (double)credit->GetSize().x/2, credit_positions[i]}));
         i++;
     }
 
@@ -69,7 +73,11 @@ void Credit::Read_File(const std::string& filename) {
     std::string line;
 
     while (std::getline(file, line)) {
-        if (line.rfind("0x", 0) == 0) {    //find color text
+        if (line.empty()) {
+            CS230::Texture* texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture(" ", 0xffffffff);
+            credit_textures.push_back(texture);
+        }
+        else if (line.rfind("0x", 0) == 0) {    //find color text
             unsigned int currentColor = std::stoul(line, nullptr, 16);
             line = line.substr(11);
             CS230::Texture* texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture(line, currentColor);
