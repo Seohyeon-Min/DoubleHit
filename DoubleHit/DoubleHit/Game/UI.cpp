@@ -11,6 +11,27 @@ void UI::Add(const std::filesystem::path& texture_path, Math::vec2 position, dou
 void UI::Update(double dt) {
 }
 
+	double ac = 0;
+void UI::Update(double dt, double speed) {
+	for (int i = 0; i < interfaces.size(); i++) {
+
+		//if (interfaces[i].position.y > 320 ) {
+		//	interfaces[i].position.y += dt * speed;
+		//}
+		//else if (interfaces[i].position.y < 340){
+		//	interfaces[i].position.y += dt * -speed;
+		//}
+		//if (interfaces[i].position.y > 330) {
+		//	ac += speed * 2;
+		//	interfaces[i].position.y += dt * ac;
+		//}
+		//else if (interfaces[i].position.y < 330) {
+		//	interfaces[i].position.y -= dt * ac;
+		//}
+		//else if()
+	}
+}
+
 void UI::Draw() {
 	for (int i = 0; i < interfaces.size(); i++) {
 		object_matrix = Math::TranslationMatrix(interfaces[i].position);
@@ -19,14 +40,20 @@ void UI::Draw() {
 	}
 
 	//Hero Heavy Attack Cooldown
-	if (hero->ReturnHeavyReady() == false) {
-		DrawRectangle(175, 620, 32, ((IconHeight / hero->ReturnHeavyMax() * (hero->ReturnHeavyTimer()+1))), attackDisable);
+	if (hero != nullptr) {
+		if (hero->ReturnHeavyReady() == false) {
+			DrawRectangle(175, 620, 32, ((IconHeight / hero->ReturnHeavyMax() * (hero->ReturnHeavyTimer() + 1))), attackDisable);
+		}
 	}
 
+
 	//Pet Heavy Attack Cooldown
-	if (pet->ReturnHeavyReady() == false) {
-		DrawRectangle(1105, 624, 32, ((IconHeight / pet->ReturnHeavyMax() * (pet->ReturnHeavyTimer() + 1))), attackDisable);
+	if (pet != nullptr) {
+		if (pet->ReturnHeavyReady() == false) {
+			DrawRectangle(1105, 624, 32, ((IconHeight / pet->ReturnHeavyMax() * (pet->ReturnHeavyTimer() + 1))), attackDisable);
+		}
 	}
+
 }
 
 void UI::Unload() {

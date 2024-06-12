@@ -13,6 +13,7 @@ Created:    May 07, 2023
 #include "States.h"
 #include "Mainmenu.h"
 #include "Background.h"
+#include "UI.h"
 
 
 Mainmenu::Mainmenu() {
@@ -23,17 +24,21 @@ Mainmenu::Mainmenu() {
 
 void Mainmenu::Load() {
     index = 0;
-
+    AddGSComponent(new CS230::Camera());
+    GetGSComponent<CS230::Camera>()->SetPosition({ 0, 0 });
     AddGSComponent(new Background());
     GetGSComponent<Background>()->Add("Assets/backgrounds/mainmenu.png", 1);
-    engine_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("CS230 Engine Test", 0x6E47ABFF);
     side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
     space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x4DAB47FF);
     exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Quit", 0x4DAB47FF);
+
+    AddGSComponent(new UI(nullptr, nullptr));
+    GetGSComponent<UI>()->Add("Assets/backgrounds/logo.png", { 350 , 330 }, 0.68);
 }
 
 void Mainmenu::Update([[maybe_unused]] double dt) {
 
+    GetGSComponent<UI>()->Update(dt, -20);
     if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Up)) {
         index--;
         updated = false;
@@ -107,24 +112,19 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
 void Mainmenu::Unload() {
     ClearGSComponents();
 
-    delete engine_texture;
     delete side_texture;
     delete space_texture;
     delete exit_texture;
-    engine_texture = nullptr;
     side_texture = nullptr;
     space_texture = nullptr;
     exit_texture = nullptr;
-    //for (CS230::Texture* texture : texts) {
-    //    delete texture; 
-    //}
 }
 
 
 void Mainmenu::Draw() {
-    GetGSComponent<Background>()->Draw(, 1);
-    engine_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - engine_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - engine_texture->GetSize().y - 20 }));
-    side_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - side_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - side_texture->GetSize().y - 150 }));
-    space_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - space_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - space_texture->GetSize().y - 250 }));
-    exit_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - exit_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - exit_texture->GetSize().y - 350 }));
+    GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), 1);
+    GetGSComponent<UI>()->Draw();
+    side_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - side_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - side_texture->GetSize().y - 410 }));
+    space_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - space_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - space_texture->GetSize().y - 510 }));
+    exit_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - exit_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - exit_texture->GetSize().y - 610 }));
 }

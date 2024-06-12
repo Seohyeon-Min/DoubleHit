@@ -26,7 +26,6 @@ private:
     int index = 0;
     bool updated = false;
     bool hasrun = false;
-    CS230::Texture* engine_texture;
     CS230::Texture* side_texture;
     CS230::Texture* space_texture;
     CS230::Texture* exit_texture;

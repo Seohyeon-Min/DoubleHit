@@ -24,4 +24,5 @@ public:
 private:
     double counter = 0;
     CS230::Texture* texture;
+    CS230::Texture* texture2;
 };
