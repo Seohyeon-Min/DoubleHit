@@ -36,7 +36,8 @@ void Upgrade::CheckClick(Vector2 mousePoint) {
                 Engine::GetLogger().LogEvent("Hero Level Up: " + std::to_string((CurrentLevel) * 2 + i + 1));
                 UpgradeActiveFlag = false;
 
-                
+                Hero* hero = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<Hero>();
+                hero_upgrade = hero;
                 hero_upgrade->GetUpgradeChoose(CurrentLevel*2+i+1);
             
             }
