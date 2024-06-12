@@ -10,40 +10,35 @@ Created:    March 8, 2023
 
 #include "../Engine/Engine.h"
 #include "States.h"
-#include "Splash.h"
+#include "GameOver.h"
 
 
-Splash::Splash() {
+GameOver::GameOver() {
 
 }
 
-void Splash::Load() {
+void GameOver::Load() {
     counter = 0;
     texture = Engine::GetTextureManager().Load("Assets/DigiPen.png");
     //texture2 = Engine::GetTextureManager().Load("Assets/logo.png");
 }
 
 
-void Splash::Update([[maybe_unused]] double dt) {
+void GameOver::Update([[maybe_unused]] double dt) {
     Engine::GetLogger().LogDebug(std::to_string(counter));
-    if (counter >= 2) {
-        Engine::GetGameStateManager().ClearNextGameState();
+    if (Engine::GetInput().KeyDown(CS230::Input::Keys::Escape)|| Engine::GetInput().KeyDown(CS230::Input::Keys::Enter)&& Engine::GetInput().KeyDown(CS230::Input::Keys::Space)) {
+        Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mainmenu));
     }
-    counter += dt;
 }
 
-void Splash::Unload() {
+void GameOver::Unload() {
     Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Logo));
 }
 
 
-void Splash::Draw() {
+void GameOver::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
     if (counter >= 0 /*&& counter <= 2*/) {
         texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
     }
-    //else if (counter >= 2) {
-    //    texture2->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
-    //}
-
 }
