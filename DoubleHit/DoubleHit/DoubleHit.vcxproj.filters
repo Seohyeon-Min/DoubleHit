@@ -144,6 +144,9 @@
     <ClInclude Include="Game\Credit.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Sound.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
@@ -253,6 +256,9 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\Credit.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Sound.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>

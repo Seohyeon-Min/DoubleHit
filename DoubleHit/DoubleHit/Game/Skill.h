@@ -3,6 +3,7 @@
 #include "..\Engine\Timer.h"
 #include "GameObjectTypes.h"
 #include "Upgrade2.h"
+#include "Sound.h"
 
 class Hero;
 

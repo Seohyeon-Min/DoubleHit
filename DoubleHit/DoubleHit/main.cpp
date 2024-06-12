@@ -5,13 +5,14 @@
 #include "Game/Splash.h"
 #include "Game/Logo.h"
 #include "Game/Credit.h"
+#include "Game/Sound.h"
 
 int main() {
     Engine& engine = Engine::Instance();
     engine.Start("DoubleHit");
-
     engine.AddFont("Assets/Font_Simple.png");
-
+    InitAudioDevice();
+    LoadAudio();
     Splash splash;
     engine.GetGameStateManager().AddGameState(splash);
     Logo logo;

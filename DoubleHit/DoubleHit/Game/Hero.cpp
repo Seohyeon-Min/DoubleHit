@@ -118,6 +118,7 @@ void Hero::State_Falling::CheckExit(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
 
     if (hero->standing_on != nullptr) {
+        PlaySound(hero_land);
         hero->SetVelocity({ hero->GetVelocity().x, 0 });
         hero->change_state(&hero->state_idle);
     }
@@ -142,6 +143,7 @@ void Hero::State_Running::CheckExit(GameObject* object) {
         hero->change_state(&hero->state_dash);
     }
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
+        PlaySound(hero_jump);
         hero->change_state(&hero->state_jumping);
     }
     if (hero->GetVelocity().x == 0) {
@@ -198,6 +200,7 @@ void Hero::State_Dash::CheckExit(GameObject* object) {
 
 
 void Hero::State_Light::Enter(GameObject* object) {
+    PlaySound(skill_p1_gg_punch);
     Hero* hero = static_cast<Hero*>(object);
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light));
     hero->SetVelocity({ 0, hero->GetVelocity().y });
@@ -227,6 +230,7 @@ void Hero::State_Light::CheckExit(GameObject* object) {
     }
     if (hero->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
         if (hero->light_combo && hero->GetGOComponent<CS230::Sprite>()->AnimationEnded() && hero->standing_on != nullptr) {
+            PlaySound(skill_p1_gg_punch);
             hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Light2));
             Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light(hero));
             hero->light_combo = false;
@@ -246,6 +250,7 @@ void Hero::State_Light::CheckExit(GameObject* object) {
 
 
 void Hero::State_Heavy::Enter(GameObject* object) {
+    PlaySound(hero_heavy);
     Hero* hero = static_cast<Hero*>(object);
     hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Animations::Heavy));
     hero->IsHeavyReady = false;
@@ -270,6 +275,7 @@ void Hero::GetUpgradeChoose(int Option) {
 
 void Hero::State_Light_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
+    PlaySound(skill_p1_gg);
     hero->SetVelocity({ 0, hero->GetVelocity().y });
     //put if statement to select which skill to activate according to Upgrade
     int option = hero->GetOption();
