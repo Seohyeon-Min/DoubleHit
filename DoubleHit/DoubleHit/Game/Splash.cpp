@@ -20,13 +20,13 @@ Splash::Splash() {
 void Splash::Load() {
     counter = 0;
     texture = Engine::GetTextureManager().Load("Assets/DigiPen.png");
-    texture2 = Engine::GetTextureManager().Load("Assets/logo.png");
+    //texture2 = Engine::GetTextureManager().Load("Assets/logo.png");
 }
 
 
 void Splash::Update([[maybe_unused]] double dt) {
     Engine::GetLogger().LogDebug(std::to_string(counter));
-    if (counter >= 4) {
+    if (counter >= 2) {
         Engine::GetGameStateManager().ClearNextGameState();
     }
     counter += dt;
@@ -39,11 +39,11 @@ void Splash::Unload() {
 
 void Splash::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-    if (counter >= 0 && counter <= 2) {
+    if (counter >= 0 /*&& counter <= 2*/) {
         texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
     }
-    else if (counter >= 2) {
-        texture2->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
-    }
+    //else if (counter >= 2) {
+    //    texture2->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
+    //}
     
 }
