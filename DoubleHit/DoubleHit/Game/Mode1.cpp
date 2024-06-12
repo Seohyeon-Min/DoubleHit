@@ -46,8 +46,8 @@ void Mode1::Load() {
     AddGSComponent(combination_ptr);
     AddGSComponent(new Gravity(Mode1::gravity));
 
-    Upgrade* upgradeInstance = new Upgrade();
-    AddGSComponent(upgradeInstance);
+    Upgrade* upgrade = new Upgrade();
+    AddGSComponent(upgrade);
 
     GetGSComponent<Combination>()->InitIcons();
     GetGSComponent<Background>()->Add("Assets/backgrounds/third3.png", 0.5);
@@ -65,7 +65,7 @@ void Mode1::Load() {
     ////layer 1
     AddGSComponent(new CS230::PlatformManager("Assets/backgrounds/platform.plf"));
 
-    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr, upgradeInstance);
+    hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * CS230::Camera::zoom), floor }, starting_floor_ptr, upgrade);
     //hero_ptr = new Hero({ (double)Engine::GetWindow().GetSize().x / (2 * zoom), floor }, starting_floor_ptr, upgradeInstance);
 
     GetGSComponent<CS230::GameObjectManager>()->Add(hero_ptr);
@@ -95,7 +95,6 @@ void Mode1::Load() {
     GetGSComponent<UI>()->Add("Assets/UI/health_bar_back.png", { 215, 53 }, 2.0);
     
     //GetGSComponent<UI>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0);
-    
 
     
     AddGSComponent(new HealthBar());
@@ -105,6 +104,11 @@ void Mode1::Load() {
     GetGSComponent<ExpBar>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0, hero_ptr, hero_ptr->max_exp);
     //CombinationUI
     AddGSComponent(new CombinationUI(combination_ptr));
+
+
+    //Upgrade UI
+    GetGSComponent<Upgrade>()->Add("Assets/UI/upgrade.png", { 200,200 }, 2.0);
+    GetGSComponent<Upgrade>()->Add("Assets/UI/upgrade.png", { 800,200 }, 2.0);
 
     //Have to change after upgrade logic is completed
     //Choose which Icon to add according which skill is selected at Upgrade.cpp
@@ -167,9 +171,9 @@ void Mode1::Draw() {
     GetGSComponent<Background>()->Draw(*GetGSComponent<CS230::Camera>(), CS230::Camera::zoom);
     GetGSComponent<CS230::GameObjectManager>()->DrawAll(GetGSComponent<CS230::Camera>()->GetMatrix());
     
-    if (GetGSComponent<Combination>()->GetCombFlag() == true) {
+    /*if (GetGSComponent<Combination>()->GetCombFlag() == true) {
         GetGSComponent<Combination>()->DrawIcons();
-    }
+    }*/
 
     GetGSComponent<UI>()->Draw();
     GetGSComponent<HealthBar>()->Draw();

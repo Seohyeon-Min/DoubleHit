@@ -260,22 +260,17 @@ void Hero::State_Light_Heavy::Enter(GameObject* object) {
     hero->SetVelocity({ 0, hero->GetVelocity().y });
     //put if statement to select which skill to activate according to Upgrade
     Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy(hero));
+    /*int option = hero->GetOption();
+    if (option == 3) {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy(hero));
+    }
+    else if (option == 4) {
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy_2(hero));
+    }*/
 }
 void Hero::State_Light_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
 void Hero::State_Light_Heavy::CheckExit(GameObject* object) {
 }
-
-//void Hero::State_Heavy_Light::Enter(GameObject* object) {
-//    Hero* hero = static_cast<Hero*>(object);
-//    hero->SetVelocity({ 0, hero->GetVelocity().y });
-//    hero->IsCombAttacking = true;
-//    //put if statement to select which skill to activate according to Upgrade
-//    Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light(hero));
-//}
-//void Hero::State_Heavy_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
-//void Hero::State_Heavy_Light::CheckExit(GameObject* object) {
-//    Hero* hero = static_cast<Hero*>(object);
-//}
 
 void Hero::Draw(Math::TransformationMatrix camera_matrix) {
     if (IsHeroVisible == true) {
@@ -306,6 +301,7 @@ void Hero::Update(double dt) {
             }
         }
     }
+
     else if(Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteEnemy>() != nullptr){
         if (Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>() == standing_on && !has_run) {
             elite_floor = Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteFloor>();
@@ -322,7 +318,6 @@ void Hero::Update(double dt) {
                 SetVelocity({ 0, GetVelocity().y });
             }
         }
-
     }
 
 
