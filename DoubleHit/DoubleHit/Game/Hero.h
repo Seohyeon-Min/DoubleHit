@@ -23,7 +23,7 @@ public:
     bool ReturnHeavyReady();
     int ReturnHeavyMax();
     void StateIdle();
-
+    const int GetLevel() { return HeroLevel; }
 
     void AddExp(int exp) {
         HeroExp += exp;

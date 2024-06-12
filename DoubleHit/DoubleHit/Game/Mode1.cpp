@@ -112,12 +112,8 @@ void Mode1::Load() {
     GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_BS.png", BSPosition, BasicScale);
     GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_SB.png", SBPosition, StrongScale);
     GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_SS.png", SSPosition, StrongScale);
-
-
-
-    elite_spawn_timer = new CS230::Timer(elite_spawn_time);
+    elite_spawn_timer = new CS230::Timer(9999999999);
     AddGSComponent(elite_spawn_timer);
-
     //score
     score = 0;
     update_score_text(score);
@@ -131,12 +127,17 @@ void Mode1::Update([[maybe_unused]] double dt) {
     GetGSComponent<UI>()->Update(dt);
     spawn_time += dt;
 
-    if (elite_spawn_timer->Remaining() == 0.0) {
+    if (hero_ptr->GetLevel() == 1 && !levelup) {
+        elite_spawn_timer->Set(elite_spawn_time/5);
+        levelup = true;
+    }
+    if (elite_spawn_timer->Remaining() == 0.0 && !GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteEnemy>()) {
         AddGSComponent(new Warning({ 0,  (double)Engine::GetWindow().GetSize().y / 2 + 100 }));
         GetGSComponent<CS230::GameObjectManager>()->Add(new EliteEnemy({ 1200,672 }));
-        elite_spawn_timer->Set(500);
-
+        elite_spawn_timer->Set(elite_spawn_time*50);
     }
+
+
     if (GetGSComponent<Warning>() && GetGSComponent<Warning>()->GetDelete()) {
         RemoveGSComponent<Warning>();
     }

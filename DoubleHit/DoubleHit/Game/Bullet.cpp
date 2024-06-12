@@ -170,9 +170,6 @@ void AEnemyBullet::ResolveCollision(GameObject* other_object)
 {
     switch (other_object->Type()) {
         case GameObjectTypes::Hero:
-
-            break;
-
         case GameObjectTypes::Floor:
                 Destroy();
             

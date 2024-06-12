@@ -63,7 +63,7 @@ void GroundEnemy::State_Dead::CheckExit(GameObject* object)
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
     if (robot->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
         if (robot->hero != nullptr) {
-            robot->hero->AddExp(150);
+            robot->hero->AddExp(800);
             Engine::GetLogger().LogEvent("Add Exp 150 ");
         }
         Engine::GetLogger().LogEvent("Add Score 300 ");
@@ -686,12 +686,7 @@ bool EliteEnemy::CanCollideWith(GameObjectTypes other_object)
 
 void EliteEnemy::ResolveCollision(GameObject* other_object)
 {
-    if (GetHealth() <= 0) {
-        RemoveGOComponent<CS230::Collision>();
-        SetVelocity({ 0,0 });
-        Engine::GetGameStateManager().GetGSComponent<EliteHealthBar>()->Unload();
-        Destroy();
-    }
+
     switch (other_object->Type()) {
     case GameObjectTypes::Bullet:
         SetHealth(GetHealth() - 1);
@@ -717,5 +712,13 @@ void EliteEnemy::ResolveCollision(GameObject* other_object)
     case GameObjectTypes::UpgradeHH:
         SetHealth(GetHealth() - Hero_Heavy_Heavy::GetDamage());
         break;
+    }
+
+    if (GetHealth() <= 0) {
+        RemoveGOComponent<CS230::Collision>();
+        SetVelocity({ 0,0 });
+        Engine::GetGameStateManager().GetGSComponent<EliteHealthBar>()->Unload();
+        alive = false;
+        Destroy();
     }
 }

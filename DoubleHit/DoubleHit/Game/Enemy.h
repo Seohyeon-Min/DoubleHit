@@ -122,7 +122,7 @@ private:
     bool attackExecuted = false;
     double speed = 70;
     double min_distance = 100;
-    double health = 5;
+    double health = 10;
     double distance;
     static constexpr double shooting_range = 380;
     static constexpr double damage = 10;     //unused... yet
@@ -146,12 +146,15 @@ public:
     bool CanCollideWith(GameObjectTypes) override;
     void ResolveCollision([[maybe_unused]] GameObject* other_object) override;
     const Math::vec2& GetPosition() const { return GameObject::GetPosition(); }
+    bool IsAlive() { return alive; }
     static constexpr double max_health = 300;
 
 private:
+
     double distance;
     bool has_run = false;
     bool attack = false;
+    bool alive = true;
     static constexpr double demerit = 4;
     static constexpr double speed = 20;
     static constexpr double min_distance = 90;
