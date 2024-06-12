@@ -46,6 +46,7 @@
     <ClInclude Include="Game\Background.h" />
     <ClInclude Include="Game\Bullet.h" />
     <ClInclude Include="Game\Combination.h" />
+    <ClInclude Include="Game\Credit.h" />
     <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\Floor.h" />
     <ClInclude Include="Game\Fonts.h" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Game\Gravity.h" />
     <ClInclude Include="Game\HealthBar.h" />
     <ClInclude Include="Game\Hero.h" />
+    <ClInclude Include="Game\Logo.h" />
     <ClInclude Include="Game\Mainmenu.h" />
     <ClInclude Include="Game\Mode1.h" />
     <ClInclude Include="Game\Pet.h" />
@@ -86,10 +88,12 @@
     <ClCompile Include="Game\Background.cpp" />
     <ClCompile Include="Game\Bullet.cpp" />
     <ClCompile Include="Game\Combination.cpp" />
+    <ClCompile Include="Game\Credit.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
     <ClCompile Include="Game\Floor.cpp" />
     <ClCompile Include="Game\HealthBar.cpp" />
     <ClCompile Include="Game\Hero.cpp" />
+    <ClCompile Include="Game\Logo.cpp" />
     <ClCompile Include="Game\Mainmenu.cpp" />
     <ClCompile Include="Game\Mode1.cpp" />
     <ClCompile Include="Game\Pet.cpp" />

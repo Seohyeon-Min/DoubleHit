@@ -17,15 +17,18 @@ Created:    May 07, 2023
 Mainmenu::Mainmenu() {
     texts.push_back(side_texture);
     texts.push_back(space_texture);
+    texts.push_back(credit_texture);
     texts.push_back(exit_texture);
 }
 
-void Mainmenu::Load() {
+void Mainmenu::Load() {   
     index = 0;
-    engine_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("CS230 Engine Test", 0x6E47ABFF);
+    main_background = Engine::GetTextureManager().Load("Assets/main.png");
     side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
     space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x4DAB47FF);
+    credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0x4DAB47FF);
     exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Quit", 0x4DAB47FF);
+    
 }
 
 void Mainmenu::Update([[maybe_unused]] double dt) {
@@ -42,12 +45,14 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
         if (index >= texts.size())
             index = 0;
     }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Enter)) {
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Enter)) {
         if (index == 0)
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         if (index == 1)
-            //Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode2));
+            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         if (index == 2)
+            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
+        if (index == 3)
             Engine::GetGameStateManager().ClearNextGameState();
     }
 
@@ -64,9 +69,15 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
             if (space_texture != nullptr) {
                 delete space_texture;
             }
-            space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
+            space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0xFFFFFFFF);
         }
         if (index == 2) {
+            if (credit_texture != nullptr) {
+                delete credit_texture;
+            }
+            credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0xFFFFFFFF);
+        }
+        if (index == 3) {
             if (exit_texture != nullptr) {
                 delete exit_texture;
             }
@@ -87,9 +98,15 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
                 if (space_texture != nullptr) {
                     delete space_texture;
                 }
-                space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0x4DAB47FF);
+                space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x4DAB47FF);
             }
             if (index != 2) {
+                if (credit_texture != nullptr) {
+                    delete credit_texture;
+                }
+                credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0x4DAB47FF);
+            }
+            if (index != 3) {
                 if (exit_texture != nullptr) {
                     delete exit_texture;
                 }
@@ -103,24 +120,26 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
 void Mainmenu::Unload() {
     ClearGSComponents();
 
-    delete engine_texture;
     delete side_texture;
     delete space_texture;
     delete exit_texture;
-    engine_texture = nullptr;
     side_texture = nullptr;
     space_texture = nullptr;
+    credit_texture = nullptr;
     exit_texture = nullptr;
-    //for (CS230::Texture* texture : texts) {
-    //    delete texture; 
-    //}
+    for (CS230::Texture* texture : texts) {
+       delete texture; 
+    }
+
 }
 
 
 void Mainmenu::Draw() {
     Engine::GetWindow().Clear(0x000000);
-    engine_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - engine_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - engine_texture->GetSize().y - 20 }));
-    side_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - side_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - side_texture->GetSize().y - 150 }));
-    space_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - space_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - space_texture->GetSize().y - 250 }));
-    exit_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - exit_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - exit_texture->GetSize().y - 350 }));
+
+    main_background->Draw(Math::TranslationMatrix(Math::ivec2{ 0,0 }));
+    side_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - side_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - side_texture->GetSize().y - 400 }));
+    space_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - space_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - space_texture->GetSize().y - 460 }));
+    credit_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - credit_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - credit_texture->GetSize().y - 520 }));
+    exit_texture->Draw(Math::TranslationMatrix(Math::ivec2{ Engine::GetWindow().GetSize().x / 2 - exit_texture->GetSize().x / 2, Engine::GetWindow().GetSize().y - exit_texture->GetSize().y - 580 }));
 }

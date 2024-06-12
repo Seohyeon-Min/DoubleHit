@@ -2,5 +2,8 @@
 
 enum class States {
     Splash,
-    Mode1,
+    Logo,
+    Mainmenu,
+    Credit,
+    Mode1
 };

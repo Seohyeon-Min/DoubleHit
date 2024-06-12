@@ -10,20 +10,20 @@ Created:    March 8, 2023
 
 #include "../Engine/Engine.h"
 #include "States.h"
-#include "Splash.h"
+#include "Credit.h"
 
 
-Splash::Splash() {
+Credit::Credit() {
 
 }
 
-void Splash::Load() {
+void Credit::Load() {
     counter = 0;
     texture = Engine::GetTextureManager().Load("Assets/DigiPen.png");
 }
 
 
-void Splash::Update([[maybe_unused]] double dt) {
+void Credit::Update([[maybe_unused]] double dt) {
     Engine::GetLogger().LogDebug(std::to_string(counter));
     if (counter >= 2) {
         Engine::GetGameStateManager().ClearNextGameState();
@@ -31,12 +31,12 @@ void Splash::Update([[maybe_unused]] double dt) {
     counter += dt;
 }
 
-void Splash::Unload() {
+void Credit::Unload() {
     Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Logo));
 }
 
 
-void Splash::Draw() {
+void Credit::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
 
     texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
