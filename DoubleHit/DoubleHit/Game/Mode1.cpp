@@ -46,7 +46,7 @@ void Mode1::Load() {
     AddGSComponent(combination_ptr);
     AddGSComponent(new Gravity(Mode1::gravity));
 
-    Upgrade* upgrade = new Upgrade();
+    upgrade = new Upgrade();
     AddGSComponent(upgrade);
 
     GetGSComponent<Combination>()->InitIcons();
@@ -104,6 +104,7 @@ void Mode1::Load() {
     GetGSComponent<ExpBar>()->Add("Assets/UI/exp_bar.png", { 215, 53 }, 2.0, hero_ptr, hero_ptr->max_exp);
     //CombinationUI
     AddGSComponent(new CombinationUI(combination_ptr));
+    AddGSComponent(new UpgradeUI(upgrade));
 
 
     //Upgrade UI
@@ -117,6 +118,8 @@ void Mode1::Load() {
     GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_SB.png", SBPosition, StrongScale);
     GetGSComponent<CombinationUI>()->Add("Assets/UI/CombSkill_SS.png", SSPosition, StrongScale);
 
+    GetGSComponent<UpgradeUI>()->Add("Assets/UI/CombSkill_BB.png", UpgradeBBPosition, BasicScale);
+    GetGSComponent<UpgradeUI>()->Add("Assets/UI/CombSkill_BB_2.png", UpgradeBBPosition, BasicScale);
 
 
     elite_spawn_timer = new CS230::Timer(elite_spawn_time);
@@ -144,10 +147,14 @@ void Mode1::Update([[maybe_unused]] double dt) {
     if (GetGSComponent<Warning>() && GetGSComponent<Warning>()->GetDelete()) {
         RemoveGSComponent<Warning>();
     }
-    if (spawn_time > enemy_spawn_time && !hero_ptr->GetOnEliteGround()) { // spawn logic
-        MakeEnemy();
-        spawn_time = 0;
+
+    if (upgrade->GetUpgradeActive() != true) {
+        if (spawn_time > enemy_spawn_time && !hero_ptr->GetOnEliteGround()) { // spawn logic
+            MakeEnemy();
+            spawn_time = 0;
+        }
     }
+    
     
     if (Engine::GetInput().KeyDown(CS230::Input::Keys::Escape)) {
         Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mainmenu));
@@ -155,6 +162,7 @@ void Mode1::Update([[maybe_unused]] double dt) {
     }
     GetGSComponent<UI>()->Update(dt);
     GetGSComponent<CombinationUI>()->Update(dt);
+    GetGSComponent<UpgradeUI>()->Update(dt);
 
     //score
     if (GetGSComponent<CS230::Score>()->Value() != score) {
@@ -181,6 +189,7 @@ void Mode1::Draw() {
     GetGSComponent<EliteHealthBar>()->Draw();
     GetGSComponent<ExpBar>()->Draw(hero_ptr->GetExp());
     GetGSComponent<CombinationUI>()->Draw();
+    GetGSComponent<UpgradeUI>()->Draw();
     if (GetGSComponent<Warning>()) {
         GetGSComponent<Warning>()->Draw();
     }

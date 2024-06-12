@@ -44,3 +44,15 @@ private:
     bool ChooseUpgrade = false;
     int UpgradeLevel;
 };
+
+//class UpgradeIcon : public Upgrade {
+//public:
+//    UpgradeIcon(Math::vec2 position);
+//    void Update(double dt) override;
+//    void Draw();
+//
+//private:
+//    CS230::Texture* texture;
+//    Math::vec2 position;
+//    double scale = 2.0;
+//};

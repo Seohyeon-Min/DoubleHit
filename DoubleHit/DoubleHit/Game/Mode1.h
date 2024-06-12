@@ -48,6 +48,7 @@ private:
     Hero* hero_ptr;
     Pet* pet_ptr;
     Combination* combination_ptr;
+    Upgrade* upgrade;
 
     std::vector<Enemy*> enemies; //enemy vectors
     CS230::Timer* elite_spawn_timer;
@@ -61,6 +62,8 @@ private:
     Math::vec2 BSPosition = { 660,85 };
     Math::vec2 SBPosition = { 624,50 };
     Math::vec2 SSPosition = { 660,50 };
+
+    Math::vec2 UpgradeBBPosition = { 250, 250 };
 
     double BasicScale = 1.0;
     double StrongScale = 0.33;

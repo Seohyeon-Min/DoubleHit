@@ -73,3 +73,9 @@ void Upgrade::Update(double dt)
         CheckClick(mousePoint);
     }
 }
+
+//UpgradeIcon::UpgradeIcon(Math::vec2 position) :
+//    Upgrade() 
+//{
+//    texture = Engine::GetTextureManager().Load("");
+//}

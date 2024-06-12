@@ -306,8 +306,7 @@ void Hero::State_Light_Heavy::Update([[maybe_unused]] GameObject* object, [[mayb
 void Hero::State_Light_Heavy::CheckExit(GameObject* object) {
 }
 
-<<<<<<< HEAD
-=======
+
 void Hero::State_Heavy_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
     hero->IsHeroVisible = false;
@@ -331,7 +330,6 @@ void Hero::State_Heavy_Heavy::CheckExit(GameObject* object) {
 }
 
 
->>>>>>> 7d918ca3ff44fa1806296ae95201f8b14f97ee71
 void Hero::Draw(Math::TransformationMatrix camera_matrix) {
     if (IsHeroVisible == true) {
         GameObject::Draw(camera_matrix);
