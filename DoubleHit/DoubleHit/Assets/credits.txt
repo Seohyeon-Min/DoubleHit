@@ -1,50 +1,50 @@
-3. Team name and/or logo
+Team name and logo
 
 
 Producer
-Dohyung Kwon
+0x3362FFFF Dohyung Kwon
 
 Technical Lead
-Seohyun Min
+0x3362FFFF Seohyun Min
 
 Art and Design Lead
-Won Kim
+0x3362FFFF Won Kim
 
 QA and Test Lead
-Jaesik Kang
+0x3362FFFF Jaesik Kang
 
-Special Thanks
-Haneul Lee (TA)
+
 
 Faculty and Advisors
 
 Programming
-Rudy Caston
-Jonathan Holmes
+0x3362FFFF Rudy Caston
+0x3362FFFF Jonathan Holmes
 
 Special Thanks
-Haneul Lee (TA)
+0x3362FFFF Haneul Lee 
 
 Created at
-Digipen Institute of Technology
+0x3362FFFF Digipen Institute of Technology
 
 
 PRESIDENT
-CLAUDE COMAIR
+0x3362FFFF CLAUDE COMAIR
 
 EXECUTIVES
 
-JASON CHU SAMIR ABOU SAMRA MICHELE COMAIR
+0x3362FFFF JASON CHU SAMIR ABOU SAMRA MICHELE COMAIR
 
-ANGELA KUGLER ERIK MOHRMANN
-BENJAMIN ELLINGER MELVIN GONSALVEZ
+0x3362FFFF ANGELA KUGLER ERIK MOHRMANN
+0x3362FFFF BENJAMIN ELLINGER MELVIN GONSALVEZ
 
 
 WWW.DIGIPEN.EDU
-COPYRIGHT © 2024 BY DIGIPEN (USA), LLC. ALL RIGHTS RESERVED 
+COPYRIGHT 2024 BY DIGIPEN (USA), LLC. ALL RIGHTS RESERVED 
 
 
-7. Credits and/or logos for software, tools and libraries used on your project
-Aesprite © 2017‐2024 Igara Studio S.A. 
-Spine © 2013-2024 Esoteric Software LLC
-Visual Studio  © Microsoft 2024
+Credits and/or logos for software, tools and libraries used on your project
+
+0x3362FFFF Aesprite 2017‐2024 Igara Studio S.A. 
+0x3362FFFF Spine 2013-2024 Esoteric Software LLC
+0x3362FFFF Visual Studio Microsoft 2024

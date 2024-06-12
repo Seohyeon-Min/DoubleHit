@@ -26,6 +26,7 @@ private:
 
     std::vector<CS230::Texture*> credit_textures;
     std::vector<double> credit_positions;
+    double font_size = 67;
     double posY;
     double modiY; //spacing
 };

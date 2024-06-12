@@ -22,11 +22,11 @@ void Credit::Load() {
     credit_positions.clear();
     credit_textures.clear();
     Read_File("Assets/credits.txt");
-    posY = 67;
+    posY = font_size;
 
     //set Y position.
     for (size_t i = 0; i < credit_textures.size(); ++i) {
-        credit_positions.push_back(posY - i * (67 ));
+        credit_positions.push_back(posY - i * (font_size));
     }
 }
 
@@ -67,17 +67,16 @@ void Credit::Draw() {
 void Credit::Read_File(const std::string& filename) {
     std::ifstream file(filename);
     std::string line;
-    unsigned int currentColor = 0xffffffff;
 
     while (std::getline(file, line)) {
         if (line.rfind("0x", 0) == 0) {    //find color text
-            currentColor = std::stoul(line, nullptr, 16);
+            unsigned int currentColor = std::stoul(line, nullptr, 16);
             line = line.substr(11);
             CS230::Texture* texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture(line, currentColor);
             credit_textures.push_back(texture);
         }
         else {  //no color text
-            CS230::Texture* texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture(line, currentColor);
+            CS230::Texture* texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture(line, 0xffffffff);
             credit_textures.push_back(texture);
         }
     }
