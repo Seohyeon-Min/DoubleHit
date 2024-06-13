@@ -19,7 +19,7 @@ void Upgrade::ActivateUpgrade(int heroLevel) {
     }else if (CurrentLevel == 3) {
         upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_SB.png"), {303,442} , 1 });
         upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_SB_2.png"), {903, 442} , 3 });
-    }else if (CurrentLevel == 4) {
+    }else if (CurrentLevel >= 4) {
         upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_SS.png"), {303,442} , 1 });
         upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_SS_2.png"), {903, 442} , 1 });
     }
