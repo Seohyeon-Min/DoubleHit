@@ -9,6 +9,21 @@ void Upgrade::ActivateUpgrade(int heroLevel) {
     CurrentLevel = heroLevel - 1;
     Engine::GetLogger().LogEvent("ActivateUpgrade called with level: " + std::to_string(CurrentLevel));
 
+    if (CurrentLevel == 0) {
+        upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_BB.png"), {303,442} , 3 });
+        upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_BB_2.png"), {903, 442} , 3 });
+        
+    }else if (CurrentLevel == 1) {
+        upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_BS.png"), {303,442} , 3 });
+        upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_BS_2.png"), {903, 442} , 3 });
+    }else if (CurrentLevel == 3) {
+        upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_SB.png"), {303,442} , 1 });
+        upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_SB_2.png"), {903, 442} , 3 });
+    }else if (CurrentLevel == 4) {
+        upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_SS.png"), {303,442} , 1 });
+        upgradeUI.push_back(upgrade{ Engine::GetTextureManager().Load("Assets/UI/CombSkill_SS_2.png"), {903, 442} , 1 });
+    }
+
     if (cnt < 4) {
         UpgradeActiveFlag = true;
     }

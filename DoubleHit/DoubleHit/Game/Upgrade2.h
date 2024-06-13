@@ -36,6 +36,8 @@ protected:
     
 
 private:
+    CS230::Texture* p1_texture;
+    CS230::Texture* p2_texture;
     std::vector<bool> chose_ups;
     Hero* hero_upgrade;
     Rectangle rect;
