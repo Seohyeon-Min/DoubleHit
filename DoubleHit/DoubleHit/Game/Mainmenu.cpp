@@ -29,10 +29,10 @@ void Mainmenu::Load() {
     }
     index = 0;
     main_background = Engine::GetTextureManager().Load("Assets/main.png");
-    side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("GameStart", 0xFFFFFFFF);
-    space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x4DAB47FF);
-    credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0x4DAB47FF);
-    exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Quit", 0x4DAB47FF);
+    side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("GameStart", 0xF4F4F4FF);
+    space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0xF4F4F4FF);
+    credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0xF4F4F4FF);
+    exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Quit", 0xF4F4F4FF);
     
 }
 
@@ -45,14 +45,14 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
         && GetMouseX() <= Engine::GetWindow().GetSize().x / 2 + side_texture->GetSize().x / 2
         && GetMouseY() >= 400 - side_texture->GetSize().y / 2
         && GetMouseY() <= 400 + side_texture->GetSize().y / 2) {
-        side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
+        side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0x3b5dc9ff);
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         }
     }
     else {
-        side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0x4DAB47FF);
+        side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xF4F4F4FF);
 
     }
     //option
@@ -60,130 +60,46 @@ void Mainmenu::Update([[maybe_unused]] double dt) {
         && GetMouseX() <= Engine::GetWindow().GetSize().x / 2 + space_texture->GetSize().x / 2
         && GetMouseY() >= 480 - space_texture->GetSize().y / 2
         && GetMouseY() <= 480 + space_texture->GetSize().y / 2) {
-        space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0xFFFFFFFF);
+        space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x3b5dc9ff);
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
         }
     }
     else {
-        space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x4DAB47FF);
+        space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0xF4F4F4FF);
 
     }
     //credit
     if (GetMouseX() >= Engine::GetWindow().GetSize().x / 2 - credit_texture->GetSize().x / 2
         && GetMouseX() <= Engine::GetWindow().GetSize().x / 2 + credit_texture->GetSize().x / 2
-        && GetMouseY() >= 560 - credit_texture->GetSize().y/2
-        && GetMouseY() <= 560 + credit_texture->GetSize().y/2) {
-        credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0xFFFFFFFF);
+        && GetMouseY() >= 560 - credit_texture->GetSize().y / 2
+        && GetMouseY() <= 560 + credit_texture->GetSize().y / 2) {
+        credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0x3b5dc9ff);
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Credit));
         }
     }
     else {
-        credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0x4DAB47FF);
+        credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0xF4F4F4FF);
 
     }
     //exit
     if (GetMouseX() >= Engine::GetWindow().GetSize().x / 2 - exit_texture->GetSize().x / 2
         && GetMouseX() <= Engine::GetWindow().GetSize().x / 2 + exit_texture->GetSize().x / 2
-        && GetMouseY() >= 640 - exit_texture->GetSize().y/2
-        && GetMouseY() <= 640 + exit_texture->GetSize().y/2) {
-        exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Exit", 0xFFFFFFFF);
+        && GetMouseY() >= 640 - exit_texture->GetSize().y / 2
+        && GetMouseY() <= 640 + exit_texture->GetSize().y / 2) {
+        exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Exit", 0x3b5dc9ff);
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             Engine::GetGameStateManager().ClearNextGameState();
         }
     }
     else {
-        exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Exit", 0x4DAB47FF);
+        exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Exit", 0xF4F4F4FF);
 
     }
-        /*
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Up)) {
-        index--;
-        updated = false;
-        if (index < 0)
-            index = (int)texts.size() - 1;
-    }
-    if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::Down)) {
-        index++;
-        updated = false;
-        if (index >= texts.size())
-            index = 0;
-    }
-    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Enter)) {
-        if (index == 0)
-            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
-        if (index == 1)
-            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Mode1));
-        if (index == 2)
-            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Credit));
-        if (index == 3)
-            Engine::GetGameStateManager().ClearNextGameState();
-    }
-
-
-    if (!updated) {
-
-        if (index == 0) {
-            if (side_texture != nullptr) {
-                delete side_texture;
-            }
-            side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0xFFFFFFFF);
-        }
-        if (index == 1) {
-            if (space_texture != nullptr) {
-                delete space_texture;
-            }
-            space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0xFFFFFFFF);
-        }
-        if (index == 2) {
-            if (credit_texture != nullptr) {
-                delete credit_texture;
-            }
-            credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0xFFFFFFFF);
-        }
-        if (index == 3) {
-            if (exit_texture != nullptr) {
-                delete exit_texture;
-            }
-            exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Quit", 0xFFFFFFFF);
-        }
-        updated = true;
-        hasrun = false;
-    }
-    else {
-        if (!hasrun) {
-            if (index != 0) {
-                if (side_texture != nullptr) {
-                    delete side_texture;
-                }
-                side_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Game Start", 0x4DAB47FF);
-            }
-            if (index != 1) {
-                if (space_texture != nullptr) {
-                    delete space_texture;
-                }
-                space_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Option", 0x4DAB47FF);
-            }
-            if (index != 2) {
-                if (credit_texture != nullptr) {
-                    delete credit_texture;
-                }
-                credit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Credit", 0x4DAB47FF);
-            }
-            if (index != 3) {
-                if (exit_texture != nullptr) {
-                    delete exit_texture;
-                }
-                exit_texture = Engine::GetFont(static_cast<int>(Fonts::Basic)).PrintToTexture("Quit", 0x4DAB47FF);
-            }
-        }
-        hasrun = true;
-        
-    }*/
 }
 
 void Mainmenu::Unload() {
