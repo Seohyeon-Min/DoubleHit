@@ -137,9 +137,12 @@ public:
     std::string TypeName() override { return "UpgradeLH"; }
     void Update(double dt) override;
     void ResolveCollision(GameObject* other_object);
+    bool GetCollision(){return ignore_enemy;}
     static constexpr double GetDamage() { return damage; }
 
 private:
+    bool ignore_enemy = true;
+    
     CS230::Timer* skill_timer;
     static constexpr double skill_time = 1.55;
     Hero* hero;
@@ -167,7 +170,7 @@ private:
     static constexpr double skill_time = 1.55;
     Hero* hero;
     int direction;
-    static constexpr double damage = 30;
+    static constexpr double damage = 10;
     bool IsEnded = false;
 
     enum class Animations {

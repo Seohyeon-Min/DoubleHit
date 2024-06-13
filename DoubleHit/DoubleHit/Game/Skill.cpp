@@ -206,6 +206,7 @@ void Hero_Light_Heavy::Update(double dt) {
     if (skill_timer->Remaining() == 0.0) {
         Destroy();
         IsEnded = true;
+        hero->SetIgnore(true);
         hero->StateIdle();
     }
 }
@@ -392,7 +393,7 @@ GEnemyAttack::GEnemyAttack(GameObject* object) :
 }
 
 void GEnemyAttack::Update(double dt)
-{
+{   
     GameObject::Update(dt);
     if (skill_timer->Remaining() == 0.0) {
         Destroy();

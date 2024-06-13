@@ -26,6 +26,10 @@ public:
     void StateIdle();
     const int GetLevel() { return HeroLevel; }
 
+    //for skill heavy_light_2
+    bool GetIgnore() { return IsIgnore; }
+    void SetIgnore(bool command) { IsIgnore = command; }
+
     void AddExp(int exp) {
         HeroExp += exp;
         HeroLevelCheck();
@@ -52,6 +56,7 @@ private:
     void update_x_velocity(double dt);
 
     static inline const  Math::vec2 velocity = { 200, 500 };//500
+    bool IsIgnore = false;  //ignore enemy attacks (for p2_light_heavy)
     bool IsHeavyReady = false; //heavy attack cooldown check
     bool IsDashReady = true;
     bool light_combo = false;

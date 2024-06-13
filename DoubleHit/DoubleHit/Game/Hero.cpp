@@ -469,15 +469,19 @@ void Hero::ResolveCollision(GameObject* other_object)
 
     switch (other_object->Type()) {
         case GameObjectTypes::AEnemyBullet:
+            if (GetIgnore()) { break; }     //if p2_heavy_light is on, ignore enemy attack.
             TakeDamage(AEnemyBullet::GetDamage());
             break;
         case GameObjectTypes::GEnemyAttack:
+            if (GetIgnore()) { break; }
             TakeDamage(GEnemyAttack::GetDamage());
             break;
         case GameObjectTypes::EEnemyAttack:
+            if (GetIgnore()) { break; }
                 TakeDamage(EEnemyAttack::GetDamage());
             break;
         case GameObjectTypes::ElitePunch:
+            if (GetIgnore()) { break; }
             if (current_state == &state_LL) {
                 TakeDamage(EEnemyAttack::GetDamage() / 5);
             }
