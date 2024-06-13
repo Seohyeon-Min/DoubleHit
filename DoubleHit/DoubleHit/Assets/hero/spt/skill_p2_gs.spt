@@ -1,4 +1,4 @@
-Assets/hero/png/skill_p2_sg.png
+Assets/hero/png/skill_p2_gs.png
 FrameSize 150  90
 HotSpot 75 0 
 RectCollision -75 0 75  90 
@@ -17,4 +17,4 @@ Frame 1650 0
 Frame 1800 0 
 Frame 1950 0
 Frame 2100 0
-Anim Assets/hero/anm/skill_p2_sg.anm
+Anim Assets/hero/anm/skill_p2_gs.anm

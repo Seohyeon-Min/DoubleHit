@@ -1,19 +1,19 @@
-Assets/hero/png/skill_p2_ss.png
-FrameSize 640  360
-HotSpot 307 110 
-RectCollision -307 0 333  360 
+Assets/hero/png/skill_p2_ss_big.png
+FrameSize 960  540
+HotSpot 480 165 
+RectCollision -480 0 480  360 
 Frame 0 0
-Frame 640 0
-Frame 1280 0
+Frame 960 0
 Frame 1920 0
-Frame 2560 0
-Frame 3200 0
+Frame 2880 0
 Frame 3840 0
-Frame 4480 0
-Frame 5120 0
+Frame 4800 0
 Frame 5760 0
-Frame 6400 0
-Frame 7040 0
+Frame 6720 0
 Frame 7680 0
-Frame 8320 0
+Frame 8640 0
+Frame 9600 0
+Frame 10560 0
+Frame 11520 0
+Frame 12480 0
 Anim Assets/hero/anm/skill_p2_ss.anm

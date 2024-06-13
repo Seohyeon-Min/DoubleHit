@@ -307,7 +307,7 @@ void Hero::State_Light_Heavy::Enter(GameObject* object) {
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy(hero));
     }
     else  {
-        //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy_2(hero));
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Light_Heavy_2(hero));
     }
 }
 void Hero::State_Light_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }
@@ -317,15 +317,17 @@ void Hero::State_Light_Heavy::CheckExit(GameObject* object) {
 
 void Hero::State_Heavy_Light::Enter(GameObject* object) {
     Hero* hero = static_cast<Hero*>(object);
-    hero->IsHeroVisible = false;
+    
     hero->SetVelocity({ 0,hero->GetVelocity().y });
     //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light(hero));
     bool option = hero->GetOption()[2];
     if (!option) {
+        hero->IsHeroVisible = false;
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light(hero));
     }
-    else if (option == 6) {
-        //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light_2(hero));
+    else{
+        hero->IsHeroVisible = true;
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Light_2(hero));
     }
 }
 void Hero::State_Heavy_Light::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt){ }
@@ -342,8 +344,9 @@ void Hero::State_Heavy_Heavy::Enter(GameObject* object) {
     if (!option) {
         Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Heavy(hero));
     }
-    else if (option == 8) {
-        //Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Heavy_2(hero));
+    else{
+        hero->IsHeroVisible = true;
+        Engine::GetGameStateManager().GetGSComponent<CS230::GameObjectManager>()->Add(new Hero_Heavy_Heavy_2(hero));
     }
 }
 void Hero::State_Heavy_Heavy::Update([[maybe_unused]] GameObject* object, [[maybe_unused]] double dt) { }

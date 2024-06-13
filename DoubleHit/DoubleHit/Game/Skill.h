@@ -97,7 +97,7 @@ private:
     Hero* hero;
     int direction;
     static constexpr double damage = 0.5;
-    static constexpr double skill_time = 2;
+    static constexpr double skill_time = 1.04;
     static constexpr double add_time = 0.1;
     static constexpr int TokenMax = 60;
     int timeToken;
@@ -126,7 +126,7 @@ private:
         Attack
     };
     static constexpr double damage = 30;
-    static constexpr double skill_time = 5;
+    static constexpr double skill_time = 0.84;
     friend class Hero;
 };
 
@@ -141,7 +141,7 @@ public:
 
 private:
     CS230::Timer* skill_timer;
-    static constexpr double skill_time = 5;
+    static constexpr double skill_time = 1.55;
     Hero* hero;
     int direction;
     static constexpr double damage = 30;
@@ -164,9 +164,16 @@ public:
 
 private:
     CS230::Timer* skill_timer;
+    static constexpr double skill_time = 1.55;
+    Hero* hero;
     int direction;
     static constexpr double damage = 30;
-    static constexpr double skill_time = 5;
+    bool IsEnded = false;
+
+    enum class Animations {
+        Attack
+    };
+    friend class Hero;
 };
 
 class Hero_Heavy_Light : public Skill {
@@ -200,10 +207,14 @@ public:
     static constexpr double GetDamage() { return damage; }
 
 private:
-    CS230::Timer* skill_timer;
+    Hero* hero;
     int direction;
     static constexpr double damage = 30;
-    static constexpr double skill_time = 5;
+    bool IsEnded = false;
+    enum class Animations {
+        Attack
+    };
+    friend class Hero;
 };
 
 class Hero_Heavy_Heavy : public Skill {
@@ -226,6 +237,29 @@ private:
     };
     friend class Hero;
 };
+
+class Hero_Heavy_Heavy_2 : public Skill {
+public:
+    Hero_Heavy_Heavy_2(GameObject* object);
+    GameObjectTypes Type() override { return GameObjectTypes::UpgradeHH; }
+    std::string TypeName() override { return "UpgradeHH_2"; }
+    void Update(double dt) override;
+    void ResolveCollision(GameObject* other_object);
+    static constexpr double GetDamage() { return damage; }
+
+private:
+    Hero* hero;
+    int direction;
+    static constexpr double damage = 50;
+    bool IsEnded = false;
+
+    enum class Animations {
+        Attack
+    };
+    friend class Hero;
+
+};
+
 
 class EEnemyAttack : public Skill {
 public:
@@ -284,20 +318,4 @@ private:
     };
 };
 
-class Hero_Heavy_Heavy_2 : public Skill {
-public:
-    Hero_Heavy_Heavy_2(GameObject* object);
-    GameObjectTypes Type() override { return GameObjectTypes::UpgradeHH; }
-    std::string TypeName() override { return "UpgradeHH_2"; }
-    void Update(double dt) override;
-    void ResolveCollision(GameObject* other_object);
-    static constexpr double GetDamage() { return damage; }
-
-private:
-    CS230::Timer* skill_timer;
-    int direction;
-    static constexpr double damage = 50;
-    static constexpr double skill_time = 10;
-
-};
 
