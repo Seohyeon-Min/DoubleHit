@@ -120,7 +120,7 @@ void Mode1::Load() {
 
     GetGSComponent<UpgradeUI>()->Add("Assets/UI/CombSkill_BB.png", UpgradeBBPosition, BasicScale);
     GetGSComponent<UpgradeUI>()->Add("Assets/UI/CombSkill_BB_2.png", UpgradeBBPosition, BasicScale);
-
+    GetGSComponent<UpgradeUI>()->Add("Assets/effect2.png", {0,0}, 1);
 
     elite_spawn_timer = new CS230::Timer(elite_spawn_time);
     AddGSComponent(elite_spawn_timer);
@@ -142,11 +142,11 @@ void Mode1::Update([[maybe_unused]] double dt) {
     GetGSComponent<UI>()->Update(dt);
     spawn_time += dt;
 
-    if (hero_ptr->GetLevel() == 1 && !levelup) {
+    if (hero_ptr->GetLevel() == 1 && !levelup && (hero_ptr->GetOption().size() > 0)) {
         elite_spawn_timer->Set(elite_spawn_time/5);
         levelup = true;
     }
-    if (elite_spawn_timer->Remaining() == 0.0 && !GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteEnemy>()) {
+    if (elite_spawn_timer->Remaining() == 0.0 && !GetGSComponent<CS230::GameObjectManager>()->GetGOComponent<EliteEnemy>() ) {
         AddGSComponent(new Warning({ 0,  (double)Engine::GetWindow().GetSize().y / 2 + 100 }));
         GetGSComponent<CS230::GameObjectManager>()->Add(new EliteEnemy({ 1200,672 }));
         elite_spawn_timer->Set(elite_spawn_time*50);

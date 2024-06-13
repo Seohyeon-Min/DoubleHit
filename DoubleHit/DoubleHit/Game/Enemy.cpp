@@ -63,7 +63,7 @@ void GroundEnemy::State_Dead::CheckExit(GameObject* object)
     GroundEnemy* robot = static_cast<GroundEnemy*>(object);
     if (robot->GetGOComponent<CS230::Sprite>()->AnimationEnded()) {
         if (robot->hero != nullptr) {
-            robot->hero->AddExp(800);
+            robot->hero->AddExp(150);
             Engine::GetLogger().LogEvent("Add Exp 150 ");
         }
         Engine::GetLogger().LogEvent("Add Score 300 ");
