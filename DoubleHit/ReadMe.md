@@ -3,14 +3,12 @@
 ##Double Hit
 
 ##Team members
+Seohyun Min
+- Lead Programmer & Technical Director
+- Owned core architecture and implementation, distributed task assignments, and led code review/feedback across the team.
+
 Dohyung Kwon
 - Producer
-- Programmer
-- Sub Art Designer
-
-Seohyun Min
-- Technical Lead
-- Sub Art Designer
 
 Won Kim
 - Art Lead
